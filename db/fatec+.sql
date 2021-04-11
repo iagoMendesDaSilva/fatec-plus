@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS fatecjobs;
-CREATE DATABASE fatecjobs;
-USE fatecjobs;
+DROP DATABASE IF EXISTS fatecplus;
+CREATE DATABASE fatecplus;
+USE fatecplus;
 
 CREATE TABLE users(
 id INT NOT NULL AUTO_INCREMENT,
