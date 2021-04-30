@@ -20,7 +20,9 @@ category VARCHAR(22) NOT NULL, /*student, teacher, internship coordinator, compa
 image TEXT,
 token TEXT,
 recovery INT(5) UNIQUE,
+recoveryTime DATETIME,
 version_app VARCHAR(15),
+onesignal_playerID VARCHAR(40) UNIQUE,
 PRIMARY KEY(id)
 );
 
