@@ -8,5 +8,6 @@ from models.language import *
 from models.formation import *
 from models.notification import *
 from models.experience import *
+from models.subscription import *
 from models.requirement import *
 from models.socialNetwork import *
