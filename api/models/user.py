@@ -15,10 +15,10 @@ class User(database.Model):
     recovery_time = database.Column(database.DateTime)
     number_address = database.Column(database.String(50))
     job = database.Column(database.Boolean, nullable=False)
+    password = database.Column(database.Text, nullable=False)
     name = database.Column(database.String(50), nullable=False)
     internship = database.Column(database.Boolean, nullable=False)
     category = database.Column(database.String(22), nullable=False)
-    password = database.Column(database.String(20), nullable=False)
     onesignal_playerID = database.Column(database.String(40), unique=True)
     email = database.Column(database.String(50), nullable=False, unique=True)
     username = database.Column(database.String(20), nullable=False, unique=True)
@@ -30,13 +30,18 @@ class User(database.Model):
     formations = database.relationship('Formation', backref='formations')
     experiences = database.relationship('Experience', backref='experiences')
     social_networks = database.relationship('SocialNetwork', backref='social_networks')
-    companies = database.relationship('Job', backref="companies", lazy = 'dynamic', foreign_keys = 'Job.company')
-    indications = database.relationship('Subscription', backref="indications", lazy = 'dynamic', foreign_keys = 'Subscription.indication')
-    subscriptions = database.relationship('Subscription', backref="subscriptions", lazy = 'dynamic', foreign_keys = 'Subscription.subscription')
+    companies = database.relationship('Job', backref="companies",  foreign_keys = 'Job.company')
+    indications = database.relationship('Subscription', backref="indications",  foreign_keys = 'Subscription.indication')
+    subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscription')
 
 class UserSchema(serializer.Schema):
     class Meta:
-        fields =  ('id','token','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','password','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks','indications','companies','subscriptions')
+        fields =  ('id','token','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks','indications','companies','subscriptions')
+
+class UserSchemaLogin(serializer.Schema):
+    class Meta:
+        fields =  ('id','token')
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+user_schema_login = UserSchemaLogin()

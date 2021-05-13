@@ -1,2 +1,2 @@
-from app.applications import database, serializer, app
-# from app.token import jwt_required
+from app.applications import *
+from app.token import token, create_token
