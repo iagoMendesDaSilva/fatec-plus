@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code</title>
+    <style>
+        .body {
+            width: 100%;
+            text-align: center;
+        }
+
+        .containerAll {
+            width: 400px;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .containerTitle {
+            padding: 20px;
+            text-align: center;
+            background-color: #8587FE;
+        }
+
+        .lblTitle {
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .containerBody {
+            padding: 20px;
+            align-items: center;
+            background-color: #F6F6F6;
+        }
+
+        .containerBodyWelcome {
+            width: 100%;
+            text-align: center;
+        }
+
+        .lblName {
+            color: #333;
+            font-size: 26px;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .lblMessage {
+            color: #333;
+            font-size: 20px;
+
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .containerCode {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+            background-color: rgb(133, 135, 254, .5);
+        }
+
+        .conatinerCodeContent {
+            padding: 35px;
+            text-align: center;
+        }
+
+        .lblTitleCode {
+            font-size: 20px;
+            color: black;
+            font-weight: bold;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .lblCode {
+            color: black;
+            font-size: 48px;
+            padding: 20px;
+            font-weight: 100;
+            letter-spacing: 15px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+
+        .lblTime {
+            color: rgba(51, 51, 51, .75);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .containerFooter {
+            padding: 20px;
+            text-align: center;
+            background-color: #ecebeb;
+        }
+
+        .lblFooter {
+            color: #333;
+            font-size: 16px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .lblLink {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0067B8;
+
+            text-decoration: none;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="containerAll">
+        <div class="containerTitle">
+            <span class="lblTitle">Fatec +</span>
+        </div>
+        <div class="containerBody">
+            <div class="containerBodyWelcome">
+                <span class="lblName">Olá $name!</span></br></br>
+                <span class="lblMessage">Por favor use o código de verificação abaixo no aplicativo para confirmar sua
+                    identidade.</span>
+            </div>
+
+            <div class="containerCode">
+                <div class="conatinerCodeContent">
+                    <span class="lblTitleCode">Código de verificação:</span></br></br>
+                    <span class="lblCode">$code</span></br></br>
+                    <span class="lblTime">Este código vai expirar em 15 minutos</span></br></br>
+                </div>
+            </div>
+        </div>
+        <div class="containerFooter">
+            <span class="lblFooter">Precisa de ajuda?<a class="lblLink" href="mailto:$name"> Nos envie
+                    um e-mail</a></span>
+        </div>
+    </div>
+</body>
+
+</html>
+<!DOCTYPE html>

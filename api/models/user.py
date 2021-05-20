@@ -36,7 +36,7 @@ class User(database.Model):
 
 class UserSchema(serializer.Schema):
     class Meta:
-        fields =  ('id','token','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks','indications','companies','subscriptions')
+        fields =  ('id','token','category','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks','indications','companies','subscriptions')
 
 class UserSchemaLogin(serializer.Schema):
     class Meta:

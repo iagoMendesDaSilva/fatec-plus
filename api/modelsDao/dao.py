@@ -21,14 +21,24 @@ class DaoDefault:
                 self.commit()
             except Exception as err:
                 abort(404, err.args)
- 
+
+    def update_many(self,id,data,model):
+            try:
+                object = self.get_by_id(id,model)
+                for key in data:
+                    if hasattr(object, key):
+                        setattr(object, key, data[key])
+                self.commit()
+            except Exception as err:
+                abort(404, err.args)
+       
+
     def get_by_id(self, id, model):
         try:
             return model.query.filter(model.id == id).first_or_404()
         except Exception as err:
              abort(404, err.args)
 
-   
     def get_by_key(self, key, value, model):
         try:
             key = self.get_key_formated(key, model)
@@ -37,7 +47,6 @@ class DaoDefault:
             print(err)
             abort(404, err.args)
 
-   
     def get_all_by_key(self,key, value, model):
         try:
             key = self.get_key_formated(key, model)
