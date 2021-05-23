@@ -1,8 +1,9 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Subscription(database.Model):
     indication = database.Column(database.Integer, database.ForeignKey('user.id'))
     subscription = database.Column(database.Integer, database.ForeignKey('user.id'))
+    company = database.Column(database.Integer, database.ForeignKey('user.id'))
     job = database.Column(database.Integer, database.ForeignKey('job.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 

@@ -1,9 +1,9 @@
 import jwt
 import datetime
-from app import app
 from functools import wraps
 from models.user import User
 from modelsDao.dao import dao
+from app.applications import app
 from jwt.exceptions import DecodeError
 from flask import current_app, request, abort
 

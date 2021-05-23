@@ -1,9 +1,9 @@
 import datetime
-from models import *
 from flask import abort
-from modelsDao import *   
 from random import randint
 from app import create_token
+from modelsDao import userDao, dao
+from models.user import user_schema_login,users_schema,user_schema,User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserController:
@@ -42,7 +42,7 @@ class UserController:
             try:
                 token =  create_token(user)
                 dao.update(user.id,'token',token,User)
-                return user
+                return user_schema_login.dump(user)
             except Exception as err:
                 abort(403, err.args)
         abort(404)
@@ -61,7 +61,7 @@ class UserController:
 
     def update(self,current_user,data,id):
         if current_user.id == id:
-            dao.update_many(1,data,User)
+            userDao.update_many(id,data,User)
             return True
         return False
 

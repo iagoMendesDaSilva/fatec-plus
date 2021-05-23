@@ -1,6 +1,6 @@
 from routes import *
 from models import *
-from app import app, database
+from app import *
 
 
 if __name__ == "__main__":

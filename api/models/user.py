@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class User(database.Model):
     token = database.Column(database.Text)
@@ -25,18 +25,20 @@ class User(database.Model):
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
 
-    projects = database.relationship('Project', backref='projects')
-    languages = database.relationship('Language', backref='languages')
-    formations = database.relationship('Formation', backref='formations')
-    experiences = database.relationship('Experience', backref='experiences')
-    social_networks = database.relationship('SocialNetwork', backref='social_networks')
-    companies = database.relationship('Job', backref="companies",  foreign_keys = 'Job.company')
+    projects = database.relationship('Project', backref='projects',  cascade="all, delete")
+    languages = database.relationship('Language', backref='languages', cascade="all, delete")
+    formations = database.relationship('Formation', backref='formations', cascade="all, delete")
+    experiences = database.relationship('Experience', backref='experiences', cascade="all, delete")
+    social_networks = database.relationship('SocialNetwork', backref='social_networks', cascade="all, delete")
+
+    jobs = database.relationship('Job', backref="jobs",  foreign_keys = 'Job.company')
     indications = database.relationship('Subscription', backref="indications",  foreign_keys = 'Subscription.indication')
+    companies = database.relationship('Subscription', backref="companies",  foreign_keys = 'Subscription.company')
     subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscription')
 
 class UserSchema(serializer.Schema):
     class Meta:
-        fields =  ('id','token','category','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks','indications','companies','subscriptions')
+        fields =  ('id','token','category','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks')
 
 class UserSchemaLogin(serializer.Schema):
     class Meta:

@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Job(database.Model):
     date = database.Column(database.Date)
@@ -11,13 +11,13 @@ class Job(database.Model):
     company = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-    benefits = database.relationship('Benefit', backref='benefits')
-    vacancies = database.relationship('Subscription', backref="vacancies")
-    requirements = database.relationship('Requirement', backref='requirements')
+    benefits = database.relationship('Benefit', backref='benefits', cascade="all, delete")
+    vacancies = database.relationship('Subscription', backref="vacancies", cascade="all, delete")
+    requirements = database.relationship('Requirement', backref='requirements', cascade="all, delete")
 
 class JobSchema(serializer.Schema):
     class Meta:
-        fields =  ('id','date','description','job','active','name','intership','receive_by_email','company')
+        fields =  ('id','date','description','job','active','name','internship','receive_by_email', "benefits","vacancies","requirements","company")
 
 job_schema = JobSchema()
 jobs_schema = JobSchema(many=True)

@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Experience(database.Model):
     end_year = database.Column(database.Date, nullable=True)

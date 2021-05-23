@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Language(database.Model):
     level = database.Column(database.String(15), nullable=False)

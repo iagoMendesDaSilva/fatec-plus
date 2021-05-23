@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Project(database.Model):
     url = database.Column(database.Text)

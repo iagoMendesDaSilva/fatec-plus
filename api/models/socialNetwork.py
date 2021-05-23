@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class SocialNetwork(database.Model):
     url = database.Column(database.Text, nullable=False)

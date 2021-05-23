@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Formation(database.Model):
     start_year = database.Column(database.Date)

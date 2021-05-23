@@ -1,8 +1,6 @@
-from modelsDao import userDao
-from models import *
-from controllers import *
 from app import app, token
 from flask import jsonify, request
+from controllers import userController
 
 @app.route("/mobile-api/v1/user/<int:id>", methods=["GET","PUT","DELETE"])
 @token

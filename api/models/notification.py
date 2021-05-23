@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Notification(database.Model):
     title = database.Column(database.String(30), nullable=False, unique=True)

@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Benefit(database.Model):
     description= database.Column(database.String(300))

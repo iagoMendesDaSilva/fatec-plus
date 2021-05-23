@@ -1,4 +1,4 @@
-from app import database, serializer
+from app.applications import database, serializer
 
 class Course(database.Model):
     duration= database.Column(database.Integer, nullable=False)

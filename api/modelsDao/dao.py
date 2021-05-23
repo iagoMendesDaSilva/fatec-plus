@@ -1,6 +1,6 @@
-from models.user import *
 from flask import abort
-from app import database
+from models import *
+from app.applications import database
 from sqlalchemy.exc import IntegrityError
 
 class DaoDefault:

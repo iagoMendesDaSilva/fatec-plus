@@ -46,7 +46,6 @@ class Email:
 
 
 emailSender = Email()
-emailSender.send_recovery("iago_mendesxx@hotmail.com","iago","12345")
 
 
 
