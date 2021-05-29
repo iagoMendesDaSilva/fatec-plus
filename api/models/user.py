@@ -31,10 +31,10 @@ class User(database.Model):
     experiences = database.relationship('Experience', backref='experiences', cascade="all, delete")
     social_networks = database.relationship('SocialNetwork', backref='social_networks', cascade="all, delete")
 
-    jobs = database.relationship('Job', backref="jobs",  foreign_keys = 'Job.company')
-    indications = database.relationship('Subscription', backref="indications",  foreign_keys = 'Subscription.indication')
-    companies = database.relationship('Subscription', backref="companies",  foreign_keys = 'Subscription.company')
-    subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscription')
+    jobs = database.relationship('Job', backref="jobs",  foreign_keys = 'Job.company', cascade="all, delete")
+    indications = database.relationship('Subscription', backref="indications",  foreign_keys = 'Subscription.indication', cascade="all, delete")
+    companies = database.relationship('Subscription', backref="companies",  foreign_keys = 'Subscription.company', cascade="all, delete")
+    subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscription', cascade="all, delete")
 
 class UserSchema(serializer.Schema):
     class Meta:

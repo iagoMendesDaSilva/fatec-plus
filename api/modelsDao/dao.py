@@ -1,6 +1,6 @@
 from flask import abort
 from models import *
-from app.applications import database
+from app import database, ObjectInvalid
 from sqlalchemy.exc import IntegrityError
 
 class DaoDefault:
@@ -15,56 +15,47 @@ class DaoDefault:
         self.commit(object, "delete")
 
     def update(self, id, key, value, model):
-            try:
-                object = self.get_by_id(id,model)
-                setattr(object, key, value)
-                self.commit()
-            except Exception as err:
-                abort(404, err.args)
+        object = self.get_by_id(id,model)
+        setattr(object, key, value)
+        self.commit()
 
     def update_many(self,id,data,model):
-            try:
-                object = self.get_by_id(id,model)
-                for key in data:
-                    if hasattr(object, key):
-                        setattr(object, key, data[key])
-                self.commit()
-            except Exception as err:
-                abort(404, err.args)
-       
+        object = self.get_by_id(id,model)
+        for key in data:
+            if hasattr(object, key):
+                setattr(object, key, data[key])
+        self.commit()
+
+    
+    def get_by_key(self, key, value, model):
+            key = self.get_key_formated(key, model)
+            object =  model.query.filter(key == value).first()
+            if  not object:
+                raise ObjectInvalid
+            return object
+
 
     def get_by_id(self, id, model):
-        try:
-            return model.query.filter(model.id == id).first_or_404()
-        except Exception as err:
-             abort(404, err.args)
-
-    def get_by_key(self, key, value, model):
-        try:
-            key = self.get_key_formated(key, model)
-            return model.query.filter(key == value).first_or_404()
-        except Exception as err:
-            print(err)
-            abort(404, err.args)
+        object =  model.query.filter(model.id == id).first()
+        if not object:
+            raise ObjectInvalid
+        return object
 
     def get_all_by_key(self,key, value, model):
-        try:
             key = self.get_key_formated(key, model)
-            return model.query.filter(key == value).all()
-        except Exception as err:
-             abort(404, err.args)
+            object =  model.query.filter(key == value).all()
+            if  not object:
+                raise ObjectInvalid
+            return object
 
     def get_all_by_model(self, model):
-        try:
-            return model.query.all()
-        except Exception as err:
-             abort(404, err.args)
+            object = model.query.all()
+            if  not object:
+                raise ObjectInvalid
+            return object
 
     def get_key_formated(self, key, model):
-        try:
-            return eval(model.__tablename__.title() + f".{key}")
-        except Exception as err:
-             abort(503, err.args)
+        return eval(model.__tablename__.title() + f".{key}")
 
     def commit(self, object=None, method=None):
         try: 
