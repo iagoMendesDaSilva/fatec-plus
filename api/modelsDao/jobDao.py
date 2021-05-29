@@ -1,3 +1,4 @@
+from models.benefit import Benefit
 from modelsDao import dao
 from models.job import Job
 from app.applications import database
@@ -20,8 +21,8 @@ class JobDao:
         else:
             return Job.query.filter(Job.company==id).all()
 
-    def update_many(self,id,data,model):
-                object = dao.get_by_id(id,model)
+    def update_many(self,id,data):
+                object = dao.get_by_id(id,Job)
                 if object:
                     for key in data:
                         if hasattr(object, key) and self.key_is_valid(key):

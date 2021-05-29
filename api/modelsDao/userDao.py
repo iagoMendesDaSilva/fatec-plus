@@ -20,8 +20,8 @@ class UserDao:
             else:
                 return User.query.all()
 
-    def update_many(self,id,data,model):
-        object = dao.get_by_id(id,model)
+    def update_many(self,id,data):
+        object = dao.get_by_id(id,User)
         if object:
             for key in data:
                 if hasattr(object, key) and self.key_is_valid(key):

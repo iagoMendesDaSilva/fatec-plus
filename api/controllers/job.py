@@ -1,15 +1,16 @@
+from re import A
 from modelsDao import jobDao,dao
 from flask import abort, make_response, jsonify
-from models import Job,jobs_schema,job_schema
 from app.exceptions import ObjectInvalid,CurrentUser
+from models import User, Job,jobs_schema,job_schema
 
 class JobController:
     def __init__(self):
         pass
 
-    def create(self, current_user,create_job, data):
+    def create(self, current_user, data):
         try:
-            if  create_job:
+            if  self.coodinator_or_company(current_user.id):
                 job = Job(
                 date=data['date'],
                 description=data['description'],
@@ -22,7 +23,9 @@ class JobController:
                 dao.add(job)
                 return True
             else:
-                raise Exception
+                raise CurrentUser
+        except CurrentUser as err:
+            abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
@@ -79,7 +82,7 @@ class JobController:
             job  =dao.get_by_id(id,Job)
             if job:
                 if current_user.id == job.company:
-                    jobDao.update_many(id,data,Job)
+                    jobDao.update_many(id,data)
                 else:
                     raise CurrentUser
             else:
@@ -91,5 +94,9 @@ class JobController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
-       
+    def coodinator_or_company(self, id):
+        user = dao.get_by_id(id, User)
+        category = user.category.lower()
+        return  True if category=='company' or category=='internship coordinator' else  False
+
 jobController = JobController()

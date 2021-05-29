@@ -8,9 +8,9 @@ class Experience(database.Model):
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class ExperienceSchema(serializer.Schema):
+class ExperienceSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','job','company','start_year','end_year','id_user')
+        model = Experience
 
 experience_schema = ExperienceSchema()
 experiences_schema = ExperienceSchema(many=True)

@@ -4,7 +4,7 @@ from controllers import userController
 
 @app.route("/mobile-api/v1/user/<int:id>", methods=["GET","PUT","DELETE"])
 @token
-def user(current_user,create_job,id):
+def user(current_user,id):
     if request.method == 'GET':
         return jsonify(userController.get(id)), 200
     elif request.method == 'DELETE':
@@ -16,60 +16,60 @@ def user(current_user,create_job,id):
 
 @app.route("/mobile-api/v1/users", methods=["GET"])
 @token
-def get_users(current_user,create_job):
+def get_users(current_user):
         return jsonify(userController.get_all()), 200
 
 @app.route("/mobile-api/v1/users/students", methods=["GET"])
 @token
-def get_students(current_user,create_job):
+def get_students(current_user):
         return jsonify(userController.get_all('student')), 200
 
 @app.route("/mobile-api/v1/users/teachers", methods=["GET"])
 @token
-def get_teachers(current_user,create_job):
+def get_teachers(current_user):
         return jsonify(userController.get_all('teacher')), 200
 
 @app.route("/mobile-api/v1/users/internship-coordinators", methods=["GET"])
 @token
-def get_intership_coordinators(current_user,create_job):
+def get_intership_coordinators(current_user):
         return jsonify(userController.get_all('internship coordinator')), 200
 
 @app.route("/mobile-api/v1/users/companies", methods=["GET"])
 @token
-def get_companies(current_user,create_job):
+def get_companies(current_use):
         return jsonify(userController.get_all('company')), 200
 
 @app.route("/mobile-api/v1/users/admins", methods=["GET"])
 @token
-def get_admins(current_user,create_job):
+def get_admins(current_user):
         return jsonify(userController.get_all('admin')), 200
 
 @app.route("/mobile-api/v1/users/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_users_limit(current_user,create_job,limit,offset):
+def get_users_limit(current_user,limit,offset):
         return jsonify(userController.get_all(None,limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/students/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_students_limit(current_user,create_job,limit,offset):
+def get_students_limit(current_user,limit,offset):
         return jsonify(userController.get_all('student',limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/teachers/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_teachers_limit(current_user,create_job,limit,offset):
+def get_teachers_limit(current_user,limit,offset):
         return jsonify(userController.get_all('teacher',limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/internship-coordinators/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_intership_coordinators_limit(current_user,create_job,limit,offset):
+def get_intership_coordinators_limit(current_user,limit,offset):
         return jsonify(userController.get_all('internship coordinator',limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/companies/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_companies_limit(current_user,create_job,limit,offset):
+def get_companies_limit(current_user,limit,offset):
         return jsonify(userController.get_all('company',limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/admins/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_admins_limit(current_user,create_job,limit,offset):
+def get_admins_limit(current_user,limit,offset):
         return jsonify(userController.get_all('admin',limit,offset)), 200

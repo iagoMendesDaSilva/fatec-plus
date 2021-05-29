@@ -1,4 +1,7 @@
+from models.benefit import BenefitSchema
 from app.applications import database, serializer
+from models.requirement import RequirementSchema
+from models.subscription import SubscriptionSchema
 
 class Job(database.Model):
     date = database.Column(database.Date)
@@ -15,9 +18,13 @@ class Job(database.Model):
     vacancies = database.relationship('Subscription', backref="vacancies", cascade="all, delete")
     requirements = database.relationship('Requirement', backref='requirements', cascade="all, delete")
 
-class JobSchema(serializer.Schema):
+class JobSchema(serializer.SQLAlchemyAutoSchema):
+    benefits = serializer.Nested(BenefitSchema, many=True)
+    vacancies = serializer.Nested(SubscriptionSchema, many=True)
+    requirements = serializer.Nested(RequirementSchema, many=True)
+
     class Meta:
-        fields =  ('id','date','description','job','active','name','internship','receive_by_email', "benefits","vacancies","requirements","company")
+        model = Job
 
 job_schema = JobSchema()
 jobs_schema = JobSchema(many=True)

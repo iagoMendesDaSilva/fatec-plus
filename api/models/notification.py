@@ -5,9 +5,9 @@ class Notification(database.Model):
     message= database.Column(database.String(300), nullable=False, unique=True)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class NotificationSchema(serializer.Schema):
+class NotificationSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','title','message')
+        model = Notification
 
 notification_schema = NotificationSchema()
 notifications_schema = NotificationSchema(many=True)

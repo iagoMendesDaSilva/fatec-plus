@@ -8,9 +8,9 @@ class Requirement(database.Model):
     id_job = database.Column(database.Integer, database.ForeignKey('job.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class RequirementSchema(serializer.Schema):
+class RequirementSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','name','level','mandatory','description','id_job')
+        model = Requirement
 
 requirement_schema = RequirementSchema()
 requirements_schema = RequirementSchema(many=True)

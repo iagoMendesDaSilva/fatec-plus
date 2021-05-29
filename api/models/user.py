@@ -1,4 +1,11 @@
+from models.job import JobSchema
+from models.project import ProjectSchema
+from models.language import LanguageSchema
+from models.formation import FormationSchema
 from app.applications import database, serializer
+from models.experience import ExperienceSchema
+from models.subscription import SubscriptionSchema
+from models.socialNetwork import SocialNetworkSchema
 
 class User(database.Model):
     token = database.Column(database.Text)
@@ -36,14 +43,20 @@ class User(database.Model):
     companies = database.relationship('Subscription', backref="companies",  foreign_keys = 'Subscription.company', cascade="all, delete")
     subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscription', cascade="all, delete")
 
-class UserSchema(serializer.Schema):
-    class Meta:
-        fields =  ('id','token','category','image','city','birth_date','road','recovery','phone','district','studying','version_app','description','recovery_time','number_address','job','name','internship','onesignal_playerID','email','username','projects','languages','formations','experiences','social_networks')
+class UserSchema(serializer.SQLAlchemyAutoSchema):
+    projects = serializer.Nested(ProjectSchema, many=True)
+    languages = serializer.Nested(LanguageSchema, many=True)
+    formations = serializer.Nested(FormationSchema, many=True)
+    experiences = serializer.Nested(ExperienceSchema, many=True)
+    social_networks = serializer.Nested(SocialNetworkSchema, many=True)
+    jobs = serializer.Nested(JobSchema, many=True)
+    indications = serializer.Nested(SubscriptionSchema, many=True)
+    companies = serializer.Nested(SubscriptionSchema, many=True)
+    subscriptions = serializer.Nested(SubscriptionSchema, many=True)
 
-class UserSchemaLogin(serializer.Schema):
     class Meta:
-        fields =  ('id','token')
+        model = User     
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-user_schema_login = UserSchemaLogin()
+user_schema_login = UserSchema(only=('id','token'))

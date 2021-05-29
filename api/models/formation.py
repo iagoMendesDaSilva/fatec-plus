@@ -9,9 +9,9 @@ class Formation(database.Model):
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class FormationSchema(serializer.Schema):
+class FormationSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','title','subtitle','start_year','end_year','worload','id_user')
+        model = Formation
 
 formation_schema = FormationSchema()
 formations_schema = FormationSchema(many=True)

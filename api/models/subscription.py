@@ -8,9 +8,9 @@ class Subscription(database.Model):
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
 
-class SubscriptionSchema(serializer.Schema):
+class SubscriptionSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','job','indication','subscription')
+        model = Subscription
 
 subscription_schema = SubscriptionSchema()
 subscriptions_schema = SubscriptionSchema(many=True)

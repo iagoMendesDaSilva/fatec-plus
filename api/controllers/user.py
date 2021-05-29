@@ -86,7 +86,7 @@ class UserController:
     def update(self,current_user,data,id):
         try:
             if current_user.id == id:
-                userDao.update_many(id,data,User)
+                userDao.update_many(id,data)
             else:
                 raise CurrentUser
         except CurrentUser as err:
@@ -100,7 +100,7 @@ class UserController:
         try:
             new_password =generate_password_hash(data['password'])
             update_data ={"password": new_password, "recovery":None, "recovery_time":None}
-            dao.update_many(id,update_data,User)
+            dao.update_many(id,update_data)
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
@@ -112,7 +112,7 @@ class UserController:
             recovery = randint(10000, 99999)
             recovery_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
             data = {"recovery":recovery,"recovery_time":recovery_time}
-            dao.update_many(user.id,data,User)
+            dao.update_many(user.id,data)
             return user.id
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))

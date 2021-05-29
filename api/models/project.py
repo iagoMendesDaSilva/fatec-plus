@@ -7,9 +7,9 @@ class Project(database.Model):
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class ProjectSchema(serializer.Schema):
+class ProjectSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','name','url','description','id_user')
+        model = Project
 
 project_schema = ProjectSchema()
 projects_schema = ProjectSchema(many=True)

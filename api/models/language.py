@@ -6,9 +6,9 @@ class Language(database.Model):
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class LanguageSchema(serializer.Schema):
+class LanguageSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-            fields =  ('id','language','level','id_user')
+            model = Language
 
 language_schema = LanguageSchema()
 languages_schema = LanguageSchema(many=True)

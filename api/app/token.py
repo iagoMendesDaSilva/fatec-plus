@@ -26,7 +26,7 @@ def token(function):
         except Exception as err:
             return abort(503, err.args)
             
-        return function(current_user=current_user, create_job=decoded['create_job'], *args, **kwargs)
+        return function(current_user=current_user, *args, **kwargs)
     return wrapper
 
 def token_admin(function):
@@ -54,7 +54,6 @@ def token_admin(function):
     
 
 def create_token(user):
-    create_job =  True if user.category.lower()=='company'  or user.category.lower()=='internship coordinator' else  False
-    payload = {'id': user.id, 'create_job':create_job,'exp': datetime.datetime.utcnow() +datetime.timedelta(days=30)}
+    payload = {'id': user.id,'exp': datetime.datetime.utcnow() +datetime.timedelta(days=30)}
     token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm="HS256")
     return token

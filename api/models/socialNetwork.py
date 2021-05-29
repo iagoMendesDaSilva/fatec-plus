@@ -6,9 +6,9 @@ class SocialNetwork(database.Model):
     id_user = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class SocialNetworkSchema(serializer.Schema):
+class SocialNetworkSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-            fields =  ('id','name','url','id_user')
+        model = SocialNetwork
 
 socialNetwork_schema = SocialNetworkSchema()
 socialNetworks_schema = SocialNetworkSchema(many=True)

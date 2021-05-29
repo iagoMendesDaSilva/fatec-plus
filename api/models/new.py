@@ -7,9 +7,9 @@ class New(database.Model):
     version_app= database.Column(database.String(15), nullable=False)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
-class NewSchema(serializer.Schema):
+class NewSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
-        fields =  ('id','title','message','version_app','type')
+        model = New
 
 new_schema = NewSchema()
 news_schema = NewSchema(many=True)
