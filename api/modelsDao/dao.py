@@ -11,6 +11,9 @@ class DaoDefault:
     def add(self, object):
         self.commit(object, "add")
 
+    def add_all(self, objects):
+        self.commit(objects, "add_all")
+
     def remove(self,object) :
         self.commit(object, "delete")
 
@@ -57,6 +60,8 @@ class DaoDefault:
         try: 
             if(method=="add"):
                 database.session.add(object)
+            elif(method=="add_all"):
+                database.session.add_all(object)
             elif(method=="delete"):
                 database.session.delete(object)
             database.session.commit() 

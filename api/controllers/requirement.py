@@ -1,9 +1,9 @@
-from modelsDao import benefitDao,dao
+from modelsDao import requirementDao,dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
-from models import Job, Benefit,benefit_schema,benefits_schema
+from models import Job, Requirement,requirement_schema,requirements_schema
 
-class BenefitController:
+class RequirementController:
     def __init__(self):
         pass
 
@@ -11,33 +11,37 @@ class BenefitController:
         try:
             job = dao.get_by_id(id_job, Job)
             if job.company == current_user.id:
-                benefit = Benefit(
+                requirement = Requirement(
                 name=data['name'],
+                level=data['level'],
+                mandatory=data['mandatory'],
                 description=data['description'],
                 id_job=id_job)
-                dao.add(benefit)
+                dao.add(requirement)
                 return True
             else:
                 raise CurrentUser
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except ObjectInvalid as err:
-            abort(make_response(jsonify({"response":"Invalid Benefit."}), 404))
+            abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
     def create_many(self, current_user, datas, id_job):
         try:
             job = dao.get_by_id(id_job, Job)
-            benefits = []
+            requirements = []
             if job.company == current_user.id:
                 for data in datas:
-                    benefit = Benefit(
+                    requirement = Requirement(
                     name=data['name'],
+                    level=data['level'],
                     description=data['description'],
+                    mandatory=data['mandatory'],
                     id_job=id_job)
-                    benefits.append(benefit)
-                dao.add_all(benefits)
+                    requirements.append(requirement)
+                dao.add_all(requirements)
                 return True
             else:
                 raise CurrentUser
@@ -50,25 +54,25 @@ class BenefitController:
 
     def get(self, id):
         try:
-            return benefit_schema.dump(dao.get_by_id(id,Benefit))
+            return requirement_schema.dump(dao.get_by_id(id,Requirement))
         except ObjectInvalid as err:
-            abort(make_response(jsonify({"response":"Invalid Benefit."}), 404))
+            abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
     def get_all_by_job(self,id_job):
         try:
-            return benefits_schema.dump(dao.get_all_by_key('id_job',id_job,Benefit))
+            return requirements_schema.dump(dao.get_all_by_key('id_job',id_job,Requirement))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
     def delete(self,current_user,id):
         try:
-            benefit  =dao.get_by_id(id,Benefit)
-            job = dao.get_by_id(benefit.id_job, Job)
-            if benefit and job:
+            requirement  =dao.get_by_id(id,Requirement)
+            job = dao.get_by_id(Requirement.id_job, Job)
+            if Requirement and job:
                 if current_user.id == job.company:
-                    dao.remove(benefit)
+                    dao.remove(requirement)
                 else:
                     raise CurrentUser
             else:
@@ -76,7 +80,7 @@ class BenefitController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except ObjectInvalid as err:
-            abort(make_response(jsonify({"response":"Invalid Benefit."}), 404))
+            abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
@@ -85,7 +89,7 @@ class BenefitController:
         try:
             job = dao.get_by_id(job_id,Job)
             if job.company == current_user.id:
-                benefitDao.delete_all(job_id)
+                requirementDao.delete_all(job_id)
             else:
                 raise CurrentUser
         except CurrentUser as err:
@@ -95,11 +99,11 @@ class BenefitController:
 
     def update(self,current_user,data,id):
         try:
-            benefit  =dao.get_by_id(id,Benefit)
-            job = dao.get_by_id(benefit.id_job, Job)
-            if benefit and job:
+            requirement  =dao.get_by_id(id,Requirement)
+            job = dao.get_by_id(requirement.id_job, Job)
+            if Requirement and job:
                 if current_user.id == job.company:
-                    benefitDao.update_many(id,data)
+                    requirementDao.update_many(id,data)
                 else:
                     raise CurrentUser
             else:
@@ -107,9 +111,9 @@ class BenefitController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except ObjectInvalid as err:
-            abort(make_response(jsonify({"response":"Invalid Benefit."}), 404))
+            abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
        
-benefitController = BenefitController()
+requirementController = RequirementController()
