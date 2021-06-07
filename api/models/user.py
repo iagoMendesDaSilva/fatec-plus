@@ -49,10 +49,6 @@ class UserSchema(serializer.SQLAlchemyAutoSchema):
     formations = serializer.Nested(FormationSchema, many=True)
     experiences = serializer.Nested(ExperienceSchema, many=True)
     social_networks = serializer.Nested(SocialNetworkSchema, many=True)
-    jobs = serializer.Nested(JobSchema, many=True)
-    indications = serializer.Nested(SubscriptionSchema, many=True)
-    companies = serializer.Nested(SubscriptionSchema, many=True)
-    subscriptions = serializer.Nested(SubscriptionSchema, many=True)
 
     class Meta:
         model = User     

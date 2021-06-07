@@ -37,7 +37,6 @@ class DaoDefault:
                 raise ObjectInvalid
             return object
 
-
     def get_by_id(self, id, model):
         object =  model.query.filter(model.id == id).first()
         if not object:

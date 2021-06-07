@@ -20,7 +20,6 @@ class Job(database.Model):
 
 class JobSchema(serializer.SQLAlchemyAutoSchema):
     benefits = serializer.Nested(BenefitSchema, many=True)
-    vacancies = serializer.Nested(SubscriptionSchema, many=True)
     requirements = serializer.Nested(RequirementSchema, many=True)
 
     class Meta:

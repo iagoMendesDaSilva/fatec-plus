@@ -7,4 +7,5 @@ from modelsDao.languageDao import languageDao
 from modelsDao.formationDao import formationDao
 from modelsDao.experienceDao import experienceDao
 from modelsDao.requirementDao import requirementDao
+from modelsDao.subscriptionDao import subscriptionDao
 from modelsDao.socilaNetworkDao import socialNetworkDao

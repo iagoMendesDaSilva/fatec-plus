@@ -6,5 +6,6 @@ from routes.project import *
 from routes.language import *
 from routes.formation import *
 from routes.experience import *
+from routes.subscription import *
 from routes.requirement import *
 from routes.socialNetwork import *
