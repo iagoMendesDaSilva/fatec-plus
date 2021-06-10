@@ -1,6 +1,6 @@
 {
     "name":"name",
-    "description":"...",
     "level":"basico",
+    "description":"...",
     "mandatory":true
 }

@@ -1,6 +1,8 @@
 import datetime
 from random import randint
 from modelsDao import userDao, dao
+from app.emailSender import emailSender
+from werkzeug.exceptions import BadRequest
 from flask import abort, make_response, jsonify
 from app import create_token, ObjectInvalid, CurrentUser
 from models.user import user_schema_login,users_schema,user_schema,User
@@ -13,29 +15,35 @@ class UserController:
     def create(self, data):
         try:
             password =generate_password_hash(data['password'])
-            user = User(
-            token=None,
-            job=data['job'],
-            city=data['city'],
-            recovery=None,
-            road=data['road'],
-            version_app=None,
-            email=data['email'],
-            name=data['name'],
-            image=data['image'],
-            phone=data['phone'],
-            recovery_time=None,
-            district=data['district'],
-            password = password,
-            studying=data['studying'],
-            category=data['category'],
-            onesignal_playerID=None,
-            username=data['username'],
-            internship=data['internship'],
-            birth_date=data['birth_date'],
-            description=data['description'],
-            number_address=data['number_address'])
-            dao.add(user)
+            if  data['category']=='Student' or data['category']=='Company' or data['category']=='Teacher':
+                user = User(
+                token=None,
+                job=data['job'],
+                city=data['city'],
+                recovery=None,
+                state=data['state'],
+                road=data['road'],
+                version_app=None,
+                email=data['email'],
+                name=data['name'],
+                image=data['image'],
+                phone=data['phone'],
+                recovery_time=None,
+                district=data['district'],
+                password = password,
+                studying=data['studying'],
+                category=data['category'],
+                onesignal_playerID=None,
+                username=data['username'],
+                internship=data['internship'],
+                birth_date=data['birth_date'],
+                description=data['description'],
+                number_address=data['number_address'])
+                dao.add(user)
+            else:
+                raise Exception
+        except BadRequest as err:
+            abort(make_response(jsonify({"response":"  Invalid parameters."}), 400))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 

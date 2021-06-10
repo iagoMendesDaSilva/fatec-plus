@@ -2,7 +2,6 @@ from app import app, token
 from flask import jsonify, request
 from controllers import userController
 
-
 @app.route("/mobile-api/v1/auth/register", methods=["POST"])
 def register():
     userController.create(request.get_json())

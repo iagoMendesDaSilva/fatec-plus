@@ -6,6 +6,7 @@ from models.subscription import SubscriptionSchema
 class Job(database.Model):
     date = database.Column(database.Date)
     description = database.Column(database.String(300))
+    subject_email=database.Column(database.String(50))
     job = database.Column(database.Boolean, nullable=False)
     active = database.Column(database.Boolean, nullable=False)
     name = database.Column(database.String(20), nullable=False)

@@ -1,7 +1,8 @@
+from app.emailSender import emailSender
 from modelsDao import dao, subscriptionDao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
-from models import  User, Job, Subscription, subscription, subscription_schema, subscriptions_schema, user_schema, job_schema
+from models import  User, Job, Subscription,subscriptions_schema
 
 class SubscriptionController:
     def __init__(self):
@@ -27,6 +28,7 @@ class SubscriptionController:
                             return True
                     if len(subs) >0 and indication!=None or len(subs)==0:
                         new_sub =Subscription(job=job_id, subscription=current_user.id, company=job.company,indication=indication)
+                        emailSender.send_resume(current_user,job)
                         dao.add(new_sub)
                     return True
             else:

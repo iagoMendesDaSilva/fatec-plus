@@ -1,9 +1,9 @@
 {  
+    "job":true,
+    "active":true,
+    "name":"job",
+    "internship":true,
+    "description":"...",
     "date":"2021-12-05",
-        "description":"...",
-        "job":true,
-        "active":true,
-        "name":"job",
-        "internship":true,
-        "receive_by_email":true
+    "receive_by_email":true
 }

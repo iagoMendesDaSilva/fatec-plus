@@ -12,6 +12,7 @@ class User(database.Model):
     image = database.Column(database.Text)
     city = database.Column(database.String(50))
     birth_date =  database.Column(database.Date)
+    state = database.Column(database.String(50))
     road = database.Column(database.String(100))
     recovery = database.Column(database.Integer)
     phone = database.Column(database.String(15))

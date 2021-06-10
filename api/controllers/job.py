@@ -13,6 +13,7 @@ class JobController:
             if  self.coodinator_or_company(current_user.id):
                 job = Job(
                 date=data['date'],
+                subject_email=data['subject_email'],
                 description=data['description'],
                 job=data['job'],
                 active=data['active'],

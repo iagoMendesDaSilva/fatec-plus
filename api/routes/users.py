@@ -31,7 +31,7 @@ def get_teachers(current_user):
 
 @app.route("/mobile-api/v1/users/internship-coordinators", methods=["GET"])
 @token
-def get_intership_coordinators(current_user):
+def get_internship_coordinators(current_user):
         return jsonify(userController.get_all('internship coordinator')), 200
 
 @app.route("/mobile-api/v1/users/companies", methods=["GET"])
@@ -61,7 +61,7 @@ def get_teachers_limit(current_user,limit,offset):
 
 @app.route("/mobile-api/v1/users/internship-coordinators/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
 @token
-def get_intership_coordinators_limit(current_user,limit,offset):
+def get_internship_coordinators_limit(current_user,limit,offset):
         return jsonify(userController.get_all('internship coordinator',limit,offset)), 200
 
 @app.route("/mobile-api/v1/users/companies/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
