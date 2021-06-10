@@ -1,6 +1,6 @@
 from app import app, token
-from flask import jsonify, request
 from controllers import userController
+from flask import jsonify, request, send_file
 
 @app.route("/mobile-api/v1/user/<int:id>", methods=["GET","PUT","DELETE"])
 @token
@@ -73,3 +73,15 @@ def get_companies_limit(current_user,limit,offset):
 @token
 def get_admins_limit(current_user,limit,offset):
         return jsonify(userController.get_all('admin',limit,offset)), 200
+
+@app.route("/mobile-api/v1/user/image-profile", methods=["PUT"])
+@token
+def image_profile(current_user):
+        userController.profile_image(current_user,request.get_json())
+        return jsonify({"response":"Edited Image"}), 200
+
+@app.route("/mobile-api/v1/user/image-profile/<int:id>", methods=["GET"])
+@token
+def get_image_profile(current_user,id):
+        path = userController.get_image_profile(id)
+        return send_file(path, mimetype="image/jpg")

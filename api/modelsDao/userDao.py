@@ -30,7 +30,15 @@ class UserDao:
         else:
             raise ObjectInvalid
 
+    def update_image(self,id, path):
+        object = dao.get_by_id(id,User)
+        if object:
+            setattr(object, 'image', path)
+            dao.commit()
+        else:
+            raise ObjectInvalid
+
     def key_is_valid(self, key):
-        return key=='image' or key=='city' or key=='birth_date' or key=='road' or key=='phone' or key=='district' or key=='studyng' or key=='description' or key=='number_address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state'
+        return key=='city' or key=='birth_date' or key=='road' or key=='phone' or key=='district' or key=='studyng' or key=='description' or key=='number_address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state'
 
 userDao = UserDao()

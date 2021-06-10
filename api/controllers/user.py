@@ -1,3 +1,5 @@
+import os
+import base64
 import datetime
 from random import randint
 from modelsDao import userDao, dao
@@ -18,6 +20,7 @@ class UserController:
             if  data['category']=='Student' or data['category']=='Company' or data['category']=='Teacher':
                 user = User(
                 token=None,
+                image=None,
                 job=data['job'],
                 city=data['city'],
                 recovery=None,
@@ -26,7 +29,6 @@ class UserController:
                 version_app=None,
                 email=data['email'],
                 name=data['name'],
-                image=data['image'],
                 phone=data['phone'],
                 recovery_time=None,
                 district=data['district'],
@@ -40,6 +42,8 @@ class UserController:
                 description=data['description'],
                 number_address=data['number_address'])
                 dao.add(user)
+                if(data['image']!=None):
+                    self.profile_image(dao.get_by_key('username',data['username'],User),data)   
             else:
                 raise Exception
         except BadRequest as err:
@@ -141,4 +145,15 @@ class UserController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
   
+    def profile_image(self, user, base64_img):
+        path = "/src/images/"+str(user.id)+"_profile"+".jpg"
+        with open(str(os.getcwd())+path, "wb") as fh:
+            data = base64_img['image'].encode('utf-8')
+            fh.write(base64.decodebytes(data))
+        fh.close()
+        userDao.update_image(user.id, "http://127.0.0.1:5000/mobile-api/v1/user/image-profile/"+str(user.id))
+
+    def get_image_profile(self, id):
+        return str(os.getcwd())+"/src/images/"+str(id)+"_profile"+".jpg"
+
 userController = UserController()
