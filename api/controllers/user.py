@@ -108,7 +108,7 @@ class UserController:
         try:
             new_password =generate_password_hash(data['password'])
             update_data ={"password": new_password, "recovery":None, "recovery_time":None}
-            dao.update_many(id,update_data)
+            dao.update_many(id,update_data,User)
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
@@ -120,7 +120,8 @@ class UserController:
             recovery = randint(10000, 99999)
             recovery_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
             data = {"recovery":recovery,"recovery_time":recovery_time}
-            dao.update_many(user.id,data)
+            dao.update_many(user.id,data,User)
+            emailSender.send_recovery(user,recovery)
             return user.id
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
