@@ -10,7 +10,7 @@ def create_vacancy(current_user):
         return jsonify({"response":"Registered Job"}), 200
     elif request.method == 'DELETE':
         jobController.delete_all(current_user)
-        return jsonify({"response":"Deleted User"}), 200
+        return jsonify({"response":"Deleted Job"}), 200
 
 @app.route("/mobile-api/v1/job/<int:id>", methods=["GET","PUT","DELETE"])
 @token

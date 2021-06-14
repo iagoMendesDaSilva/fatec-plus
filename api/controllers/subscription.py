@@ -1,3 +1,4 @@
+from app.notification import notification
 from app.emailSender import emailSender
 from modelsDao import dao, subscriptionDao
 from flask import abort, make_response, jsonify
@@ -10,29 +11,36 @@ class SubscriptionController:
 
     def create_subscribe(self, current_user, data, job_id):
         try:
-            indication = None
-            if data['indication'] != None:
-                teacher = dao.get_by_id(data['indication'],User)
-                if teacher.category.lower() == 'teacher' or teacher.category.lower() == 'internship coordinator':
-                    indication = teacher.id
-                else:
-                    raise ObjectInvalid
+            job = dao.get_by_id(job_id,Job)
             if  current_user.category.lower() == "student":
-                    subs =subscriptionDao.get_all_by_job_user(job_id,current_user.id)
-                    job = dao.get_by_id(job_id,Job)
-                    for sub in subs:
-                        if sub.indication == data['indication']:
-                            return True
-                        elif sub.indication == None:
-                            dao.update(sub.id,'indication',indication,Subscription)
-                            return True
-                    if len(subs) >0 and indication!=None or len(subs)==0:
+                indication = None
+                if data['indication'] != None:
+                    teacher = dao.get_by_id(data['indication'],User)
+                    if teacher.category.lower() == 'teacher' or teacher.category.lower() == 'internship coordinator':
+                        indication = teacher.id
+                    else:
+                        raise ObjectInvalid
+                subs =subscriptionDao.get_all_by_job_user(job_id,current_user.id)
+                for sub in subs:
+                    if sub.indication == data['indication']:
+                        return True
+                    elif sub.indication == None:
+                        dao.update(sub.id,'indication',indication,Subscription)
+                        return True
+                if len(subs) >0 and indication!=None or len(subs)==0:
                         new_sub =Subscription(job=job_id, subscription=current_user.id, company=job.company,indication=indication)
                         emailSender.send_resume(current_user,job)
+                        notification.send(job.jobs.onesignal_playerID,"Nova inscrição",current_user.name+" se inscreveu para a vaga: "+job.name,{"id":current_user.id})
                         dao.add(new_sub)
-                    return True
+                return True
             else:
-                raise CurrentUser
+                student = dao.get_by_id(data['student'],User)
+                if current_user.category.lower()=='company':
+                    notification.send([student.onesignal_playerID],"Solicitação",job.jobs.name+" solicitou você para a vaga: "+job.name,{"id":job.id})
+                if current_user.category.lower()=='internship coordinator' or  current_user.category.lower()=='teacher':
+                    notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id})
+                    notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id})
+                return True
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except ObjectInvalid as err:

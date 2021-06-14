@@ -67,12 +67,13 @@ class Email:
         location_text = 270
 
         if(user.description != None):
+            location_text += 50
             resume.setFont("Helvetica-Bold", 16)
             resume.drawString(50,320, "Descrição")
             resume.setFont("Helvetica", 16)
-            location_text = 350 
-            text: user.description
-            for x in range(1 , int(len(text)/60)):
+            text = user.description
+            text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
+            for x in range(1 , text_len):
                 location_text += 30
                 resume.drawString(50,location_text,text[x*60 - 60:x*60])
 
@@ -87,7 +88,8 @@ class Email:
                     end =experience.end_year.strftime("%d/%m/%Y")
                     time = start+" até "+end
                 text = "• " + experience.job+" | "+experience.company+" | "+time
-                for x in range(1 , int(len(text)/60)):
+                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
+                for x in range(1 , text_len):
                     location_text += 30
                     resume.drawString(50,location_text,text[x*60 - 60:x*60])
 
@@ -106,7 +108,8 @@ class Email:
                 if formation.workload != None:
                     text += " | "+formation.workload.strftime("%H")+"h"
                 resume.setFont("Helvetica", 16)
-                for x in range(1 , int(len(text)/60)):
+                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
+                for x in range(1 , text_len):
                     location_text += 30
                     resume.drawString(50,location_text,text[x*60 - 60:x*60])
 
@@ -117,25 +120,30 @@ class Email:
             for language in user.languages:
                 resume.setFont("Helvetica", 16)
                 text = "• " + language.language+" | "+language.level
-                for x in range(1 , int(len(text)/60)):
+                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
+                for x in range(1 , text_len):
                     location_text += 30
                     resume.drawString(50,location_text,text[x*60 - 60:x*60])
 
         resume.save()
 
     def send_resume(self, user, job):
-            self.create_resume(user)
-            filename = str(user.id)+".pdf"
-            msg = self.create_msg(job.subject_email, job.jobs.email)
-            text = MIMEText(self.get_text_resume(user, job))
-            part = MIMEBase('application', "octet-stream")
-            part.set_payload(open(self.path+"src/resumes/"+filename, "rb").read())
-            encoders.encode_base64(part)
-            part.add_header(f'Content-Disposition', 'attachment; filename=' +user.name+'_Curriculo.pdf')
-            msg.attach(part)
-            msg.attach(text)
-            self.send(msg)
-            os.remove(self.path+"src/resumes/"+filename)
+            try:
+                self.create_resume(user)
+                filename = str(user.id)+".pdf"
+                msg = self.create_msg(job.subject_email, job.jobs.email)
+                text = MIMEText(self.get_text_resume(user, job))
+                part = MIMEBase('application', "octet-stream")
+                part.set_payload(open(self.path+"src/resumes/"+filename, "rb").read())
+                encoders.encode_base64(part)
+                part.add_header(f'Content-Disposition', 'attachment; filename=' +user.name+'_Curriculo.pdf')
+                msg.attach(part)
+                msg.attach(text)
+                self.send(msg)
+            except:
+                raise Exception
+            finally:
+                os.remove(self.path+"src/resumes/"+filename)
 
     def get_text_resume(self, user, job):
         return "Olá.\n"+user.name+" se inscreveu na vaga " +job.name+". Para mais informações acesse o aplicativo Fatec +.\n\nEste é um e-mail automático. Por favor, não responda este e-mail."
