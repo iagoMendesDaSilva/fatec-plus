@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 
 class Email:
     def __init__(self):
+        self.location_text=0
         self.path = str(os.getcwd())+"/"
         self.sender = os.getenv("FATEC_PLUS_EMAIL")
         self.password = os.getenv("FATEC_PLUS_PASSWORD")
@@ -53,97 +54,100 @@ class Email:
         return msg
 
     def create_resume(self, user ):
+        self.lines=0
         age = str(datetime.date.today().year - user.birth_date.year)
         resume = canvas.Canvas(self.path+"src/resumes/"+str(user.id)+".pdf", bottomup=0, )
         resume.setFont("Helvetica-Bold", 28)
         resume.drawString(50,100, user.name)
         resume.line(50,110,500,110)
-        resume.setFont("Helvetica", 16)
-        resume.drawString(50,150, "Idade: "+age+" anos")
-        resume.drawString(50,180, "Email: "+user.email)
-        resume.drawString(50,210, "Telefone: "+user.phone)
-        resume.drawString(50,240, "Endereço: R. "+user.road+", "+user.number_address)
-        resume.drawString(50,270, "Cidade: "+user.city+"-"+user.state)
-        location_text = 270
 
-        if(user.description != None):
-            location_text += 50
-            resume.setFont("Helvetica-Bold", 16)
-            resume.drawString(50,320, "Descrição")
-            resume.setFont("Helvetica", 16)
-            text = user.description
-            text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
-            for x in range(1 , text_len):
-                location_text += 30
-                resume.drawString(50,location_text,text[x*60 - 60:x*60])
+        self.location_text = 110
+        self.add_text(resume,"Idade: "+age+" anos")
+        self.add_text(resume, "Email: "+user.email)
+        self.add_text(resume, "Telefone: "+user.phone)
+        self.add_text(resume, "Endereço: R. "+user.road+", "+user.number_address)
+        self.add_text(resume, "Cidade: "+user.city+"-"+user.state)
+
+        if user.description:
+            self.add_topic(resume, "Descrição")
+            self.add_text(resume, user.description)
 
         if(len(user.experiences)>0):
-            location_text += 50
-            resume.setFont("Helvetica-Bold", 16)
-            resume.drawString(50,location_text, "Experiências")
+            self.add_topic(resume, "Experiências")
+
             for experience in user.experiences:
-                start = experience.start_year.strftime("%d/%m/%Y")
-                time = "Desde "+ start
-                if(experience.end_year != None):
-                    end =experience.end_year.strftime("%d/%m/%Y")
-                    time = start+" até "+end
+                time = self.format_time(experience.start_year, experience.end_year)
                 text = "• " + experience.job+" | "+experience.company+" | "+time
-                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
-                for x in range(1 , text_len):
-                    location_text += 30
-                    resume.drawString(50,location_text,text[x*60 - 60:x*60])
+                self.add_text(resume, text)
 
         if(len(user.formations)>0):
-            location_text += 50
-            resume.setFont("Helvetica-Bold", 16)
-            resume.drawString(50,location_text, "Formações")
+            self.add_topic(resume, "Formações")
+
             for formation in user.formations:
-                start = formation.start_year.strftime("%d/%m/%Y")
-                time = "Desde "+ start
-                text = None
-                if(formation.end_year != None):
-                    end =formation.end_year.strftime("%d/%m/%Y")
-                    time = start+" até "+end
-                    text ="• " + formation.title+" - "+formation.subtitle+" | "+time
-                if formation.workload != None:
+                time = self.format_time(formation.start_year, formation.end_year)
+                text ="• " + formation.title+" - "+formation.subtitle + " | "+time
+                if formation.workload:
                     text += " | "+formation.workload.strftime("%H")+"h"
-                resume.setFont("Helvetica", 16)
-                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
-                for x in range(1 , text_len):
-                    location_text += 30
-                    resume.drawString(50,location_text,text[x*60 - 60:x*60])
+                self.add_text(resume, text)
 
         if(len(user.languages)>0):
-            location_text += 50
-            resume.setFont("Helvetica-Bold", 16)
-            resume.drawString(50,location_text, "Idiomas")
+            self.add_topic(resume, "Idiomas")
             for language in user.languages:
-                resume.setFont("Helvetica", 16)
                 text = "• " + language.language+" | "+language.level
-                text_len = int(len(text)/60) if int(len(text)/60) != 0 else 2
-                for x in range(1 , text_len):
-                    location_text += 30
-                    resume.drawString(50,location_text,text[x*60 - 60:x*60])
+                self.add_text(resume, text)
 
         resume.save()
 
+    def add_text(self, file, text):
+        self.verify_page(file)
+        file.setFont("Helvetica", 16)
+        file.drawString(50, self.location_text, "") 
+        text_len = int(len(text)/60)
+        if text_len:
+            for index in range (0, text_len+1):
+                self.location_text+=30
+                file.drawString(50, self.location_text,text[index*60:(index+1)*60])
+        else:
+            self.location_text+=40
+            file.drawString(50, self.location_text,text)
+
+
+    def add_topic(self, file, topic):
+        self.verify_page(file)
+        self.location_text += 15
+        file.setFont("Helvetica-Bold", 16)
+        file.drawString(50, self.location_text, "") 
+        self.location_text += 15
+        file.drawString(50, self.location_text, "") 
+        self.location_text += 15
+        file.drawString(50,self.location_text, topic)
+
+    def verify_page(self, file):
+        if self.location_text >= 800:
+            file.showPage()
+            self.location_text =0
+
+    def format_time(self, start_date, end_date=None):
+        start =start_date.strftime("%d/%m/%Y")
+        time = "Desde "+ start
+        if end_date:
+            end =end_date.strftime("%d/%m/%Y")
+            time = start+" até "+end
+        return time
+
     def send_resume(self, user, job):
-            try:
-                self.create_resume(user)
-                filename = str(user.id)+".pdf"
-                msg = self.create_msg(job.subject_email, job.jobs.email)
-                text = MIMEText(self.get_text_resume(user, job))
-                part = MIMEBase('application', "octet-stream")
-                part.set_payload(open(self.path+"src/resumes/"+filename, "rb").read())
-                encoders.encode_base64(part)
-                part.add_header(f'Content-Disposition', 'attachment; filename=' +user.name+'_Curriculo.pdf')
-                msg.attach(part)
-                msg.attach(text)
-                self.send(msg)
-            except:
-                raise Exception
-            finally:
-                os.remove(self.path+"src/resumes/"+filename)
+            self.create_resume(user)
+            filename = str(user.id)+".pdf"
+            msg = self.create_msg(job.subject_email, job.jobs.email)
+            text = MIMEText(self.get_text_resume(user, job))
+            part = MIMEBase('application', "octet-stream")
+            part.set_payload(open(self.path+"src/resumes/"+filename, "rb").read())
+            encoders.encode_base64(part)
+            part.add_header(f'Content-Disposition', 'attachment; filename=' +user.name+'_Curriculo.pdf')
+            msg.attach(part)
+            msg.attach(text)
+            self.send(msg)
+            os.remove(self.path+"src/resumes/"+filename)
 
     def get_text_resume(self, user, job):
         return "Olá.\n"+user.name+" se inscreveu na vaga " +job.name+". Para mais informações acesse o aplicativo Fatec +.\n\nEste é um e-mail automático. Por favor, não responda este e-mail."
