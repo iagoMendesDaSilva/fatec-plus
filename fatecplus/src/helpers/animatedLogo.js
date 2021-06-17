@@ -1,59 +1,54 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text } from 'react-native';
 
-import { Icon } from './icon';
+import { Animate } from '../services';
 import Colors from '../constants/colors';
 
 export const AnimatedLogo = ({ show }) => {
 
-    const animationFade = useRef(new Animated.Value(0)).current
-    const animationRotate = useRef(new Animated.Value(0)).current
+    const fade = useRef(new Animated.Value(0)).current
+    const rotate = useRef(new Animated.Value(0)).current
+    const plusVertical = useRef(new Animated.Value(35)).current
+    const plusHorizontal = useRef(new Animated.Value(-35)).current
 
-    useEffect(async () => {
-        if (!show) {
-            await animateFade(animationFade, 0, 600)
-            animationRotate.setValue(0)
-        } else {
-            await animateFade(animationFade, 1)
-            animateLoop([
-                animate(animationRotate, 1),
-                animate(animationRotate, 2),
-                animate(animationRotate, 3),
-                animate(animationRotate, 4),
-            ])
-        }
-    }, [show])
+    useEffect(() => {
+        show ? start() : end()
+    }, [show]);
 
-    animateLoop = animations => Animated.loop(Animated.sequence(animations)).start()
-
-    animate = (state, toValue, duration = 600, useNativeDriver = false) => {
-        return Animated.timing(state, {
-            duration,
-            toValue,
-            useNativeDriver,
-        })
-    }
-
-    animateFade = (state, toValue, duration = 1200, useNativeDriver = false) => {
-        return new Promise(resolve => {
-            Animated.timing(state, {
-                duration,
-                toValue,
-                useNativeDriver,
-            }).start(() => resolve())
+    const start = () => {
+        Animate.timming(fade, 1).start(() => {
+            Animated.loop(Animated.sequence([
+                Animate.timming(plusVertical, 0, 300),
+                Animate.timming(plusHorizontal, 0, 300),
+                Animate.timming(rotate, 1, 500),
+                Animate.timming(plusHorizontal, -35, 300),
+                Animate.timming(plusVertical, 35, 300),
+                Animate.timming(rotate, 0, 0),
+            ])).start();
         });
     }
 
-    const rotateLogo = animationRotate.interpolate({
-        inputRange: [0, 1, 2, 3, 4],
-        outputRange: ["90deg", "45deg", "0deg", "-45deg", "-90deg"],
-        extrapolate: "clamp"
-    })
+    const end = () => {
+        Animate.timming(fade, 0).start(() => {
+            rotate.setValue(0)
+            plusVertical.setValue(35)
+            plusHorizontal.setValue(-35)
+        });
+    }
+
+    const rotateLogo = rotate.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "180deg",],
+        extrapolate: "clamp",
+    });
 
     return (
-        <Animated.View style={{ ...styles.containerLogo, opacity: animationFade }}>
+        <Animated.View style={{ ...styles.containerLogo, opacity: fade }}>
             <Text style={styles.txtLogo}>Fatec</Text>
-            <Icon name={"plus"} lib={"feather"} size={50} color={Colors.primary} style={{ ...styles.iconLogo, transform: [{ rotate: rotateLogo }] }} />
+            <Animated.View style={{ ...styles.containerIcon, transform: [{ rotate: rotateLogo }] }}>
+                <Animated.View style={{ ...styles.iconPlusHorizontal, transform: [{ translateX: plusHorizontal }] }} />
+                <Animated.View style={{ ...styles.iconPlusVertical, transform: [{ translateY: plusVertical }] }} />
+            </Animated.View>
         </Animated.View>
     );
 }
@@ -67,7 +62,29 @@ const styles = StyleSheet.create({
         fontSize: 60,
         color: Colors.primary,
     },
-    iconLogo: {
+    containerIcon: {
+        width: 35,
+        height: 35,
+        marginLeft: 10,
         marginTop: 10,
+        overflow: "hidden",
+    },
+    iconPlusHorizontal: {
+        top: 15,
+        height: 5,
+        zIndex: 2,
+        width: 35,
+        borderRadius: 3,
+        position: "absolute",
+        backgroundColor: Colors.primary,
+    },
+    iconPlusVertical: {
+        left: 15,
+        width: 5,
+        zIndex: 2,
+        height: 35,
+        borderRadius: 3,
+        position: "absolute",
+        backgroundColor: Colors.primary,
     },
 });
