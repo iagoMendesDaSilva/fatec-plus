@@ -1,17 +1,38 @@
 import styles from './style';
-import React, { useState } from 'react';
-import { View, StatusBar } from 'react-native';
+import { View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
-import Colors from '../../constants/colors';
+import { Storage } from '../../services';
+import { StorageAuth } from '../auth/storage';
 import { AnimatedLogo } from '../../helpers';
 
-export const Splash = () => {
+export const Splash = ({ navigation }) => {
 
+    let timer = null;
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        timer = setTimeout(() => checkUser(), 2300)
+    }, []);
+
+    const checkUser = async () => {
+        const user = await Storage.getUser()
+        user ?
+            StorageAuth.login(user.username, user.password)
+                .then(data => goTo("Home"))
+                .catch(status => goTo("Login"))
+            :
+            goTo("Login")
+    }
+
+    const goTo = screen => {
+        clearTimeout(timer)
+        setLoading(false)
+        navigation.replace(screen)
+    }
 
     return (
         <View style={styles.containerAll}>
-            <StatusBar barStyle={'light-content'} backgroundColor={Colors.background} />
             <AnimatedLogo show={loading} />
         </View>
     );
