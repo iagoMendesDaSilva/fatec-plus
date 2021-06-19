@@ -6,7 +6,7 @@ export class StorageAuth {
         return new Promise((resolve, reject) => {
             Executor.run(new RequestLogin(username, password))
                 .then(resp => resolve(resp.data))
-                .catch(err => reject(err.response.status));
+                .catch(err => reject(err.response ? err.response.status : 500));
         })
     }
 }

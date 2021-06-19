@@ -1,21 +1,30 @@
 import styles from './style';
-import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
 
 import { StorageAuth } from './storage';
+import { Error, Storage } from '../../services';
+import { ModalContext } from '../../routes/modalContext';
 import { TextDefault, Input, ButtonDefault } from '../../helpers';
 
 export const Auth = () => {
+
+    const modal = useContext(ModalContext);
 
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
+    const configErrorModal = async status => {
+        const message = status === 404 ? "Usuário ou senha inválidos!" : Error.validate(status)
+        modal.setInfo({ visible: true, message })
+    }
+
     const login = () => {
         setLoading(true)
         StorageAuth.login(username, password)
-            .then(data => console.log(data))
-            .catch(status => console.log(status))
+            .then(data => Storage.setUser(username, password, data.token, data.id))
+            .catch(status => configErrorModal(status))
             .finally(() => setLoading(false));
     }
 

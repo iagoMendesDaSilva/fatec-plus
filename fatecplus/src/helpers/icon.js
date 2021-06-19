@@ -15,7 +15,7 @@ import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconSimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import IconMaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export const Icon = ({ name, size = 20, color = "white", style, lib = 'fontawesome' }) => {
+export const Icon = ({ name="question", size = 20, color = "white", style, lib = 'fontawesome' }) => {
 
     const getIcon = () => {
         switch (lib.replace(/[^a-zA-Z0-9]/g, "").toLowerCase()) {
@@ -48,7 +48,7 @@ export const Icon = ({ name, size = 20, color = "white", style, lib = 'fontaweso
             case "materialcommunityicons":
                 return <IconMaterialCommunityIcons name={name} size={size} color={color} />
             default:
-                return <IconFontAwesome name={"question"} size={size} color={color} />
+                return <IconFontAwesome name={name} size={size} color={color} />
         }
     }
 

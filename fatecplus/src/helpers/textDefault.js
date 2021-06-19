@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const TextDefault = memo(({ children, style, lines = 1,
+export const TextDefault =({ children, style, lines = 1,
     selectable = true, onPress = false }) => {
 
     return (
@@ -20,7 +20,7 @@ export const TextDefault = memo(({ children, style, lines = 1,
             </Text>
         </TouchableOpacity>
     )
-});
+}
 
 const styles = StyleSheet.create({
     textDefault: {
