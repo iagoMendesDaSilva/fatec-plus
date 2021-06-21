@@ -18,4 +18,9 @@ export class Storage {
         Token.setToken(token);
     }
 
+    static clear(){
+        AsyncStorage.clear();
+        Token.setToken("");
+    }
+
 }

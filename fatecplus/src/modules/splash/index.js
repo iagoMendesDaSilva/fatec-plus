@@ -2,16 +2,18 @@ import styles from './style';
 import { View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
-import { Storage } from '../../services';
-import { StorageAuth } from '../auth/storage';
 import { AnimatedLogo } from '../../helpers';
+import { StorageAuth } from '../auth/storage';
+import { Storage, Notification } from '../../services';
 
-export const Splash = ({ navigation }) => {
+export const Splash = (props) => {
 
     let timer = null;
+    let notification = null;
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        notification = new Notification(props.navigation)
         timer = setTimeout(() => checkUser(), 2300)
     }, []);
 
@@ -19,16 +21,31 @@ export const Splash = ({ navigation }) => {
         const user = await Storage.getUser()
         user ?
             StorageAuth.login(user.username, user.password)
-                .then(data => goTo("Home"))
-                .catch(status => goTo("Login"))
+                .then(data => goToApp(user, data))
+                .catch(status => goToLogin())
             :
-            goTo("Login")
+            goToLogin()
     }
 
-    const goTo = screen => {
+    const stopEvents = () => {
         clearTimeout(timer)
         setLoading(false)
-        navigation.replace(screen)
+    }
+
+    const goToLogin = () => {
+        stopEvents();
+        props.navigation.replace("Login")
+    }
+
+    const  goToApp = async (user, data) => {
+        stopEvents();
+        Storage.setUser(user.username,user.password,data.token, data.id)
+        const params = props.route.params
+        if(params){
+            params.id && (params.type==="Student" || params.type==="Job") && props.navigation.replace(params.type, { id: params.id }) 
+        }else{
+            props.navigation.replace("Vacancies")
+        }
     }
 
     return (

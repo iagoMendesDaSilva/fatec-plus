@@ -30,16 +30,16 @@ class SubscriptionController:
                 if len(subs) >0 and indication!=None or len(subs)==0:
                         new_sub =Subscription(job=job_id, subscription=current_user.id, company=job.company,indication=indication)
                         emailSender.send_resume(current_user,job)
-                        notification.send(job.jobs.onesignal_playerID,"Nova inscrição",current_user.name+" se inscreveu para a vaga: "+job.name,{"id":current_user.id})
+                        notification.send([job.jobs.onesignal_playerID],"Nova inscrição",current_user.name+" se inscreveu para a vaga: "+job.name,{"id":current_user.id, "type":"Student"})
                         dao.add(new_sub)
                 return True
             else:
                 student = dao.get_by_id(data['student'],User)
                 if current_user.category.lower()=='company':
-                    notification.send([student.onesignal_playerID],"Solicitação",job.jobs.name+" solicitou você para a vaga: "+job.name,{"id":job.id})
+                    notification.send([student.onesignal_playerID],"Solicitação",job.jobs.name+" solicitou você para a vaga: "+job.name,{"id":job.id, "type":"Job"})
                 if current_user.category.lower()=='internship coordinator' or  current_user.category.lower()=='teacher':
-                    notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id})
-                    notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id})
+                    notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id, "type":"Job"})
+                    notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id, "type":"Student"})
                 return True
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
