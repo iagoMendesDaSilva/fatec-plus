@@ -39,38 +39,42 @@ export const Auth = ({ navigation }) => {
 
     return (
         <View style={styles.containerAll}>
-            <TextDefault
-                lines={2}
-                styleText={styles.txtWelcome}
-                children={"Olá.\nBem vindo!"} />
-            <ScrollView contentContainerStyle={styles.containerContent}
+            <ScrollView contentContainerStyle={styles.containerScroll}
                 keyboardShouldPersistTaps='handled'>
-                <View style={styles.containerInput}>
-                    <Input
-                        text={username}
-                        placeholder={"Usuário"}
-                        onchange={text => setUsername(text)} />
-                    <Input
-                        text={password}
-                        password={true}
-                        placeholder={"Senha"}
-                        onchange={text => setPassword(text)} />
+                <TextDefault
+                    lines={2}
+                    styleText={styles.txtWelcome}
+                    children={"Olá.\nBem vindo!"} />
+                <View style={styles.containerContent}>
+                    <View style={styles.containerInput}>
+                        <Input
+                            text={username}
+                            iconName={"user"}
+                            placeholder={"Usuário"}
+                            onchange={text => setUsername(text)} />
+                        <Input
+                            text={password}
+                            password={true}
+                            iconName={"lock"}
+                            placeholder={"Senha"}
+                            onchange={text => setPassword(text)} />
+                        <TextDefault
+                            children={"Esqueci minha senha!"}
+                            styleText={styles.txtForgetPassword}
+                            onPress={() => navigation.navigate("Recovery")} />
+                    </View>
+                    <ButtonDefault
+                        text={"Entrar"}
+                        onPress={login}
+                        loading={loading}
+                        style={styles.button}
+                        active={Boolean(username && password)} />
                     <TextDefault
-                        children={"Esqueci minha senha!"}
-                        styleText={styles.txtForgetPassword}
+                        selectable={false}
+                        styleText={styles.txtCreateAccount}
+                        children={"Não tem conta? Crie uma!"}
                         onPress={() => console.log("esqueci a senha")} />
                 </View>
-                <ButtonDefault
-                    text={"Entrar"}
-                    onPress={login}
-                    loading={loading}
-                    style={styles.button}
-                    active={Boolean(username && password)} />
-                <TextDefault
-                    selectable={false}
-                    styleText={styles.txtCreateAccount}
-                    children={"Não tem conta? Crie uma!"}
-                    onPress={() => console.log("esqueci a senha")} />
             </ScrollView>
         </View>
     );

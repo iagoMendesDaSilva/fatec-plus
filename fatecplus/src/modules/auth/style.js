@@ -26,8 +26,11 @@ export default StyleSheet.create({
         fontSize: 18,
         color: Colors.link,
     },
+    containerScroll: {
+        flexGrow: 1,
+    },
     containerContent: {
-        flexGrow:1,
+        flex:1,
         alignItems: "center",
         justifyContent: "center",
     },
