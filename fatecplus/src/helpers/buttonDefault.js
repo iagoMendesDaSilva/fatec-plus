@@ -29,7 +29,11 @@ export const ButtonDefault = ({ text, onPress, style, loading, active }) => {
                     ?
                     <ActivityIndicator size="small" color={"white"} />
                     :
-                    <TextDefault selectable={false} style={styles.textButton}> {text} </TextDefault>
+                    <TextDefault
+                        children={text}
+                        selectable={false}
+                        style={styles.containerText}
+                        styleText={styles.textButton} />
                 }
             </View>
         </TouchableOpacity>
@@ -47,12 +51,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: Colors.background_light,
     },
-    textButton: {
+    containerText: {
         width: 120,
+    },
+    textButton: {
         fontSize: 16,
         color: "white",
         textAlign: 'center',
         fontWeight: 'bold',
+        fontFamily:"Nunito-Bold"
     },
     buttonActive: {
         height: 50,

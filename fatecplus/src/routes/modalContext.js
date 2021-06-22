@@ -7,12 +7,12 @@ export const ModalContext = createContext();
 export const ModalProvider = ({ children }) => {
 
     const [info, setInfo] = useState({ visible: false });
-    const [infoTwoOptions, setInfoTwoOptions] = useState({ visible: false });
+    const [infoTwoOptions, setInfoOptions] = useState({ visible: false });
 
     const positivePress = (dualButtons = false) => {
         if (dualButtons) {
             infoTwoOptions.positivePress && infoTwoOptions.positivePress()
-            setInfoTwoOptions({ visible: false })
+            setInfoOptions({ visible: false })
         } else {
             info.positivePress && info.positivePress()
             setInfo({ visible: false })
@@ -21,11 +21,11 @@ export const ModalProvider = ({ children }) => {
 
     const negativePress = () => {
         infoTwoOptions.negativePress && infoTwoOptions.negativePress()
-        setInfoTwoOptions({ visible: false })
+        setInfoOptions({ visible: false })
     }
 
     return (
-        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoTwoOptions }}>
+        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions }}>
             {children}
             <ModalOneOption
                 visible={info.visible}

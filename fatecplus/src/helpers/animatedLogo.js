@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text } from 'react-native';
+import { Animated, StyleSheet } from 'react-native';
 
 import { Animate } from '../services';
 import Colors from '../constants/colors';
+import {TextDefault} from './textDefault';
 
 export const AnimatedLogo = ({ show }) => {
 
@@ -44,7 +45,7 @@ export const AnimatedLogo = ({ show }) => {
 
     return (
         <Animated.View style={{ ...styles.containerLogo, opacity: fade }}>
-            <Text style={styles.txtLogo}>Fatec</Text>
+            <TextDefault styleText={styles.txtLogo}>Fatec</TextDefault>
             <Animated.View style={{ ...styles.containerIcon, transform: [{ rotate: rotateLogo }] }}>
                 <Animated.View style={{ ...styles.iconPlusHorizontal, transform: [{ translateX: plusHorizontal }] }} />
                 <Animated.View style={{ ...styles.iconPlusVertical, transform: [{ translateY: plusVertical }] }} />
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     txtLogo: {
         fontSize: 60,
         color: Colors.primary,
+        fontFamily:"Nunito-SemiBold",
     },
     containerIcon: {
         width: 35,

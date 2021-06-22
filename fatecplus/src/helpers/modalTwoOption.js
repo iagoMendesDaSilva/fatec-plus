@@ -30,18 +30,19 @@ export const ModalTwoOption = ({ visible, title, message, positiveText = "Confir
                             <TextDefault
                                 children={title}
                                 selectable={false}
-                                style={styles.textTitle} />
+                                styleText={styles.textTitle}
+                                style={styles.containerTitle} />
                         </View>
                         <TextDefault
                             lines={2}
                             selectable={false}
                             children={message}
-                            style={styles.textMessage} />
+                            styleText={styles.textMessage} />
                     </View>
                     <View style={styles.containerButtons}>
                         <TextDefault
-                            children={negativeText}
                             style={styles.button}
+                            children={negativeText}
                             onPress={() => negativePress && negativePress()} />
                         <View style={styles.divisionButtons} />
                         <TextDefault
@@ -68,33 +69,33 @@ const styles = StyleSheet.create({
         width: widthScreen * .9,
         backgroundColor: Colors.background_light,
     },
+    containerTitle:{
+        paddingRight:40,
+    },
     textTitle: {
         fontSize: 14,
-        marginRight: 10,
         color: "rgba(255,255,255,.5)",
     },
     textMessage: {
         fontSize: 16,
         color: "white",
         lineHeight: 22,
+        paddingHorizontal: 15,
     },
     containerText: {
         flex: 1.5,
         paddingVertical: 20,
-        paddingHorizontal: 15,
     },
     containerButtons: {
         flex: 1,
-        paddingBottom: 10,
         flexDirection: 'row',
         alignItems: "center",
+        paddingBottom: 10,
     },
     button: {
         flex: 1,
-        color: "white",
         alignItems: "center",
         justifyContent: "center",
-        textAlignVertical: "center",
     },
     header: {
         marginBottom: 10,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginRight: 10,
+        paddingLeft: 15,
     },
     divisionButtons: {
         width: .3,

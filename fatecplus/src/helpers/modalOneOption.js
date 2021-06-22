@@ -16,20 +16,17 @@ export const ModalOneOption = ({ visible, message, positiveText = "OK", positive
 
             <View style={styles.containerModal}>
                 <View style={styles.modal}>
-                    <View style={styles.containerText}>
-                        <TextDefault
-                            lines={2}
-                            selectable={false}
-                            children={message}
-                            style={styles.textMessage} />
-                    </View>
+                    <TextDefault
+                        lines={1}
+                        selectable={false}
+                        children={message}
+                        styleText={styles.txtMessage}
+                        style={styles.containerText} />
                     <View style={styles.divisionButton} />
-                    <View style={styles.containerButtons}>
-                        <TextDefault
-                            style={styles.button}
-                            children={positiveText}
-                            onPress={() => positivePress && positivePress()} />
-                    </View>
+                    <TextDefault
+                        style={styles.button}
+                        children={positiveText}
+                        onPress={() => positivePress && positivePress()} />
                 </View>
             </View>
 
@@ -47,41 +44,29 @@ const styles = StyleSheet.create({
         height: 110,
         borderRadius: 20,
         overflow: "hidden",
-        alignItems:"center",
+        alignItems: "center",
         width: widthScreen * .9,
         backgroundColor: Colors.background_light,
     },
-    textTitle: {
-        fontSize: 14,
-        marginRight: 10,
-        color: "rgba(255,255,255,.5)",
-    },
-    textMessage: {
+    txtMessage: {
         fontSize: 16,
         color: "white",
         textAlign: "center",
     },
     containerText: {
         flex: 1,
-        width:"80%",
-        paddingVertical: 20,
-    },
-    containerButtons: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: "center",
-        paddingVertical: 10,
+        width: "80%",
+        justifyContent: "center",
     },
     button: {
         flex: 1,
-        color: "white",
+        width:"100%",
         alignItems: "center",
         justifyContent: "center",
-        textAlignVertical: "center",
     },
     divisionButton: {
         height: .3,
-        width: "95%",
+        width: "75%",
         backgroundColor: "rgba(255,255,255,.5)",
     },
 });

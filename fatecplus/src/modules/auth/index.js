@@ -41,7 +41,7 @@ export const Auth = ({ navigation }) => {
         <View style={styles.containerAll}>
             <TextDefault
                 lines={2}
-                style={styles.txtWelcome}
+                styleText={styles.txtWelcome}
                 children={"Olá.\nBem vindo!"} />
             <ScrollView contentContainerStyle={styles.containerContent}
                 keyboardShouldPersistTaps='handled'>
@@ -56,8 +56,8 @@ export const Auth = ({ navigation }) => {
                         placeholder={"Senha"}
                         onchange={text => setPassword(text)} />
                     <TextDefault
-                        style={styles.txtForgetPassword}
                         children={"Esqueci minha senha!"}
+                        styleText={styles.txtForgetPassword}
                         onPress={() => console.log("esqueci a senha")} />
                 </View>
                 <ButtonDefault
@@ -68,7 +68,7 @@ export const Auth = ({ navigation }) => {
                     active={Boolean(username && password)} />
                 <TextDefault
                     selectable={false}
-                    style={styles.txtCreateAccount}
+                    styleText={styles.txtCreateAccount}
                     children={"Não tem conta? Crie uma!"}
                     onPress={() => console.log("esqueci a senha")} />
             </ScrollView>
