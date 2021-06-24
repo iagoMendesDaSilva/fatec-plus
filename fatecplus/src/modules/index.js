@@ -5,3 +5,4 @@ export * from './student';
 export * from './student';
 export * from './recovery';
 export * from './vacancies';
+export * from './verificationCode';

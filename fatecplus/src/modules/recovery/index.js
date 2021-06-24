@@ -2,28 +2,29 @@ import styles from './style';
 import { View, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
 
-import { Error } from '../../services';
+import { Storage } from '../../services';
+import Strings from '../../constants/strings';
 import { StorageRecovery } from './storage';
 import { ModalContext } from '../../routes/modalContext';
 import { TextDefault, Input, ButtonDefault } from '../../helpers';
 
-export const Recovery = () => {
+export const Recovery = ({ navigation }) => {
 
     const modal = useContext(ModalContext);
 
-    const [email, setEmail] = useState(false);
+    const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const configErrorModal = async status => {
-        const message = status === 404 ? "Email não cadastrado!" : Error.validate(status)
-        modal.setInfo({ visible: true, message })
+    const goToVerificationCode = data => {
+        Storage.setUser("", "", "", data.id)
+        navigation.navigate("VerificationCode", { email: email })
     }
 
     const confirmEmail = () => {
         setLoading(true)
         StorageRecovery.confirmEmail(email)
-            .then(data =>console.log("email confirmado"))
-            .catch(status => configErrorModal(status))
+            .then(data => goToVerificationCode(data))
+            .catch(status => modal.configErrorModal({ msg: Strings.failEmail, status }))
             .finally(() => setLoading(false));
     }
 
@@ -51,7 +52,7 @@ export const Recovery = () => {
                     selectable={false}
                     styleText={styles.txtAlreadyCode}
                     children={"Já tenho um código!"}
-                    onPress={() => console.log("cod")} />
+                    onPress={() => navigation.navigate("VerificationCode")} />
             </ScrollView>
         </View>
     );

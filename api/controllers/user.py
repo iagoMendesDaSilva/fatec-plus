@@ -140,8 +140,10 @@ class UserController:
                 token =  create_token(user)
                 dao.update(user.id,'token',token,User)
                 return user
+            else:
+                raise ObjectInvalid
         except ObjectInvalid as err:
-            abort(make_response(jsonify({"response":"Invalid User."}), 404))
+            abort(make_response(jsonify({"response":"Invalid User or Code."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
   

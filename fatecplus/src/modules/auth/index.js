@@ -3,7 +3,8 @@ import { View, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
 
 import { StorageAuth } from './storage';
-import { Error, Storage, Notification } from '../../services';
+import Strings from '../../constants/strings';
+import { Storage, Notification } from '../../services';
 import { ModalContext } from '../../routes/modalContext';
 import { TextDefault, Input, ButtonDefault } from '../../helpers';
 
@@ -17,8 +18,7 @@ export const Auth = ({ navigation }) => {
 
     const configErrorModal = async status => {
         Storage.clear()
-        const message = status === 404 ? "Usuário ou senha inválidos!" : Error.validate(status)
-        modal.setInfo({ visible: true, message })
+        modal.configErrorModal({ msg: Strings.failLogin, status })
     }
 
     const configUser = async data => {

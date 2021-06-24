@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 
+import { Error } from '../services';
 import { ModalOneOption, ModalTwoOption } from '../helpers';
 
 export const ModalContext = createContext();
@@ -24,8 +25,15 @@ export const ModalProvider = ({ children }) => {
         setInfoOptions({ visible: false })
     }
 
+    const configErrorModal = ({status=404, options = false, msg = false, back=false, ...props}) => {
+        const message = status === 404 && msg ? msg : Error.validate(status)
+        options
+            ? setInfoOptions({ visible: true, message, ...props })
+            : setInfo({ visible: true, message, ...props })
+    }
+
     return (
-        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions }}>
+        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions, configErrorModal}}>
             {children}
             <ModalOneOption
                 visible={info.visible}

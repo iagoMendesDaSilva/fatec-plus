@@ -1,4 +1,3 @@
-import shutil
 import smtplib
 import os, datetime
 from email import encoders
@@ -17,27 +16,18 @@ class Email:
     
     def send_recovery(self, user, code):
         path = self.path+'src/html/recovery.html'
-        path_temp = self.path+'src/html/recovery_'+str(user.id)+'.html'
-        shutil.copyfile(path, path_temp)
-        self.change_HTML(user.name, str(code), path_temp)
+        html = self.change_HTML(user.name, str(code), path)
         msg = self.create_msg("Recuperação de senha", user.email)
-        with open(path_temp, 'r') as file:
-            html = file.read()
-        file.close()
         msg.attach(MIMEText(html, 'html'))
         self.send(msg)
-        os.remove(path_temp)
 
     def change_HTML(self, name, code, path):
         with open(path, 'r') as file :
             filedata = file.read()
-            filedata = filedata.replace("$name", name)
-            filedata = filedata.replace("$code",  code)
-            filedata = filedata.replace("$email", self.sender)
-        file.close()
-        with open(path, 'w') as file:
-            file.write(filedata)
-        file.close()
+            filedata = filedata.replace("username", name)
+            filedata = filedata.replace("email", self.sender)
+            filedata = filedata.replace("verification_code",  code)
+        return filedata
 
     def send(self, msg):
         server = smtplib.SMTP('smtp.gmail.com: 587')
