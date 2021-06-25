@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import Colors from '../../constants/colors';
+
+const widthScreen = Dimensions.get("screen").width;
 
 export default StyleSheet.create({
     containerAll: {
@@ -20,8 +22,8 @@ export default StyleSheet.create({
         marginBottom: 25,
     },
     containerInputsCodes: {
-        width:300,
-        marginTop: 25,
+        width:widthScreen*.75,
+        marginTop: 15,
         flexDirection: "row",
         justifyContent:"space-between",
     },

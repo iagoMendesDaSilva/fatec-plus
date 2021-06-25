@@ -37,13 +37,13 @@ export const Splash = (props) => {
         props.navigation.replace("Login")
     }
 
-    const  goToApp = async (user, data) => {
+    const goToApp = async (user, data) => {
         stopEvents();
-        Storage.setUser(user.username,user.password,data.token, data.id)
+        Storage.setUser({ username: user.username, password: user.password, token: data.token, id: data.id })
         const params = props.route.params
-        if(params){
-            params.id && (params.type==="Student" || params.type==="Job") && props.navigation.replace(params.type, { id: params.id }) 
-        }else{
+        if (params) {
+            params.id && (params.type === "Student" || params.type === "Job") && props.navigation.replace(params.type, { id: params.id })
+        } else {
             props.navigation.replace("Vacancies")
         }
     }

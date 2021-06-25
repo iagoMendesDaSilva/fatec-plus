@@ -6,3 +6,4 @@ export * from './buttonDefault';
 export * from './animatedLogo';
 export * from './modalTwoOption';
 export * from './modalOneOption';
+export * from './progressPassword';

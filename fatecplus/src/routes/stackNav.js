@@ -6,7 +6,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 
 import { Icon } from '../helpers';
 import Colors from '../constants/colors';
-import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode } from '../modules';
+import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode, ChangePassword } from '../modules';
 
 export const StackNav = () => {
 
@@ -41,6 +41,7 @@ export const StackNav = () => {
             <Stack.Screen name="Vacancies" component={Vacancies} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Recovery" component={Recovery} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, false) }} />
         </Stack.Navigator>

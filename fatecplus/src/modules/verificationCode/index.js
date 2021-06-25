@@ -9,7 +9,7 @@ import { StorageVerificationCode } from './storage.js';
 import { ModalContext } from '../../routes/modalContext';
 import { TextDefault, ButtonDefault, InputCode } from '../../helpers';
 
-export const VerificationCode = (props) => {
+export const VerificationCode = ({ navigation }) => {
 
     const modal = useContext(ModalContext);
     const referencesCodes = Array(5).fill(null).map(ref => React.createRef(ref))
@@ -18,29 +18,34 @@ export const VerificationCode = (props) => {
     const [activeResend, setActiveResend] = useState(true);
     const [valueCodes, setValueCodes] = useState({ codes: Array(5).fill("") });
 
-    const comeBack = () => props.navigation.goBack()
+    const comeBack = () => navigation.goBack()
 
     const getCompleteCode = () => Number(valueCodes.codes.join(""))
 
     const missingEmail = () => modal.configErrorModal({ msg: Strings.misssingEmail, positivePress: comeBack })
+
+    const goToChangePassword = data => {
+        Storage.setUser({ token: data.token, id: data.id })
+        navigation.navigate("ChangePassword")
+    }
 
     const verifyVerificationCode = async () => {
         setLoading(true)
         const user = await Storage.getUser()
         user ?
             StorageVerificationCode.confirmCode(getCompleteCode(), user.id)
-                .then(data => console.log(1))
+                .then(data => goToChangePassword(data))
                 .catch(status => modal.configErrorModal({ msg: Strings.verificationCode, status }))
             :
             missingEmail()
         setLoading(false)
     }
 
-    const resendEmail = () => {
-        const { params } = props.route;
-        if (params) {
+    const resendEmail = async () => {
+        const user = await Storage.getUser()
+        if (user) {
             setActiveResend(false)
-            StorageRecovery.confirmEmail(params.email)
+            StorageRecovery.confirmEmail(user.email)
                 .catch(status => missingEmail())
         } else {
             missingEmail()
@@ -51,22 +56,14 @@ export const VerificationCode = (props) => {
         let codes = valueCodes.codes;
         codes[index] = value;
         setValueCodes({ codes })
-        if (index + 1 < referencesCodes.length) {
+        if (index + 1 < referencesCodes.length && value) {
             referencesCodes[index + 1].current.focus()
         }
     }
 
     const goBackInput = (value, index) => {
-        if (index - 1 >= 0 && value==="Backspace") {
+        if (index - 1 >= 0 && value === "Backspace") {
             referencesCodes[index - 1].current.focus()
-        }
-    }
-
-    const cleanInputFocus = (value, index) => {
-        if (value) {
-            let codes = valueCodes.codes;
-            codes[index] = "";
-            setValueCodes({ codes })
         }
     }
 
@@ -90,8 +87,7 @@ export const VerificationCode = (props) => {
                                 ref={referencesCodes[index]}
                                 text={valueCodes.codes[index]}
                                 onchange={value => goNextInput(value, index)}
-                                onKeyPress={value => goBackInput(value, index)}
-                                onFocus={value => cleanInputFocus(value, index)} />
+                                onKeyPress={value => goBackInput(value, index)} />
                         ))
                     }
                 </View>

@@ -12,8 +12,8 @@ export class Storage {
         return user ? JSON.parse(user) : false
     }
 
-    static setUser = (username = "", password = "", token = "", id = 0) => {
-        const user = { username, password, token, id }
+    static setUser = ({username = "", password = "", email="", token = "", id = 0}) => {
+        const user = { username, password, email, token, id }
         AsyncStorage.setItem("user", JSON.stringify(user));
         Token.setToken(token);
     }

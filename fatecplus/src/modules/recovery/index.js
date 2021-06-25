@@ -16,8 +16,8 @@ export const Recovery = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const goToVerificationCode = data => {
-        Storage.setUser("", "", "", data.id)
-        navigation.navigate("VerificationCode", { email: email })
+        Storage.setUser({ id: data.id, email:email })
+        navigation.navigate("VerificationCode")
     }
 
     const confirmEmail = () => {

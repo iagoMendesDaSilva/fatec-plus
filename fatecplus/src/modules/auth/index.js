@@ -15,6 +15,7 @@ export const Auth = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
+    const [showingPassword, setShowingPassword] = useState(false);
 
     const configErrorModal = async status => {
         Storage.clear()
@@ -22,7 +23,7 @@ export const Auth = ({ navigation }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser(username, password, data.token, data.id)
+        Storage.setUser({username, password, token:data.token, id:data.id})
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.replace("Vacancies"))
@@ -36,6 +37,8 @@ export const Auth = ({ navigation }) => {
             .catch(status => configErrorModal(status))
             .finally(() => setLoading(false));
     }
+
+    const changeVisibility = () => setShowingPassword(!showingPassword)
 
     return (
         <View style={styles.containerAll}>
@@ -57,6 +60,8 @@ export const Auth = ({ navigation }) => {
                             password={true}
                             iconName={"lock"}
                             placeholder={"Senha"}
+                            changeVisibility={changeVisibility}
+                            showPassword={showingPassword}
                             onchange={text => setPassword(text)} />
                         <TextDefault
                             children={"Esqueci minha senha!"}
