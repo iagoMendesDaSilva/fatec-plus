@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export const TextDefault = ({ children, style, styleText, lines = 1,
-    selectable = true, onPress = false, active = true }) => {
+    selectable = false, onPress = false, active = true }) => {
 
     return (
         <TouchableOpacity

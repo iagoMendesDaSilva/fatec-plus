@@ -7,6 +7,9 @@ export default {
     regularPassword: "Senha intermediária",
     veryWeekPassword: "Senha muito fraca.",
     verificationCode: 'Código inválido ou expirado.',
-    differentPasswords:"As senhas devem ser iguais.",
+    differentPasswords: "As senhas devem ser iguais.",
     misssingEmail: 'Por favor inserir novamente o email.',
+    descriptionTeacher: "Professores ou coordenadores tem permissão para indicar alunos para as vagas. Se você é um coordenador de estágio contate o administrador para poder gerenciar vagas.",
+    descriptionStudent:"Alunos podem se inscrever nas vagas , ser indicado e solicitados para vagas de estágio ou emprego.",
+    descriptionCompany:"Empresas tem permissão para postar e gerenciar vagas de emprego ou estágio, solicitar candidatos e recebem indicações dos professores.",
 }

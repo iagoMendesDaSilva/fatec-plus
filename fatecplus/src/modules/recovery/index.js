@@ -16,7 +16,7 @@ export const Recovery = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const goToVerificationCode = data => {
-        Storage.setUser({ id: data.id, email:email })
+        Storage.setUser({ id: data.id, email: email })
         navigation.navigate("VerificationCode")
     }
 
@@ -30,8 +30,10 @@ export const Recovery = ({ navigation }) => {
 
     return (
         <View style={styles.containerAll}>
-            <ScrollView contentContainerStyle={styles.containerContent}
-                keyboardShouldPersistTaps='handled'>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={styles.containerContent}>
                 <TextDefault
                     style={styles.logo}
                     children={"Fatec +"}

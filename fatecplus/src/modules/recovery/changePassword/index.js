@@ -2,10 +2,10 @@ import styles from './style';
 import { View, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
 
-import { StoragePassword } from './storage';
-import Strings from '../../constants/strings';
-import { ModalContext } from '../../routes/modalContext';
-import { ProgressPassword, Input, ButtonDefault } from '../../helpers';
+import { StorageRecovery } from '../storage';
+import Strings from '../../../constants/strings';
+import { ModalContext } from '../../../routes/modalContext';
+import { ProgressPassword, Input, ButtonDefault } from '../../../helpers';
 
 export const ChangePassword = ({ navigation }) => {
 
@@ -20,7 +20,7 @@ export const ChangePassword = ({ navigation }) => {
     const changePassword = () => {
         if (password === confirmPassword) {
             setLoading(true)
-            StoragePassword.changePassword(password)
+            StorageRecovery.changePassword(password)
                 .then(data => navigation.replace("Vacancies"))
                 .catch(status => modal.configErrorModal({ status }))
                 .finally(() => setLoading(false));
@@ -51,8 +51,10 @@ export const ChangePassword = ({ navigation }) => {
 
     return (
         <View style={styles.containerAll}>
-            <ScrollView contentContainerStyle={styles.containerContent}
-                keyboardShouldPersistTaps='handled'>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={styles.containerContent}>
                 <ProgressPassword strong={strongPassword} />
                 <View style={styles.containerInputs}>
                     <Input

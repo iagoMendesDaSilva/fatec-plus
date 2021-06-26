@@ -2,12 +2,11 @@ import styles from './style';
 import { View, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
 
-import { Storage } from '../../services';
-import Strings from '../../constants/strings';
-import { StorageRecovery } from '../recovery/storage'
-import { StorageVerificationCode } from './storage.js';
-import { ModalContext } from '../../routes/modalContext';
-import { TextDefault, ButtonDefault, InputCode } from '../../helpers';
+import { Storage } from '../../../services'
+import Strings from '../../../constants/strings'
+import { StorageRecovery } from '../storage'
+import { ModalContext } from '../../../routes/modalContext'
+import { TextDefault, ButtonDefault, InputCode } from '../../../helpers';
 
 export const VerificationCode = ({ navigation }) => {
 
@@ -33,7 +32,7 @@ export const VerificationCode = ({ navigation }) => {
         setLoading(true)
         const user = await Storage.getUser()
         user ?
-            StorageVerificationCode.confirmCode(getCompleteCode(), user.id)
+            StorageRecovery.confirmCode(getCompleteCode(), user.id)
                 .then(data => goToChangePassword(data))
                 .catch(status => modal.configErrorModal({ msg: Strings.verificationCode, status }))
             :
@@ -69,8 +68,10 @@ export const VerificationCode = ({ navigation }) => {
 
     return (
         <View style={styles.containerAll}>
-            <ScrollView contentContainerStyle={styles.containerContent}
-                keyboardShouldPersistTaps='handled'>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={styles.containerContent}>
                 <TextDefault
                     style={styles.logo}
                     children={"Fatec +"}

@@ -23,7 +23,7 @@ export const Auth = ({ navigation }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser({username, password, token:data.token, id:data.id})
+        Storage.setUser({ username, password, token: data.token, id: data.id })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.replace("Vacancies"))
@@ -42,8 +42,10 @@ export const Auth = ({ navigation }) => {
 
     return (
         <View style={styles.containerAll}>
-            <ScrollView contentContainerStyle={styles.containerScroll}
-                keyboardShouldPersistTaps='handled'>
+            <ScrollView 
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps='handled'
+                contentContainerStyle={styles.containerScroll}>
                 <TextDefault
                     lines={2}
                     styleText={styles.txtWelcome}
@@ -78,7 +80,7 @@ export const Auth = ({ navigation }) => {
                         selectable={false}
                         styleText={styles.txtCreateAccount}
                         children={"Não tem conta? Crie uma!"}
-                        onPress={() => console.log("esqueci a senha")} />
+                        onPress={() => navigation.navigate("Register")} />
                 </View>
             </ScrollView>
         </View>
