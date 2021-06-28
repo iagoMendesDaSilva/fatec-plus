@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 import Colors from '../constants/colors';
 
-export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress }, ref) => {
+export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, onFocus }, ref) => {
 
     return (
         <TextInput
@@ -13,8 +13,10 @@ export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress },
             keyboardType={type}
             style={styles.textInput}
             allowFontScaling={false}
+            onSubmitEditing={e => console.log(e)}
+            onFocus={() => onFocus()}
             onChangeText={value => onchange(value)}
-            onKeyPress={e=>onKeyPress(e.nativeEvent.key)}
+            onKeyPress={e => onKeyPress(e.nativeEvent.key)}
         />
     );
 });
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
         color: "white",
         borderRadius: 10,
         textAlign: "center",
-        paddingHorizontal:12,
+        paddingHorizontal: 12,
         paddingVertical: 10,
         backgroundColor: Colors.background_light,
     },

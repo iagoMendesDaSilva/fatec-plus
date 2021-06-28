@@ -55,14 +55,22 @@ export const VerificationCode = ({ navigation }) => {
         let codes = valueCodes.codes;
         codes[index] = value;
         setValueCodes({ codes })
-        if (index + 1 < referencesCodes.length && value) {
+        if (index + 1 < referencesCodes.length && !valueCodes.codes[index + 1]) {
             referencesCodes[index + 1].current.focus()
         }
     }
 
     const goBackInput = (value, index) => {
-        if (index - 1 >= 0 && value === "Backspace") {
+        if (index - 1 >= 0 && value === "Backspace" && !valueCodes.codes[index]) {
             referencesCodes[index - 1].current.focus()
+        }
+    }
+
+    const onFocus = index => {
+        if (valueCodes.codes[index]) {
+            let codes = valueCodes.codes;
+            codes[index] = "";
+            setValueCodes({ codes })
         }
     }
 
@@ -81,15 +89,16 @@ export const VerificationCode = ({ navigation }) => {
                     styleText={styles.txtInsertCode} />
                 <View style={styles.containerInputsCodes}>
                     {
-                        referencesCodes.map((_, index) => (
+                        referencesCodes.map((_, index) => 
                             <InputCode
                                 type={"numeric"}
                                 key={String(index)}
                                 ref={referencesCodes[index]}
                                 text={valueCodes.codes[index]}
+                                onFocus={() => onFocus(index)}
                                 onchange={value => goNextInput(value, index)}
                                 onKeyPress={value => goBackInput(value, index)} />
-                        ))
+                        )
                     }
                 </View>
                 <ButtonDefault

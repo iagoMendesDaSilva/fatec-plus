@@ -6,5 +6,6 @@ export * from './register';
 export * from './student';
 export * from './recovery';
 export * from './vacancies';
+export * from './register/mainRegister';
 export * from './recovery/verificationCode';
 export * from './recovery/changePassword';

@@ -7,7 +7,7 @@ import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const Card = ({ title, description, source, onPress, selected = false }) => {
+export const Card = ({ title, description, source, onPress, }) => {
 
     const [open, setOpen] = React.useState(false);
     const heightCard = React.useRef(new Animated.Value(120)).current;
@@ -19,7 +19,7 @@ export const Card = ({ title, description, source, onPress, selected = false }) 
 
     return (
         <Animated.View
-            style={{ ...styles.containerAll, height: heightCard, opacity: selected ? .5 : 1 }}>
+            style={{ ...styles.containerAll, height: heightCard }}>
             <TouchableOpacity
                 onPress={() => onPress && onPress()}
                 style={styles.containerContent}>
