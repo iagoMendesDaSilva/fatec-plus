@@ -9,16 +9,19 @@ export default StyleSheet.create({
     },
     containerContent: {
         flexGrow: 1,
+    },
+    containerPressable: {
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
     },
     button: {
-        marginTop:30,
+        marginTop: 30,
         marginBottom: 15,
     },
     containerInputs: {
         height: 275,
-        marginVertical:30,
+        marginVertical: 30,
         justifyContent: "space-between"
     },
 });

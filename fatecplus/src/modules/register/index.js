@@ -3,7 +3,7 @@ import styles from './style';
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 
-import types from './storage';
+import  Strings from '../../constants/strings';
 import { TextDefault, Card } from '../../helpers';
 
 export const Register = ({ navigation }) => {
@@ -23,16 +23,21 @@ export const Register = ({ navigation }) => {
                     styleText={styles.txtTitle}
                     children={"Selecione o\ntipo de usuário!"} />
                 <View style={styles.containerContent}>
-                    {
-                        types.map((_, index) =>
-                            <Card
-                                key={String(index)}
-                                title={types[index].title}
-                                source={types[index].img}
-                                description={types[index].description}
-                                onPress={() => nextStage(types[index].type)} />
-                        )
-                    }
+                    <Card
+                        title={"Aluno(a)"}
+                        onPress={() => nextStage("Student")}
+                        description={Strings.descriptionStudent}
+                        source={require("../../assets/img/category_student.png")} />
+                    <Card
+                        title={"Empresa"}
+                        onPress={() => nextStage("Company")}
+                        description={Strings.descriptionCompany}
+                        source={require("../../assets/img/category_company.png")} />
+                    <Card
+                        title={"Professor(a)"}
+                        onPress={() => nextStage("Teacher")}
+                        description={Strings.descriptionTeacher}
+                        source={require("../../assets/img/category_teacher.png")} />
                 </View>
             </ScrollView>
         </View>
