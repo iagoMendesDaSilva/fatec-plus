@@ -8,3 +8,7 @@ from controllers import courseController
 def change_internship_coordinator(current_user, id):
     courseController.update(request.get_json(),id)
     return jsonify({"response":"Changed internship coordinator"}), 200
+
+@app.route("/mobile-api/v1/courses", methods=["GET"])
+def courses():
+    return jsonify( courseController.get_all()), 200

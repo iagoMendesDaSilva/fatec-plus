@@ -1,9 +1,9 @@
-from models.user import User
+from models import  Job
 from modelsDao import dao
-from models import  Course, Job
-from app.applications import database
-from flask import abort, make_response, jsonify
+from models.user import User
 from app.exceptions import ObjectInvalid
+from flask import abort, make_response, jsonify
+from models.course import Course, courses_schema
 
 class CourseController:
     def __init__(self):
@@ -28,5 +28,11 @@ class CourseController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
+    def get_all(self):
+        try:
+            courses = dao.get_all_by_model(Course)
+            return courses_schema.dump(courses)
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))
        
 courseController = CourseController()
