@@ -25,6 +25,7 @@ export const DatePickerDefault = ({ title, onPress }) => {
 const styles = StyleSheet.create({
     containerAll: {
         padding: 8,
+        marginVertical:10,
         borderRadius: 30,
         flexDirection: "row",
         alignItems: "center",

@@ -1,3 +1,3 @@
 export default {
-    base_url: 'http://192.168.0.31:5000/mobile-api/v1/',
+    base_url: 'http://192.168.0.4:5000/mobile-api/v1/',
 }

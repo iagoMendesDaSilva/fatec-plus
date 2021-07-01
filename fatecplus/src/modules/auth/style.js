@@ -17,10 +17,8 @@ export default StyleSheet.create({
         fontSize: 18,
     },
     containerInput: {
-        height: 170,
         marginBottom: 50,
         alignItems: "flex-end",
-        justifyContent: "space-between",
     },
     txtCreateAccount: {
         fontSize: 18,
@@ -33,8 +31,5 @@ export default StyleSheet.create({
         flex:1,
         alignItems: "center",
         justifyContent: "center",
-    },
-    button: {
-        marginBottom: 15,
     },
 });

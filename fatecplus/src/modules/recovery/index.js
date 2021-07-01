@@ -42,6 +42,7 @@ export const Recovery = ({ navigation }) => {
                     text={email}
                     iconName={"email"}
                     placeholder={"Email"}
+                    type={"email-address"}
                     iconLib={"MaterialIcons"}
                     onchange={text => setEmail(text)} />
                 <ButtonDefault

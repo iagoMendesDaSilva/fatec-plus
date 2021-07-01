@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: 250,
         borderRadius: 30,
+        marginVertical:10,
         overflow: "hidden",
         flexDirection: 'row',
         alignItems: 'center',

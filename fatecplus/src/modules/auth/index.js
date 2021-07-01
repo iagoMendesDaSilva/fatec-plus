@@ -74,7 +74,6 @@ export const Auth = ({ navigation }) => {
                         text={"Entrar"}
                         onPress={login}
                         loading={loading}
-                        style={styles.button}
                         active={Boolean(username && password)} />
                     <TextDefault
                         selectable={false}

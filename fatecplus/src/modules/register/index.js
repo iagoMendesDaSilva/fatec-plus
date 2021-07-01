@@ -8,8 +8,8 @@ import { TextDefault, Card } from '../../helpers';
 
 export const Register = ({ navigation }) => {
 
-    const nextStage = type => {
-        navigation.navigate("MainRegister", { type })
+    const nextStage = category => {
+        navigation.navigate("MainRegister", { category })
     }
 
     return (

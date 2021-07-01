@@ -7,14 +7,9 @@ export default StyleSheet.create({
         padding: 15,
         backgroundColor: Colors.background,
     },
-    containerContent: {
+    containerScroll: {
         flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    containerInputs: {
-        marginVertical: 20,
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems:"center",
+        justifyContent:"center",
     },
 });

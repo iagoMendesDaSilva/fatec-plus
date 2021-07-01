@@ -22,14 +22,13 @@ export default StyleSheet.create({
         marginBottom: 25,
     },
     containerInputsCodes: {
-        width:widthScreen*.75,
         marginTop: 15,
         flexDirection: "row",
+        width:widthScreen*.75,
         justifyContent:"space-between",
     },
     button: {
         marginTop: 50,
-        marginBottom: 15,
     },
     txtInsertCode: {
         fontSize: 18,

@@ -13,7 +13,6 @@ export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, o
             keyboardType={type}
             style={styles.textInput}
             allowFontScaling={false}
-            onSubmitEditing={e => console.log(e)}
             onFocus={() => onFocus()}
             onChangeText={value => onchange(value)}
             onKeyPress={e => onKeyPress(e.nativeEvent.key)}

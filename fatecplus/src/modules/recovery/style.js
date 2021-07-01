@@ -17,11 +17,10 @@ export default StyleSheet.create({
         fontFamily: "Nunito-SemiBold",
     },
     logo: {
-        marginBottom: 25,
+        marginBottom: 15,
     },
     button: {
-        marginTop: 50,
-        marginBottom: 15,
+        marginTop: 40,
     },
     txtAlreadyCode: {
         fontSize: 18,

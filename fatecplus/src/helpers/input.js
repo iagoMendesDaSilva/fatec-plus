@@ -43,6 +43,7 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
 
 const styles = StyleSheet.create({
     containerAll: {
+        marginVertical:10,
         flexDirection: "row",
         alignItems: "center",
         borderBottomWidth: 1,

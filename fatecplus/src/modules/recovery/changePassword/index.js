@@ -78,7 +78,6 @@ export const ChangePassword = ({ navigation }) => {
                 <ButtonDefault
                     text={"Salvar"}
                     loading={loading}
-                    style={styles.button}
                     active={activeButton()}
                     onPress={changePassword} />
             </ScrollView>

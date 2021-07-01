@@ -7,14 +7,17 @@ export default StyleSheet.create({
         padding: 15,
         backgroundColor: Colors.background,
     },
-    containerContent: {
+    containerScroll: {
         flexGrow: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems:"center",
+        justifyContent:"center",
     },
-    containerInputs: {
-        marginVertical: 20,
-        alignItems: "center",
-        justifyContent: "space-between",
+    txtLogo: {
+        fontSize: 60,
+        color: Colors.primary,
+        fontFamily: "Nunito-SemiBold",
+    },
+    logo: {
+        marginBottom: 15,
     },
 });

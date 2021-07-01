@@ -7,4 +7,5 @@ export default {
     primary: 'rgba(133,135,254,1)',
     warning: 'rgba(237, 161, 52,1)',
     background_light: 'rgba(23,23,23,1)',
+    background_medium: 'rgba(16,16,16,1)',
 }
