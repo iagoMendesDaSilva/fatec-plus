@@ -6,18 +6,18 @@ import { TextDefault, Icon } from '../helpers';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const DatePickerDefault = ({ title, onPress }) => {
+export const DatePickerDefault = ({ initialValue,title, onPress }) => {
 
     return (
         <TouchableOpacity
             style={styles.containerAll}
             onPress={() => onPress()}>
             <Icon
-                name={"cake"}
-                lib={"MaterialIcons"} />
+                lib={"AntDesign"} 
+                name={"calendar"}/>
             <TextDefault
                 styleText={styles.txtDate}
-                children={title ? title : "Data de Nascimento"} />
+                children={title ? title : initialValue} />
         </TouchableOpacity>
     );
 }

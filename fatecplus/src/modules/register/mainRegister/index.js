@@ -1,12 +1,12 @@
 import styles from './style';
 
 import React from 'react';
-import DatePicker from 'react-native-date-picker'
+import { TouchableOpacity } from 'react-native';
+import DatePicker from 'react-native-date-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { ScrollView, TouchableOpacity } from 'react-native';
 
 import Colors from '../../../constants/colors';
-import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea } from '../../../helpers';
+import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea, Screen } from '../../../helpers';
 
 
 export const MainRegister = (props) => {
@@ -53,8 +53,8 @@ export const MainRegister = (props) => {
     }
 
     const buttonActive = () => {
-        const phoneValid =  params.category == "Teacher" ? true : Boolean(phone) 
-        const birthDateValid =  params.category != "Student" ? true : Boolean(birthDate) 
+        const phoneValid = params.category == "Teacher" ? true : Boolean(phone)
+        const birthDateValid = params.category != "Student" ? true : Boolean(birthDate)
         return Boolean(email && name && birthDateValid && username && phoneValid)
     }
 
@@ -81,10 +81,7 @@ export const MainRegister = (props) => {
             activeOpacity={1}
             onPress={() => setPicker(false)}
             style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerContent}>
+            <Screen>
                 <ImagePicker
                     image={image.photo}
                     getImage={getImage} />
@@ -97,6 +94,7 @@ export const MainRegister = (props) => {
                     onchange={text => setName(text)}
                     iconLib={"MaterialCommunityIcons"} />
                 <Input
+                    maxLength={20}
                     text={username}
                     iconName={"user"}
                     placeholder={"Usuário"}
@@ -114,6 +112,7 @@ export const MainRegister = (props) => {
                     params.category != "Teacher" &&
                     <Input
                         text={phone}
+                        maxLength={11}
                         type={"phone-pad"}
                         iconName={"phone"}
                         defaultValue={phone}
@@ -124,7 +123,8 @@ export const MainRegister = (props) => {
                     params.category === "Student" &&
                     <DatePickerDefault
                         title={birthDate}
-                        onPress={() => setPicker(!picker)} />
+                        onPress={() => setPicker(!picker)} 
+                        initialValue={"Data de Nascimento"}/>
                 }
                 {
                     picker &&
@@ -147,7 +147,7 @@ export const MainRegister = (props) => {
                     onPress={nextStage}
                     text={"Próximo"}
                     active={buttonActive()} />
-            </ScrollView>
+            </Screen>
         </TouchableOpacity>
     );
 };

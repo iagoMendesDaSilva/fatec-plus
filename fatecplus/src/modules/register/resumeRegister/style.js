@@ -1,15 +1,24 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../../../constants/colors';
 
 export default StyleSheet.create({
-    containerAll: {
+    containerContent: {
         flex: 1,
-        padding: 15,
-        backgroundColor: Colors.background,
-    },
-    containerScroll: {
-        flexGrow: 1,
         alignItems:"center",
-        justifyContent:"center",
+        justifyContent: "center",
+    },
+    txtSection: {
+        fontSize: 18,
+        color: "rgba(255,255,255,.5)"
+    },
+    containerSection: {
+        width: "90%",
+        marginTop: 10,
+    },
+    containerSwitch: {
+        flexDirection: 'row',
+        alignItems: "center",
+    },
+    containerTxtSwitch: {
+        marginLeft: 10,
     },
 });

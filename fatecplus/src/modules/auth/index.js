@@ -1,12 +1,12 @@
 import styles from './style';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import React, { useState, useContext } from 'react';
 
 import { StorageAuth } from './storage';
 import Strings from '../../constants/strings';
 import { Storage, Notification } from '../../services';
 import { ModalContext } from '../../routes/modalContext';
-import { TextDefault, Input, ButtonDefault } from '../../helpers';
+import { TextDefault, Input, ButtonDefault, Screen } from '../../helpers';
 
 export const Auth = ({ navigation }) => {
 
@@ -41,47 +41,43 @@ export const Auth = ({ navigation }) => {
     const changeVisibility = () => setShowingPassword(!showingPassword)
 
     return (
-        <View style={styles.containerAll}>
-            <ScrollView 
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerScroll}>
-                <TextDefault
-                    lines={2}
-                    styleText={styles.txtWelcome}
-                    children={"Olá.\nBem vindo!"} />
-                <View style={styles.containerContent}>
-                    <View style={styles.containerInput}>
-                        <Input
-                            text={username}
-                            iconName={"user"}
-                            placeholder={"Usuário"}
-                            onchange={text => setUsername(text)} />
-                        <Input
-                            text={password}
-                            password={true}
-                            iconName={"lock"}
-                            placeholder={"Senha"}
-                            changeVisibility={changeVisibility}
-                            showPassword={showingPassword}
-                            onchange={text => setPassword(text)} />
-                        <TextDefault
-                            children={"Esqueci minha senha!"}
-                            styleText={styles.txtForgetPassword}
-                            onPress={() => navigation.navigate("Recovery")} />
-                    </View>
-                    <ButtonDefault
-                        text={"Entrar"}
-                        onPress={login}
-                        loading={loading}
-                        active={Boolean(username && password)} />
+        <Screen center={false}>
+            <TextDefault
+                lines={2}
+                styleText={styles.txtWelcome}
+                children={"Olá.\nBem vindo!"} />
+            <View style={styles.containerContent}>
+                <View style={styles.containerInput}>
+                    <Input
+                        text={username}
+                        iconName={"user"}
+                        placeholder={"Usuário"}
+                        onchange={text => setUsername(text)} />
+                    <Input
+                        maxLength={8}
+                        text={password}
+                        password={true}
+                        iconName={"lock"}
+                        placeholder={"Senha"}
+                        changeVisibility={changeVisibility}
+                        showPassword={showingPassword}
+                        onchange={text => setPassword(text)} />
                     <TextDefault
-                        selectable={false}
-                        styleText={styles.txtCreateAccount}
-                        children={"Não tem conta? Crie uma!"}
-                        onPress={() => navigation.navigate("Register")} />
+                        children={"Esqueci minha senha!"}
+                        styleText={styles.txtForgetPassword}
+                        onPress={() => navigation.navigate("Recovery")} />
                 </View>
-            </ScrollView>
-        </View>
+                <ButtonDefault
+                    text={"Entrar"}
+                    onPress={login}
+                    loading={loading}
+                    active={Boolean(username && password)} />
+                <TextDefault
+                    selectable={false}
+                    styleText={styles.txtCreateAccount}
+                    children={"Não tem conta? Crie uma!"}
+                    onPress={() => navigation.navigate("Register")} />
+            </View>
+        </Screen>
     );
 };

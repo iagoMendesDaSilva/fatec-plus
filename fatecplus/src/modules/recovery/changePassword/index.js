@@ -1,11 +1,11 @@
 import styles from './style';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import React, { useState, useContext } from 'react';
 
 import { StorageRecovery } from '../storage';
 import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext';
-import { ProgressPassword, Input, ButtonDefault } from '../../../helpers';
+import { ProgressPassword, Input, ButtonDefault, Screen } from '../../../helpers';
 
 export const ChangePassword = ({ navigation }) => {
 
@@ -50,37 +50,32 @@ export const ChangePassword = ({ navigation }) => {
         Boolean(password.length === confirmPassword.length && password && strongPassword > 2)
 
     return (
-        <View style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerContent}>
-                <ProgressPassword strong={strongPassword} />
-                <View style={styles.containerInputs}>
-                    <Input
-                        maxLength={8}
-                        text={password}
-                        password={true}
-                        iconName={"lock"}
-                        placeholder={"Senha"}
-                        showPassword={showingPassword}
-                        changeVisibility={changeVisibility}
-                        onchange={text => verifyPassword(text)} />
-                    <Input
-                        maxLength={8}
-                        password={true}
-                        iconName={"lock"}
-                        text={confirmPassword}
-                        placeholder={"Confirmar senha"}
-                        showPassword={showingPassword}
-                        onchange={text => setConfirmPassword(text)} />
-                </View>
-                <ButtonDefault
-                    text={"Salvar"}
-                    loading={loading}
-                    active={activeButton()}
-                    onPress={changePassword} />
-            </ScrollView>
-        </View>
+        <Screen>
+            <ProgressPassword strong={strongPassword} />
+            <View style={styles.containerInputs}>
+                <Input
+                    maxLength={8}
+                    text={password}
+                    password={true}
+                    iconName={"lock"}
+                    placeholder={"Senha"}
+                    showPassword={showingPassword}
+                    changeVisibility={changeVisibility}
+                    onchange={text => verifyPassword(text)} />
+                <Input
+                    maxLength={8}
+                    password={true}
+                    iconName={"lock"}
+                    text={confirmPassword}
+                    placeholder={"Confirmar senha"}
+                    showPassword={showingPassword}
+                    onchange={text => setConfirmPassword(text)} />
+            </View>
+            <ButtonDefault
+                text={"Salvar"}
+                loading={loading}
+                active={activeButton()}
+                onPress={changePassword} />
+        </Screen>
     );
 };

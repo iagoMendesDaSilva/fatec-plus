@@ -1,23 +1,24 @@
 import styles from './style';
 
 import React from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 
+import Strings from '../../../constants/strings';
 import { StorageRegister } from '../storage';
-import { ButtonDefault, Select } from '../../../helpers';
 import { ModalContext } from '../../../routes/modalContext';
+import { ButtonDefault, Select, ContractedList, TextDefault, SwicthDefault, Screen } from '../../../helpers';
 
 
 export const ResumeRegister = (props) => {
 
-    const params = props.route.params;
+    let params = props.route.params;
     const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState(false);
+    const [course, setCourse] = React.useState("");
     const [loading, setLoading] = React.useState(false)
-    const [courses, setCourses] = React.useState({ data: [] });
-    const [course, setCourse] = React.useState("Cursando");
     const [internship, setInternship] = React.useState(false);
+    const [courses, setCourses] = React.useState({ data: [] });
     const [projects, setProjects] = React.useState({ data: [] });
     const [networks, setNetworks] = React.useState({ data: [] });
     const [languages, setLanguages] = React.useState({ data: [] });
@@ -29,6 +30,10 @@ export const ResumeRegister = (props) => {
         getCourses()
     }, [])
 
+    React.useEffect(() => {
+        getItems()
+    }, [params])
+
     const formatCourses = data => {
         let courses = [];
         data.forEach(course => courses.push(course.name));
@@ -39,7 +44,7 @@ export const ResumeRegister = (props) => {
         setLoading(true)
         StorageRegister.getCourses()
             .then(data => formatCourses(data))
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.configErrorModal({ status: 404, msg: Strings.coursesFail }))
             .finally(() => setLoading(false))
     }
 
@@ -56,6 +61,28 @@ export const ResumeRegister = (props) => {
         props.navigation.navigate("ChangePassword", data);
     }
 
+    const insertItem = item => {
+    switch (item.type) {
+            case "project":
+                setProjects({ data: [...projects.data, item.data] })
+                break;
+            case "network":
+                setNetworks({ data: [...networks.data, item.data] })
+                break;
+            case "language":
+                setLanguages({ data: [...languages.data, item.data] })
+                break;
+            case "formation":
+                setFormations({ data: [...formations.data, item.data] })
+                break;
+            case "experience":
+                setExperiencies({ data: [...experiences.data, item.data] })
+                break;
+            default:
+                console.log("Unknown type " + item);
+    }
+}
+
     const getDefaultValues = () => {
         if (params && params.data) {
             setCourse(params.data.course)
@@ -65,37 +92,92 @@ export const ResumeRegister = (props) => {
             setFormations({ data: params.data.formations })
             setExperiencies({ data: params.data.experiences })
         }
+
+    }
+
+    const getItems = () => {
+        if (params && params.item)
+            insertItem(params.item)
     }
 
     const buttonActive = () =>
         Boolean(course && Boolean(job || internship))
 
+    const addItem = type =>
+        props.navigation.navigate(type)
+
     return (
-        <View
-            style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerScroll}>
-                {
-                    loading
-                        ?
-                        <ActivityIndicator color={"white"} size={"large"} />
-                        :
+        <Screen >
+            {
+                loading
+                    ?
+                    <ActivityIndicator color={"white"} size={"large"} />
+                    :
+                    <View style={styles.containerContent}>
                         <View>
+                            <TextDefault
+                                children={"Cursando"}
+                                styleText={styles.txtSection}
+                                style={styles.containerSection} />
                             <Select
                                 value={course}
                                 options={courses.data}
+                                initialValue={"Escolha seu curso"}
                                 changeValue={value => setCourse(value)} />
-                            <ButtonDefault
-                                text={"Próximo"}
-                                onPress={nextStage}
-                                active={buttonActive()} />
+                            <TextDefault
+                                children={"Informações adicionais"}
+                                styleText={styles.txtSection}
+                                style={styles.containerSection} />
+                            <ContractedList
+                                title={"Redes"}
+                                keyArray={"name"}
+                                items={networks.data}
+                                showAll={() => console.log(1)}
+                                addPress={() => addItem("Network")} />
+                            <ContractedList
+                                title={"Idiomas"}
+                                keyArray={"language"}
+                                items={languages.data}
+                                showAll={() => console.log(1)}
+                                addPress={() => addItem("Language")} />
+                            <ContractedList
+                                title={"Projetos"}
+                                items={projects.data}
+                                showAll={() => console.log(1)}
+                                addPress={() => addItem("Project")} />
+                            <ContractedList
+                                title={"Formações"}
+                                items={formations.data}
+                                showAll={() => console.log(1)}
+                                addPress={() => addItem("Formation")} />
+                            <ContractedList
+                                title={"Experiências"}
+                                items={experiences.data}
+                                showAll={() => console.log(1)}
+                                addPress={() => addItem("Experience")} />
+                            <View style={styles.containerSwitch}>
+                                <SwicthDefault
+                                    on={internship}
+                                    changeValue={value => setInternship(value)} />
+                                <TextDefault
+                                    children={"Estágio"}
+                                    style={styles.containerTxtSwitch} />
+                            </View>
+                            <View style={styles.containerSwitch}>
+                                <SwicthDefault
+                                    on={job}
+                                    changeValue={value => setJob(value)} />
+                                <TextDefault
+                                    children={"Trabalho"}
+                                    style={styles.containerTxtSwitch} />
+                            </View>
                         </View>
-                }
-
-
-            </ScrollView>
-        </View>
+                        <ButtonDefault
+                            text={"Próximo"}
+                            onPress={nextStage}
+                            active={buttonActive()} />
+                    </View>
+            }
+        </Screen>
     );
 };

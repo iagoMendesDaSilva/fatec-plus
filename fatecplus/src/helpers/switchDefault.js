@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 25,
         borderRadius: 35,
+        marginVertical:10,
         justifyContent: "center",
     },
     switch: {

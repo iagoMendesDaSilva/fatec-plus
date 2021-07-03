@@ -5,7 +5,7 @@ import { Icon } from './icon';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const Input = ({ text, type, capitalize, onchange, placeholder, defaultValue, size = widthScreen * .9, password, iconName, iconColor, iconLib, changeVisibility, showPassword, maxLength }) => {
+export const Input = ({ text, type, capitalize, onchange, placeholder, defaultValue, size = widthScreen * .9, password, iconName, iconColor, iconLib, changeVisibility, showPassword, maxLength=50 }) => {
 
     return (
         <View style={{ ...styles.containerAll, width: size }}>
@@ -20,10 +20,10 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
                 autoCorrect={false}
                 keyboardType={type}
                 allowFontScaling={false}
-                maxLength={maxLength}
                 onChangeText={onchange}
                 placeholder={placeholder}
                 defaultValue={defaultValue}
+                maxLength={maxLength?maxLength:null}
                 placeholderTextColor="rgba(255,255,255,.5)"
                 autoCapitalize={capitalize ? capitalize : 'none'}
                 secureTextEntry={password ? !showPassword : false}

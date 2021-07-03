@@ -5,7 +5,7 @@ import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const TextArea = ({ text, placeholder, onchange, size = widthScreen * .9, maxHeight= 150, maxLength=300 ,                    defaultValue}) => {
+export const TextArea = ({ text, placeholder, onchange, size = widthScreen * .9, maxHeight = 150, maxLength = 300, defaultValue }) => {
 
     return (
         <TextInput
@@ -17,7 +17,7 @@ export const TextArea = ({ text, placeholder, onchange, size = widthScreen * .9,
             onChangeText={onchange}
             defaultValue={defaultValue}
             placeholderTextColor="rgba(255,255,255,.5)"
-            style={{ ...styles.textArea, width: size, height: maxHeight }}/>
+            style={{ ...styles.textArea, width: size, height: maxHeight }} />
     );
 }
 
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "white",
         borderRadius: 10,
-        marginVertical:10,
-        textAlignVertical:"top",
+        marginVertical: 10,
+        textAlignVertical: "top",
         backgroundColor: Colors.background_light,
     },
 })

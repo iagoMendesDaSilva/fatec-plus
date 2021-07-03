@@ -1,12 +1,12 @@
 import styles from './style';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import React, { useState, useContext } from 'react';
 
 import { Storage } from '../../../services'
 import Strings from '../../../constants/strings'
 import { StorageRecovery } from '../storage'
 import { ModalContext } from '../../../routes/modalContext'
-import { TextDefault, ButtonDefault, InputCode } from '../../../helpers';
+import { TextDefault, ButtonDefault, InputCode, Screen } from '../../../helpers';
 
 export const VerificationCode = ({ navigation }) => {
 
@@ -75,45 +75,40 @@ export const VerificationCode = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerContent}>
-                <TextDefault
-                    style={styles.logo}
-                    children={"Fatec +"}
-                    styleText={styles.txtLogo} />
-                <TextDefault
-                    children={"Insira o código de acesso"}
-                    styleText={styles.txtInsertCode} />
-                <View style={styles.containerInputsCodes}>
-                    {
-                        referencesCodes.map((_, index) => 
-                            <InputCode
-                                type={"numeric"}
-                                key={String(index)}
-                                ref={referencesCodes[index]}
-                                text={valueCodes.codes[index]}
-                                onFocus={() => onFocus(index)}
-                                onchange={value => goNextInput(value, index)}
-                                onKeyPress={value => goBackInput(value, index)} />
-                        )
-                    }
-                </View>
-                <ButtonDefault
-                    text={"Próximo"}
-                    loading={loading}
-                    style={styles.button}
-                    active={Boolean(!valueCodes.codes.includes(""))}
-                    onPress={verifyVerificationCode} />
-                <TextDefault
-                    selectable={false}
-                    active={activeResend}
-                    children={"Reenviar email"}
-                    styleText={styles.txtResendEmail}
-                    onPress={activeResend ? resendEmail : false} />
-            </ScrollView>
-        </View>
+        <Screen>
+            <TextDefault
+                style={styles.logo}
+                children={"Fatec +"}
+                styleText={styles.txtLogo} />
+            <TextDefault
+                children={"Insira o código de acesso"}
+                styleText={styles.txtInsertCode} />
+            <View style={styles.containerInputsCodes}>
+                {
+                    referencesCodes.map((_, index) =>
+                        <InputCode
+                            type={"numeric"}
+                            key={String(index)}
+                            ref={referencesCodes[index]}
+                            text={valueCodes.codes[index]}
+                            onFocus={() => onFocus(index)}
+                            onchange={value => goNextInput(value, index)}
+                            onKeyPress={value => goBackInput(value, index)} />
+                    )
+                }
+            </View>
+            <ButtonDefault
+                text={"Próximo"}
+                loading={loading}
+                style={styles.button}
+                active={Boolean(!valueCodes.codes.includes(""))}
+                onPress={verifyVerificationCode} />
+            <TextDefault
+                selectable={false}
+                active={activeResend}
+                children={"Reenviar email"}
+                styleText={styles.txtResendEmail}
+                onPress={activeResend ? resendEmail : false} />
+        </Screen>
     );
 };

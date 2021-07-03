@@ -1,9 +1,8 @@
 import styles from './style';
 
 import React from 'react';
-import { View, ScrollView } from 'react-native';
 
-import { Input, ButtonDefault, TextDefault } from '../../../helpers';
+import { Input, ButtonDefault, TextDefault, Screen } from '../../../helpers';
 
 
 export const AddressRegister = (props) => {
@@ -45,12 +44,7 @@ export const AddressRegister = (props) => {
         Boolean(city && state && road && district && number)
 
     return (
-        <View
-            style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerScroll}>
+        <Screen>
                 <TextDefault
                     style={styles.logo}
                     children={"Fatec +"}
@@ -65,11 +59,12 @@ export const AddressRegister = (props) => {
                     onchange={text => setCity(text)} />
                 <Input
                     text={state}
+                    maxLength={2}
                     iconLib={"Entypo"}
                     defaultValue={state}
                     iconName={"address"}
                     placeholder={"Estado"}
-                    capitalize={"sentences"}
+                    capitalize={"characters"}
                     onchange={text => setState(text)} />
                 <Input
                     text={district}
@@ -99,7 +94,6 @@ export const AddressRegister = (props) => {
                     text={"Próximo"}
                     onPress={nextStage}
                     active={buttonActive()} />
-            </ScrollView>
-        </View>
+           </Screen>
     );
 };

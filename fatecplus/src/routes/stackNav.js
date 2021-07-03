@@ -6,7 +6,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 
 import { Icon } from '../helpers';
 import Colors from '../constants/colors';
-import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, ResumeRegister } from '../modules';
+import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, ResumeRegister, Network, Language, Project, Formation, Experience } from '../modules';
 
 export const StackNav = () => {
 
@@ -46,6 +46,11 @@ export const StackNav = () => {
             <Stack.Screen name="MainRegister" component={MainRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="AddressRegister" component={AddressRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ResumeRegister" component={ResumeRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Network" component={Network} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Language" component={Language} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Project" component={Project} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Formation" component={Formation} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Experience" component={Experience} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, false) }} />
         </Stack.Navigator>

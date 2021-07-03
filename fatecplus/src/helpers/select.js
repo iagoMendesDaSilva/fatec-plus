@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { StyleSheet, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Animated, Dimensions, View } from 'react-native';
 
 import { Animate } from '../services';
-import { TextDefault } from '../helpers';
 import Colors from '../constants/colors';
+import { TextDefault, Icon } from '../helpers';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const Select = ({ value = "", changeValue = false, options = [] }) => {
+export const Select = ({ value = "", changeValue = false, options = [], zIndex = 2, initialValue }) => {
 
     const [open, setOpen] = React.useState(false);
     const heightSelect = React.useRef(new Animated.Value(40)).current;
@@ -24,37 +24,55 @@ export const Select = ({ value = "", changeValue = false, options = [] }) => {
     }
 
     return (
-        <Animated.View style={{ ...styles.containerSelect, height: heightSelect }} >
-            <TextDefault
-                children={value}
-                onPress={pressSelect}
-                style={styles.containerText}
-                styleText={styles.txtSelectItem} />
-            {
-                options.map((item, index) =>
+        <View style={styles.containerAll}>
+            <Animated.View style={{ ...styles.containerSelect, height: heightSelect, zIndex: zIndex }} >
+                <View style={styles.containerHeader}>
                     <TextDefault
-                        children={item}
-                        key={String(index)}
-                        active={value != item}
+                        onPress={pressSelect}
                         style={styles.containerText}
-                        styleText={styles.txtSelectItem}
-                        onPress={() => open && choiseSelect(options[index])} />
-                )
-            }
-        </Animated.View>
+                        children={value ? value: initialValue}
+                        styleText={value ? styles.txtSelectItem : styles.initialValue} />
+                    <Icon
+                        style={styles.icon}
+                        lib={'MaterialIcons'}
+                        name={open ? 'keyboard-arrow-down' : 'keyboard-arrow-up'} />
+                </View>
+                {
+                    options.map((item, index) =>
+                        <TextDefault
+                            children={item}
+                            key={String(index)}
+                            active={value != item}
+                            style={styles.containerText}
+                            styleText={styles.txtSelectItem}
+                            onPress={() => open && choiseSelect(options[index])} />
+                    )
+                }
+            </Animated.View>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    containerAll: {
+        height: 40,
+        marginVertical: 10,
+        alignItems: "center"
+    },
     containerSelect: {
-        zIndex:2,
+        zIndex: 2,
         borderRadius: 30,
-        position:"absolute",
+        position: "absolute",
         overflow: "hidden",
         width: widthScreen * .9,
         backgroundColor: Colors.background_light
     },
+    containerHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
     containerText: {
+        flex: 1,
         height: 40,
         justifyContent: "center",
     },
@@ -63,4 +81,12 @@ const styles = StyleSheet.create({
         color: "white",
         marginHorizontal: 20,
     },
+    initialValue:{
+        fontSize: 18,
+        color: "rgba(255,255,255,.5)",
+        marginHorizontal: 20,
+    },
+    icon: {
+        marginRight: 15,
+    }
 })

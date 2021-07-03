@@ -1,12 +1,11 @@
 import styles from './style';
-import { View, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
 
 import { Storage } from '../../services';
 import Strings from '../../constants/strings';
 import { StorageRecovery } from './storage';
 import { ModalContext } from '../../routes/modalContext';
-import { TextDefault, Input, ButtonDefault } from '../../helpers';
+import { TextDefault, Input, ButtonDefault, Screen } from '../../helpers';
 
 export const Recovery = ({ navigation }) => {
 
@@ -29,11 +28,7 @@ export const Recovery = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.containerAll}>
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
-                contentContainerStyle={styles.containerContent}>
+        <Screen>
                 <TextDefault
                     style={styles.logo}
                     children={"Fatec +"}
@@ -56,7 +51,6 @@ export const Recovery = ({ navigation }) => {
                     styleText={styles.txtAlreadyCode}
                     children={"Já tenho um código!"}
                     onPress={() => navigation.navigate("VerificationCode")} />
-            </ScrollView>
-        </View>
+        </Screen>
     );
 };
