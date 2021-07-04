@@ -6,7 +6,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 
 import { Icon } from '../helpers';
 import Colors from '../constants/colors';
-import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, ResumeRegister, Network, Language, Project, Formation, Experience } from '../modules';
+import { Splash, Auth, Vacancies,Student, Job, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, ResumeRegister, Network, Language, Project, Formation, Experience, ListItems } from '../modules';
 
 export const StackNav = () => {
 
@@ -51,6 +51,7 @@ export const StackNav = () => {
             <Stack.Screen name="Project" component={Project} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Formation" component={Formation} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Experience" component={Experience} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="ListItems" component={ListItems} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, false) }} />
         </Stack.Navigator>

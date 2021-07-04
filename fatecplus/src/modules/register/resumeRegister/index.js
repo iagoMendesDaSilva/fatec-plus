@@ -61,27 +61,42 @@ export const ResumeRegister = (props) => {
         props.navigation.navigate("ChangePassword", data);
     }
 
-    const insertItem = item => {
-    switch (item.type) {
+    const verifyAddPutDelete = (state, setState, item) => {
+        if (Number.isInteger(item.index)) {
+            let data = state.data;
+            item.data ? data[item.index] = item.data : data.splice(item.index, 1)
+            setState({ data })
+        } else {
+            setState({ data: [...state.data, item.data] })
+        }
+    }
+
+    const verifyItem = item => {
+        switch (item.type) {
             case "project":
-                setProjects({ data: [...projects.data, item.data] })
+                verifyAddPutDelete(projects, setProjects, item)
                 break;
             case "network":
-                setNetworks({ data: [...networks.data, item.data] })
+                verifyAddPutDelete(networks, setNetworks, item)
                 break;
             case "language":
-                setLanguages({ data: [...languages.data, item.data] })
+                verifyAddPutDelete(languages, setLanguages, item)
                 break;
             case "formation":
-                setFormations({ data: [...formations.data, item.data] })
+                verifyAddPutDelete(formations, setFormations, item)
                 break;
             case "experience":
-                setExperiencies({ data: [...experiences.data, item.data] })
+                verifyAddPutDelete(experiences, setExperiencies, item)
                 break;
             default:
                 console.log("Unknown type " + item);
+        }
     }
-}
+
+    const getItems = () => {
+        if (params && params.item)
+            verifyItem(params.item)
+    }
 
     const getDefaultValues = () => {
         if (params && params.data) {
@@ -95,16 +110,14 @@ export const ResumeRegister = (props) => {
 
     }
 
-    const getItems = () => {
-        if (params && params.item)
-            insertItem(params.item)
-    }
-
     const buttonActive = () =>
         Boolean(course && Boolean(job || internship))
 
     const addItem = type =>
         props.navigation.navigate(type)
+
+    const editItem = (index, screen, state) =>
+        props.navigation.navigate(screen, { data: state.data[index], index });
 
     return (
         <Screen >
@@ -125,35 +138,43 @@ export const ResumeRegister = (props) => {
                                 initialValue={"Escolha seu curso"}
                                 changeValue={value => setCourse(value)} />
                             <TextDefault
-                                children={"Informações adicionais"}
                                 styleText={styles.txtSection}
-                                style={styles.containerSection} />
+                                style={styles.containerSection}
+                                children={"Informações adicionais"} />
                             <ContractedList
                                 title={"Redes"}
                                 keyArray={"name"}
                                 items={networks.data}
-                                showAll={() => console.log(1)}
+                                showAll={() => props.navigation.navigate("ListItems", { type: "Networks", data: networks.data })}
+                                onPress={index => editItem(index, "Network", networks)}
                                 addPress={() => addItem("Network")} />
                             <ContractedList
                                 title={"Idiomas"}
                                 keyArray={"language"}
                                 items={languages.data}
                                 showAll={() => console.log(1)}
+                                onPress={index => editItem(index, "Language", languages)}
                                 addPress={() => addItem("Language")} />
                             <ContractedList
                                 title={"Projetos"}
+                                keyArray={"name"}
                                 items={projects.data}
                                 showAll={() => console.log(1)}
+                                onPress={index => editItem(index, "Project", projects)}
                                 addPress={() => addItem("Project")} />
                             <ContractedList
+                                keyArray={"title"}
                                 title={"Formações"}
                                 items={formations.data}
                                 showAll={() => console.log(1)}
+                                onPress={index => editItem(index, "Formation", formations)}
                                 addPress={() => addItem("Formation")} />
                             <ContractedList
+                                keyArray={"job"}
                                 title={"Experiências"}
                                 items={experiences.data}
                                 showAll={() => console.log(1)}
+                                onPress={index => editItem(index, "Experience", experiences)}
                                 addPress={() => addItem("Experience")} />
                             <View style={styles.containerSwitch}>
                                 <SwicthDefault

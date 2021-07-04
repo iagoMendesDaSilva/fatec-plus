@@ -8,7 +8,7 @@ import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const ContractedList = ({ title = "", items = [], addPress, showAll, keyArray=false }) => {
+export const ContractedList = ({ title = "", items = [], addPress, showAll, keyArray = false, onPress }) => {
 
     const [open, setOpen] = React.useState(false);
     const heightList = React.useRef(new Animated.Value(40)).current;
@@ -24,6 +24,22 @@ export const ContractedList = ({ title = "", items = [], addPress, showAll, keyA
         open && pressSelect()
         addPress && addPress()
     }
+
+    const editItem = index => {
+        open && pressSelect()
+        onPress && onPress(index)
+    }
+
+    const getChildren = index =>
+        keyArray ? items[index][keyArray] : items[index]
+
+    const getRow = index =>
+        <TextDefault
+            disabled={!open}
+            styleText={styles.txtItem}
+            style={styles.containerText}
+            children={getChildren(index)}
+            onPress={() => editItem(index)} />
 
     return (
         <Animated.View style={{ ...styles.containerContent, height: heightList }} >
@@ -41,24 +57,19 @@ export const ContractedList = ({ title = "", items = [], addPress, showAll, keyA
                     onPress={addItem}
                     styleText={styles.txtItem}
                     style={styles.containerPlus} />
-            </TouchableOpacity>
+            </TouchableOpacity >
             {
                 items.length > 0 &&
-                <TextDefault
-                styleText={styles.txtItem}
-                style={styles.containerText}
-                children={keyArray?items[0][keyArray]:items[0]}/>
+                getRow(0)
             }
             {
                 items.length > 1 &&
-                <TextDefault
-                styleText={styles.txtItem}
-                style={styles.containerText} 
-                children={keyArray?items[1][keyArray]:items[1]}/>
+                getRow(1)
             }
             {
                 items.length > 2 &&
                 <TouchableOpacity
+                    disabled={!open}
                     onPress={showAll}
                     style={styles.containerShowAll}>
                     <View style={styles.divisionShowAll} />

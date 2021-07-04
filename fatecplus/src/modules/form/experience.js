@@ -5,38 +5,39 @@ import Strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 
 import Colors from '../../constants/colors';
-import { ButtonDefault, Input, Note, DatePickerDefault, Screen } from '../../helpers';
+import { ButtonDefault, Input, Note, DatePickerDefault, Screen, TextDefault } from '../../helpers';
 
-export const Formation = (props) => {
+export const Experience = (props) => {
 
     const params = props.route.params;
 
-    const [title, setTitle] = React.useState("");
-    const [subTitle, setSubTitle] = React.useState("");
+    const [job, setJob] = React.useState("");
+    const [index, setIndex] = React.useState(null);
     const [endYear, setEndYear] = React.useState("");
     const [startYear, setStartYear] = React.useState("");
     const [date, setDate] = React.useState(new Date());
-    const [workload, setWorkload] = React.useState("");
+    const [company, setCompany] = React.useState("");
     const [picker, setPicker] = React.useState({ on: false, start: true });
 
     React.useEffect(() => getValues(), [])
 
-    const save = () => {
+    const send = (exclude = false) => {
         props.navigation.navigate("ResumeRegister", {
             item: {
-                type: "formation", data:
-                    { title, subTitle, endYear, startYear, workload }
+                index,
+                type: "experience", 
+                data:exclude?null:   { job, endYear, startYear, company },
             }
         })
     }
 
     const getValues = () => {
         if (params) {
-            setTitle(params.title);
-            setSubTitle(params.subTitle);
-            setEndYear(params.endYear);
-            setStartYear(params.startYear);
-            setWorkload(params.workload);
+            setIndex(params.index)
+            setJob(params.data.job);
+            setEndYear(params.data.endYear);
+            setStartYear(params.data.startYear);
+            setCompany(params.data.company);
         }
     }
 
@@ -54,36 +55,35 @@ export const Formation = (props) => {
         picker.start ? setStartYear(dateFormated) : setEndYear(dateFormated);
     }
 
-    const changeTime = value => {
-        if((/^\d+$/.test(value)) || value === "" ) setWorkload(value)
-    }
-
     return (
         <Screen>
-            <Note text={Strings.descriptionFormation} />
+            <Note text={Strings.descriptionExperience} />
             <Input
-                text={title}
+                text={job}
                 maxLength={100}
-                defaultValue={title}
+                defaultValue={job}
                 iconName={"pencil"}
-                placeholder={"Título"}
-                onchange={text => setTitle(text)}
+                placeholder={"Cargo"}
+                onchange={text => setJob(text)}
                 iconLib={"MaterialCommunityIcons"} />
             <Input
-                text={subTitle}
+                text={company}
                 maxLength={100}
                 iconName={"pencil"}
-                placeholder={"Subtítulo"}
-                defaultValue={subTitle}
-                onchange={text => setSubTitle(text)}
+                placeholder={"Empresa"}
+                defaultValue={company}
+                onchange={text => setCompany(text)}
                 iconLib={"MaterialCommunityIcons"} />
             <DatePickerDefault
                 title={startYear}
                 initialValue={"Data de iníco"}
+                deleteValue={() => setStartYear("")}
                 onPress={() => setPicker({ on: !picker.on, start: true })} />
             <DatePickerDefault
                 title={endYear}
                 initialValue={"Data de término"}
+                deleteValue={() => setEndYear("")}
+                open={Boolean(picker.on && !picker.start)}
                 onPress={() => setPicker({ on: !picker.on, start: false })} />
             {
                 picker.on &&
@@ -96,19 +96,16 @@ export const Formation = (props) => {
                     fadeToColor={Colors.background}
                     onDateChange={value => changeDate(value)} />
             }
-            <Input
-                maxLength={3}
-                text={workload}
-                type={"numeric"}
-                iconLib={"AntDesign"}
-                iconName={"calendar"}
-                defaultValue={workload}
-                placeholder={"Duração (horas)"}
-                onchange={text => changeTime(text)} />
             <ButtonDefault
                 text={"Salvar"}
-                onPress={save}
-                active={Boolean(title, startYear)} />
+                onPress={send}
+                active={Boolean(job && startYear && company)} />
+            {
+                Boolean(Number.isInteger(index)) &&
+                <TextDefault
+                    onPress={() => send(true)}
+                    children={"Excluir Experiência"} />
+            }
         </Screen>
     )
 }

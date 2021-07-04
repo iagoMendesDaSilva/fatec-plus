@@ -124,6 +124,7 @@ export const MainRegister = (props) => {
                     <DatePickerDefault
                         title={birthDate}
                         onPress={() => setPicker(!picker)} 
+                        deleteValue={() => setBirthDate("")} 
                         initialValue={"Data de Nascimento"}/>
                 }
                 {

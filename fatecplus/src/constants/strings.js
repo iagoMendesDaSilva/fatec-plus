@@ -11,6 +11,7 @@ export default {
     differentPasswords: "As senhas devem ser iguais.",
     coursesFail: "Não foi possível consultar os cursos.",
     misssingEmail: 'Por favor inserir novamente o email.',
+    descriptionExperience:"Adicione uma experiência profissional.",
     descriptionLanguage:"Adicione o nome do idioma é o nível de compreensão.",
     descriptionProject:"Adicione um projeto relacionado a sua área fora da faculdade.",
     descriptionFormation:"Adicione uma formação de algum curso da área.",

@@ -1,28 +1,34 @@
 import React from 'react';
 
 import Strings from '../../constants/strings';
-import { ButtonDefault, Input, Note, Select, Screen } from '../../helpers';
+import { ButtonDefault, Input, Note, Select, Screen, TextDefault } from '../../helpers';
 
 export const Language = (props) => {
 
     const params = props.route.params;
-    const levels = ["Básico", "Intermediário", "Avançado"]
+    const levels = ["Básico", "Intermediário", "Avançado", "Fluente"]
 
     const [level, setLevel] = React.useState("");
+    const [index, setIndex] = React.useState(null);
     const [language, setLanguage] = React.useState("");
 
     React.useEffect(() => getValues(), [])
 
-    const save = () => {
+    const send = (exclude = false) => {
         props.navigation.navigate("ResumeRegister", {
-            item: { type: "language", data: { level, language } }
+            item: {
+                index,
+                type: "language",
+                data: exclude ? null : { level, language },
+            }
         })
     }
 
     const getValues = () => {
         if (params) {
-            setLevel(params.level);
-            setLanguage(params.language);
+            setIndex(params.index)
+            setLevel(params.data.level);
+            setLanguage(params.data.language);
         }
     }
 
@@ -43,8 +49,14 @@ export const Language = (props) => {
                 changeValue={value => setLevel(value)} />
             <ButtonDefault
                 text={"Salvar"}
-                onPress={save}
+                onPress={send}
                 active={Boolean(language && level)} />
+            {
+                Boolean(Number.isInteger(index)) &&
+                <TextDefault
+                    onPress={() => send(true)}
+                    children={"Excluir Idioma"} />
+            }
         </Screen>
     )
 }

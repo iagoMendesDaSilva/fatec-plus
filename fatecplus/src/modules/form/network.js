@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Strings from '../../constants/strings';
-import { ButtonDefault, Input, Note, Screen } from '../../helpers';
+import { ButtonDefault, Input, Note, Screen, TextDefault } from '../../helpers';
 
 export const Network = (props) => {
 
@@ -9,19 +9,25 @@ export const Network = (props) => {
 
     const [url, setUrl] = React.useState("");
     const [name, setName] = React.useState("");
+    const [index, setIndex] = React.useState(null);
 
     React.useEffect(() => getValues(), [])
 
-    const save = () => {
+    const send = (exclude = false) => {
         props.navigation.navigate("ResumeRegister", {
-            item: { type: "network", data: { name, url } }
+            item: {
+                index,
+                type: "network",
+                data: exclude ? null : { name, url },
+            }
         })
     }
 
     const getValues = () => {
         if (params) {
-            setUrl(params.url);
-            setName(params.name);
+            setUrl(params.data.url);
+            setIndex(params.index);
+            setName(params.data.name);
         }
     }
 
@@ -46,8 +52,14 @@ export const Network = (props) => {
                 iconLib={"MaterialCommunityIcons"} />
             <ButtonDefault
                 text={"Salvar"}
-                onPress={save}
+                onPress={send}
                 active={Boolean(name && url)} />
+            {
+                Boolean(Number.isInteger(index)) &&
+                <TextDefault
+                    onPress={() => send(true)}
+                    children={"Excluir Rede"} />
+            }
         </Screen>
     )
 }

@@ -2,13 +2,13 @@ import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export const TextDefault = ({ children, style, styleText, lines = 1,
-    selectable = false, onPress = false, active = true, hitSlop = false }) => {
+    selectable = false, onPress = false, active = true, hitSlop = false ,  disabled=false}) => {
 
     return (
         <TouchableOpacity
             style={style}
-            disabled={!onPress}
             onPress={onPress}
+            disabled={!onPress || disabled}
             hitSlop={hitSlop ? hitSlop : styles.hitSlop}>
             <Text
                 selectionColor={"gray"}
