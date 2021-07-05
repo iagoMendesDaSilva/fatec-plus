@@ -2,12 +2,11 @@ import { StyleSheet } from 'react-native';
 import Colors from '../../../constants/colors';
 
 export default StyleSheet.create({
-    txtLogo: {
-        fontSize: 60,
-        color: Colors.primary,
-        fontFamily: "Nunito-SemiBold",
+    containerAll: {
+        flex: 1,
+        backgroundColor: Colors.background,
     },
-    logo: {
-        marginBottom: 15,
+    map: {
+        flex: 1,
     },
 });

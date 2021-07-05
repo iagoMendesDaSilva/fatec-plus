@@ -9,6 +9,7 @@ export * from './datePicker';
 export * from './inputCode';
 export * from './textDefault';
 export * from './imagePicker';
+export * from './addressInput';
 export * from './switchDefault';
 export * from './buttonDefault';
 export * from './contractedList';

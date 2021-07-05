@@ -1,8 +1,11 @@
 import styles from './style';
 
 import React from 'react';
+import { View } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, } from 'react-native-maps';
 
-import { Input, ButtonDefault, TextDefault, Screen } from '../../../helpers';
+import mapStyle from '../../../assets/mapStyle.json';
+import { Input, ButtonDefault, TextDefault, Screen, AddressInput } from '../../../helpers';
 
 
 export const AddressRegister = (props) => {
@@ -14,6 +17,7 @@ export const AddressRegister = (props) => {
     const [road, setRoad] = React.useState("");
     const [district, setDistrict] = React.useState("");
     const [number, setNumber] = React.useState("");
+    const[location, setLocation] = React.useState({lat:-22.217583, lng:-49.950523});
 
     React.useEffect(() => getDefaultValues(), [])
 
@@ -43,57 +47,28 @@ export const AddressRegister = (props) => {
     const buttonActive = () =>
         Boolean(city && state && road && district && number)
 
+    const changeMap = place => {
+        const { lat, lng } = place.result.geometry.location;
+        setLocation({lat, lng})
+    }
+
     return (
-        <Screen>
-                <TextDefault
-                    style={styles.logo}
-                    children={"Fatec +"}
-                    styleText={styles.txtLogo} />
-                <Input
-                    text={city}
-                    defaultValue={city}
-                    iconLib={"Entypo"}
-                    iconName={"address"}
-                    placeholder={"Cidade"}
-                    capitalize={"sentences"}
-                    onchange={text => setCity(text)} />
-                <Input
-                    text={state}
-                    maxLength={2}
-                    iconLib={"Entypo"}
-                    defaultValue={state}
-                    iconName={"address"}
-                    placeholder={"Estado"}
-                    capitalize={"characters"}
-                    onchange={text => setState(text)} />
-                <Input
-                    text={district}
-                    iconLib={"Entypo"}
-                    iconName={"address"}
-                    defaultValue={district}
-                    placeholder={"Bairro"}
-                    capitalize={"sentences"}
-                    onchange={text => setDistrict(text)} />
-                <Input
-                    text={road}
-                    iconLib={"Entypo"}
-                    defaultValue={road}
-                    placeholder={"Rua"}
-                    iconName={"address"}
-                    capitalize={"sentences"}
-                    onchange={text => setRoad(text)} />
-                <Input
-                    text={number}
-                    type={"numeric"}
-                    iconLib={"Entypo"}
-                    iconName={"address"}
-                    defaultValue={number}
-                    placeholder={"Número"}
-                    onchange={text => setNumber(text)} />
-                <ButtonDefault
-                    text={"Próximo"}
-                    onPress={nextStage}
-                    active={buttonActive()} />
-           </Screen>
+        <View style={styles.containerAll}>
+
+
+            <AddressInput onSelect={place => changeMap(place)} />
+            <MapView
+                customMapStyle={mapStyle}
+                provider={PROVIDER_GOOGLE}
+                style={styles.map}
+                region={{
+                    latitude: location.lat,
+                    longitude: location.lng,
+                    latitudeDelta: 0.008,
+                    longitudeDelta: 0.008,
+                }}
+            >
+            </MapView>
+        </View >
     );
 };
