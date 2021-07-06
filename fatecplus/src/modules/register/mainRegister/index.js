@@ -76,6 +76,11 @@ export const MainRegister = (props) => {
         setBirthDate(day + "/" + month + "/" + year)
     }
 
+    const checkPhone = value => {
+        if ((/^\d+$/).test(value) || value==="")
+            setPhone(value)
+    }
+
     return (
         <TouchableOpacity
             activeOpacity={1}
@@ -117,15 +122,15 @@ export const MainRegister = (props) => {
                         iconName={"phone"}
                         defaultValue={phone}
                         placeholder={"Telefone"}
-                        onchange={text => setPhone(text)} />
+                        onchange={text => checkPhone(text)} />
                 }
                 {
                     params.category === "Student" &&
                     <DatePickerDefault
                         title={birthDate}
-                        onPress={() => setPicker(!picker)} 
-                        deleteValue={() => setBirthDate("")} 
-                        initialValue={"Data de Nascimento"}/>
+                        onPress={() => setPicker(!picker)}
+                        deleteValue={() => setBirthDate("")}
+                        initialValue={"Data de Nascimento"} />
                 }
                 {
                     picker &&

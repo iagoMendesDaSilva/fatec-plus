@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Dimensions, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Dimensions, View, Keyboard } from 'react-native';
 
 import Colors from '../constants/colors';
 import { TextDefault, Icon } from '../helpers';
@@ -8,11 +8,18 @@ const widthScreen = Dimensions.get("screen").width;
 
 export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue }) => {
 
+    const pressPicker = () => {
+        if (onPress) {
+            onPress()
+            Keyboard.dismiss()
+        }
+    }
+
     return (
         <View style={styles.containerAll}>
             <TouchableOpacity
                 style={styles.containerContent}
-                onPress={() => onPress && onPress()}>
+                onPress={pressPicker}>
                 <Icon
                     lib={"AntDesign"}
                     name={"calendar"} />

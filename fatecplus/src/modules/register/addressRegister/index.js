@@ -59,7 +59,7 @@ export const AddressRegister = (props) => {
     }
 
     const getLocation = (lat, lng) => {
-        Geocoder.from(1, lng)
+        Geocoder.from(lat, lng)
             .then(location => {
                 getCityandState(location.results)
                 setLocation({ lat, lng, name: location.results[0].formatted_address })
