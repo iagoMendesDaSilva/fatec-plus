@@ -4,10 +4,11 @@ import React, { useState, useContext } from 'react';
 
 import { StorageRecovery } from '../storage';
 import Strings from '../../../constants/strings';
+import { StorageRegister } from '../../register/storage';
 import { ModalContext } from '../../../routes/modalContext';
 import { ProgressPassword, Input, ButtonDefault, Screen } from '../../../helpers';
 
-export const ChangePassword = ({ navigation }) => {
+export const ChangePassword = ({ navigation, route }) => {
 
     const modal = useContext(ModalContext);
 
@@ -20,14 +21,24 @@ export const ChangePassword = ({ navigation }) => {
     const changePassword = () => {
         if (password === confirmPassword) {
             setLoading(true)
-            StorageRecovery.changePassword(password)
-                .then(data => navigation.replace("Vacancies"))
-                .catch(status => modal.configErrorModal({ status }))
-                .finally(() => setLoading(false));
-
+            route.params ? saveUser(password) : editUser(password)
         } else {
             modal.configErrorModal({ msg: Strings.differentPasswords })
         }
+    }
+
+    const editUser = password => {
+        StorageRecovery.changePassword(password)
+            .then(data => navigation.replace("Vacancies"))
+            .catch(status => modal.configErrorModal({ status }))
+            .finally(() => setLoading(false));
+    }
+
+    const saveUser = password => {
+        StorageRegister.register( route.params, password)
+        .then(data => console.log(data))
+        .catch(status => modal.configErrorModal({ status }))
+        .finally(() => setLoading(false));
     }
 
     const changeVisibility = () => setShowingPassword(!showingPassword)

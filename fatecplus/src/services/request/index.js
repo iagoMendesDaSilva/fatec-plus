@@ -3,6 +3,7 @@ export * from './request';
 export * from './executor';
 export * from './requestEmail';
 export * from './requestLogin';
+export * from './requestRegister';
 export * from './requestCourses';
 export * from './requestPlayerId';
 export * from './requestPassword';

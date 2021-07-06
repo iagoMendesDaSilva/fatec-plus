@@ -5,11 +5,14 @@ import Strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 
 import Colors from '../../constants/colors';
+import { ModalContext } from '../../routes/modalContext';
 import { ButtonDefault, Input, Note, DatePickerDefault, Screen, TextDefault } from '../../helpers';
 
 export const Experience = (props) => {
 
     const params = props.route.params;
+
+    const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState("");
     const [index, setIndex] = React.useState(null);
@@ -22,13 +25,17 @@ export const Experience = (props) => {
     React.useEffect(() => getValues(), [])
 
     const send = (exclude = false) => {
-        props.navigation.navigate("ResumeRegister", {
-            item: {
-                index,
-                type: "experience", 
-                data:exclude?null:   { job, endYear, startYear, company },
-            }
-        })
+        if (endYear < startYear && endYear)
+            modal.configErrorModal({ status: 404, msg: Strings.dateEndFail })
+        else {
+            props.navigation.navigate("ResumeRegister", {
+                item: {
+                    index,
+                    type: "experience",
+                    data: exclude ? null : { job, endYear, startYear, company },
+                }
+            });
+        }
     }
 
     const getValues = () => {

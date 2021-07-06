@@ -31,6 +31,7 @@ export const ResumeRegister = (props) => {
     }, [])
 
     React.useEffect(() => {
+        getDefaultValues()
         getItems()
     }, [params])
 
@@ -50,6 +51,8 @@ export const ResumeRegister = (props) => {
 
     const nextStage = () => {
         const data = {
+            job,
+            internship,
             course: course,
             projects: projects,
             networks: networks,
@@ -100,7 +103,6 @@ export const ResumeRegister = (props) => {
 
     const getDefaultValues = () => {
         if (params && params.data) {
-            setCourse(params.data.course)
             setProjects({ data: params.data.projects })
             setNetworks({ data: params.data.networks })
             setLanguages({ data: params.data.languages })
@@ -109,6 +111,10 @@ export const ResumeRegister = (props) => {
         }
 
     }
+
+    const showAll = (type, data) =>
+        props.navigation.navigate("ListItems", { type, data })
+
 
     const buttonActive = () =>
         Boolean(course && Boolean(job || internship))
@@ -145,37 +151,37 @@ export const ResumeRegister = (props) => {
                                 title={"Redes"}
                                 keyArray={"name"}
                                 items={networks.data}
-                                showAll={() => props.navigation.navigate("ListItems", { type: "Networks", data: networks.data })}
-                                onPress={index => editItem(index, "Network", networks)}
-                                addPress={() => addItem("Network")} />
+                                addPress={() => addItem("Network")}
+                                showAll={() => showAll("Networks", networks.data)}
+                                onPress={index => editItem(index, "Network", networks)} />
                             <ContractedList
                                 title={"Idiomas"}
                                 keyArray={"language"}
                                 items={languages.data}
-                                showAll={() => console.log(1)}
-                                onPress={index => editItem(index, "Language", languages)}
-                                addPress={() => addItem("Language")} />
+                                addPress={() => addItem("Language")}
+                                showAll={() => showAll("Languages", languages.data)}
+                                onPress={index => editItem(index, "Language", languages)} />
                             <ContractedList
                                 title={"Projetos"}
                                 keyArray={"name"}
                                 items={projects.data}
-                                showAll={() => console.log(1)}
-                                onPress={index => editItem(index, "Project", projects)}
-                                addPress={() => addItem("Project")} />
+                                addPress={() => addItem("Project")}
+                                showAll={() => showAll("Projects", projects.data)}
+                                onPress={index => editItem(index, "Project", projects)} />
                             <ContractedList
                                 keyArray={"title"}
                                 title={"Formações"}
                                 items={formations.data}
-                                showAll={() => console.log(1)}
-                                onPress={index => editItem(index, "Formation", formations)}
-                                addPress={() => addItem("Formation")} />
+                                addPress={() => addItem("Formation")}
+                                showAll={() => showAll("Formations", formations.data)}
+                                onPress={index => editItem(index, "Formation", formations)} />
                             <ContractedList
                                 keyArray={"job"}
                                 title={"Experiências"}
                                 items={experiences.data}
-                                showAll={() => console.log(1)}
-                                onPress={index => editItem(index, "Experience", experiences)}
-                                addPress={() => addItem("Experience")} />
+                                addPress={() => addItem("Experience")}
+                                showAll={() => showAll("Experiences", experiences.data)}
+                                onPress={index => editItem(index, "Experience", experiences)} />
                             <View style={styles.containerSwitch}>
                                 <SwicthDefault
                                     on={internship}

@@ -5,11 +5,14 @@ import Strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 
 import Colors from '../../constants/colors';
+import { ModalContext } from '../../routes/modalContext';
 import { ButtonDefault, Input, Note, DatePickerDefault, Screen, TextDefault } from '../../helpers';
 
 export const Formation = (props) => {
 
     const params = props.route.params;
+
+    const modal = React.useContext(ModalContext);
 
     const [title, setTitle] = React.useState("");
     const [index, setIndex] = React.useState(null);
@@ -23,13 +26,17 @@ export const Formation = (props) => {
     React.useEffect(() => getValues(), [])
 
     const send = (exclude = false) => {
-        props.navigation.navigate("ResumeRegister", {
-            item: {
-                index,
-                type: "formation",
-                data: exclude ? null : { title, subTitle, endYear, startYear, workload },
-            }
-        })
+        if (endYear < startYear && endYear)
+            modal.configErrorModal({ status: 404, msg: Strings.dateEndFail })
+        else {
+            props.navigation.navigate("ResumeRegister", {
+                item: {
+                    index,
+                    type: "formation",
+                    data: exclude ? null : { title, subTitle, endYear, startYear, workload },
+                }
+            });
+        }
     }
 
     const getValues = () => {

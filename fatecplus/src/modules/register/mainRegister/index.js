@@ -26,13 +26,15 @@ export const MainRegister = (props) => {
     React.useEffect(() => getDefaultValues(), [])
 
     const nextStage = () => {
+        const formatedDate = birthDate.split("/").reverse().join("-")
+
         const data = {
             email: email,
             name: name,
             phone: phone,
-            birthDate: birthDate,
             username: username,
             description: description,
+            birthDate: formatedDate,
             category: params.category,
             image: image.base64 ? image.base64 : null,
         }
