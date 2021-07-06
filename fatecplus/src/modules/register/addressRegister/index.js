@@ -2,27 +2,28 @@ import styles from './style';
 
 import React from 'react';
 import Geocoder from 'react-native-geocoding';
-import { TouchableOpacity, View } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, { PROVIDER_GOOGLE, } from 'react-native-maps';
+import { TouchableOpacity, View, PermissionsAndroid as Permission } from 'react-native';
 
-import mapStyle from '../../../assets/mapStyle.json';
 import Values from '../../../constants/values';
+import Strings from '../../../constants/strings';
+import mapStyle from '../../../assets/mapStyle.json';
+import { ModalContext } from '../../../routes/modalContext';
 import { Icon, AddressInput, TextDefault, ButtonDefault } from '../../../helpers';
-
 
 export const AddressRegister = (props) => {
 
     Geocoder.init(Values.google_places_key);
 
     const params = props.route.params;
+    const modal = React.useContext(ModalContext);
 
     const [city, setCity] = React.useState("");
     const [state, setState] = React.useState("");
     const [location, setLocation] = React.useState({ lat: -22.2335121, lng: -49.6461569, name: "" });
 
     const nextStage = () => {
-        console.log("City: ",city, "State:", state);
         const data = {
             city,
             state,
@@ -33,16 +34,18 @@ export const AddressRegister = (props) => {
         props.navigation.navigate(screen, data);
     }
 
-    const useCurrentLocation = () => {
-        Geolocation.getCurrentPosition(
-            place => getCurrentLocation(place.coords.latitude, place.coords.longitude),
-            error => console.log(error.code, error.message),
-            { enableHighAccuracy: true }
-        );
+    const getCurrentLocation = async () => {
+        const granted = await Permission.request(Permission.PERMISSIONS.ACCESS_FINE_LOCATION)
+        if (granted === Permission.RESULTS.GRANTED) {
+            Geolocation.getCurrentPosition(
+                place => getLocation(place.coords.latitude, place.coords.longitude),
+                error => modal.configErrorModal({ msg: Strings.currentLocationError, status: 404 }),
+                { enableHighAccuracy: true }
+            );
+        }
     }
 
     const getCityandState = data => {
-        console.log(data);
         data.forEach(item => {
             if (item.address_components) {
                 item.address_components.forEach(address => {
@@ -55,18 +58,18 @@ export const AddressRegister = (props) => {
         });
     }
 
-    const getCurrentLocation = (lat, lng) => {
-        Geocoder.from(lat, lng)
+    const getLocation = (lat, lng) => {
+        Geocoder.from(1, lng)
             .then(location => {
                 getCityandState(location.results)
                 setLocation({ lat, lng, name: location.results[0].formatted_address })
             })
-            .catch(a => console.log(a))
+            .catch(error => modal.configErrorModal({ msg: Strings.locationError, status: 404 }))
     }
 
     const changeMap = place => {
         const { lat, lng } = place.result.geometry.location;
-        getCurrentLocation(lat, lng)
+        getLocation(lat, lng)
     }
 
     const getRegion = () => {
@@ -80,10 +83,12 @@ export const AddressRegister = (props) => {
 
     return (
         <View style={styles.containerAll}>
+            <AddressInput
+                onSelect={place => changeMap(place)} />
             <View style={styles.containerAddress}>
                 <TouchableOpacity
                     hitSlop={styles.hitSlop}
-                    onPress={useCurrentLocation}>
+                    onPress={getCurrentLocation}>
                     <Icon
                         size={25}
                         lib={'Ionicons'}
@@ -100,13 +105,14 @@ export const AddressRegister = (props) => {
                     onPress={nextStage}
                     active={Boolean(location.name)} />
             </View>
-            <AddressInput
-                onSelect={place => changeMap(place)} />
             <MapView
                 style={styles.map}
                 region={getRegion()}
                 customMapStyle={mapStyle}
-                provider={PROVIDER_GOOGLE} />
+                provider={PROVIDER_GOOGLE} >
+                <MapView.Marker
+                    coordinate={{ latitude: location.lat, longitude: location.lng }} />
+            </MapView>
         </View >
     );
 };
