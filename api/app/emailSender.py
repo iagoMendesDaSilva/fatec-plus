@@ -55,8 +55,7 @@ class Email:
         self.add_text(resume,"Idade: "+age+" anos")
         self.add_text(resume, "Email: "+user.email)
         self.add_text(resume, "Telefone: "+user.phone)
-        self.add_text(resume, "Endereço: R. "+user.road+", "+user.number_address)
-        self.add_text(resume, "Cidade: "+user.city+"-"+user.state)
+        self.add_text(resume, "Endereço: "+user.address)
 
         if user.description:
             self.add_topic(resume, "Descrição")

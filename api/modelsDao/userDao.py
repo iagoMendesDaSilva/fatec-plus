@@ -39,6 +39,6 @@ class UserDao:
             raise ObjectInvalid
 
     def key_is_valid(self, key):
-        return key=='city' or key=='birth_date' or key=='road' or key=='phone' or key=='district' or key=='studyng' or key=='description' or key=='number_address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state' or key=='onesignal_playerID' or key == 'version_app'
+        return key=='city' or key=='birth_date'  or key=='phone' or key=='studyng' or key=='description' or key=='address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state' or key=='onesignal_playerID' or key == 'version_app'
 
 userDao = UserDao()

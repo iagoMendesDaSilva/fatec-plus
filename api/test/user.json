@@ -4,16 +4,14 @@
     "image":null,
     "city":"marilia",
     "internship":true,
-    "category":"Student",
     "username":"iago",
-    "district":"Alcir raineri",
-    "number_address":"09",
+    "address":"address",
+    "category":"Student",
     "phone":"14998211887",
     "birth_date":"2001-05-11",
     "description":"descrição...",
     "password":"iagomendesxx*",
     "name":"Iago mendes da silva",
-    "road":"vitorio salviano rodrigues",
     "email":"iago_mendesxx@hotmail.com",
     "studying":"Analise e desenvolvimento de sistemas"
 }

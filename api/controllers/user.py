@@ -25,22 +25,20 @@ class UserController:
                 city=data['city'],
                 recovery=None,
                 state=data['state'],
-                road=data['road'],
                 version_app=None,
                 email=data['email'],
                 name=data['name'],
                 phone=data['phone'],
                 recovery_time=None,
-                district=data['district'],
                 password = password,
+                address=data['address'],
                 studying=data['studying'],
                 category=data['category'],
                 onesignal_playerID=None,
                 username=data['username'],
                 internship=data['internship'],
                 birth_date=data['birth_date'],
-                description=data['description'],
-                number_address=data['number_address'])
+                description=data['description'])
                 dao.add(user)
                 if(data['image']!=None):
                     self.profile_image(dao.get_by_key('username',data['username'],User),data)   
