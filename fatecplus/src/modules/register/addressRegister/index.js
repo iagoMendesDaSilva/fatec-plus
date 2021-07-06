@@ -1,74 +1,112 @@
 import styles from './style';
 
 import React from 'react';
-import { View } from 'react-native';
+import Geocoder from 'react-native-geocoding';
+import { TouchableOpacity, View } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
 import MapView, { PROVIDER_GOOGLE, } from 'react-native-maps';
 
 import mapStyle from '../../../assets/mapStyle.json';
-import { Input, ButtonDefault, TextDefault, Screen, AddressInput } from '../../../helpers';
+import Values from '../../../constants/values';
+import { Icon, AddressInput, TextDefault, ButtonDefault } from '../../../helpers';
 
 
 export const AddressRegister = (props) => {
+
+    Geocoder.init(Values.google_places_key);
 
     const params = props.route.params;
 
     const [city, setCity] = React.useState("");
     const [state, setState] = React.useState("");
-    const [road, setRoad] = React.useState("");
-    const [district, setDistrict] = React.useState("");
-    const [number, setNumber] = React.useState("");
-    const[location, setLocation] = React.useState({lat:-22.217583, lng:-49.950523});
-
-    React.useEffect(() => getDefaultValues(), [])
+    const [location, setLocation] = React.useState({ lat: -22.2335121, lng: -49.6461569, name: "" });
 
     const nextStage = () => {
+        console.log("City: ",city, "State:", state);
         const data = {
-            city: city,
-            state: state,
-            road: road,
-            district: district,
-            number: number,
+            city,
+            state,
+            address: location.name,
             ...params,
         }
         const screen = params.category == "Student" ? "ResumeRegister" : "ChangePassword"
         props.navigation.navigate(screen, data);
     }
 
-    const getDefaultValues = () => {
-        if (params && params.data) {
-            setCity(params.data.city)
-            setState(params.data.state)
-            setRoad(params.data.road)
-            setDistrict(params.data.district)
-            setNumber(params.data.number)
-        }
+    const useCurrentLocation = () => {
+        Geolocation.getCurrentPosition(
+            place => getCurrentLocation(place.coords.latitude, place.coords.longitude),
+            error => console.log(error.code, error.message),
+            { enableHighAccuracy: true }
+        );
     }
 
-    const buttonActive = () =>
-        Boolean(city && state && road && district && number)
+    const getCityandState = data => {
+        console.log(data);
+        data.forEach(item => {
+            if (item.address_components) {
+                item.address_components.forEach(address => {
+                    if (address.types.includes("administrative_area_level_1") && item.types.includes("political"))
+                        setState(address.short_name)
+                    if (address.types.includes("administrative_area_level_2") && item.types.includes("political"))
+                        setCity(address.short_name)
+                });
+            }
+        });
+    }
+
+    const getCurrentLocation = (lat, lng) => {
+        Geocoder.from(lat, lng)
+            .then(location => {
+                getCityandState(location.results)
+                setLocation({ lat, lng, name: location.results[0].formatted_address })
+            })
+            .catch(a => console.log(a))
+    }
 
     const changeMap = place => {
         const { lat, lng } = place.result.geometry.location;
-        setLocation({lat, lng})
+        getCurrentLocation(lat, lng)
+    }
+
+    const getRegion = () => {
+        return {
+            latitude: location.lat,
+            latitudeDelta: 0.008,
+            longitudeDelta: 0.008,
+            longitude: location.lng,
+        }
     }
 
     return (
         <View style={styles.containerAll}>
-
-
-            <AddressInput onSelect={place => changeMap(place)} />
+            <View style={styles.containerAddress}>
+                <TouchableOpacity
+                    hitSlop={styles.hitSlop}
+                    onPress={useCurrentLocation}>
+                    <Icon
+                        size={25}
+                        lib={'Ionicons'}
+                        name={'location-sharp'} />
+                </TouchableOpacity>
+                <TextDefault
+                    lines={2}
+                    styleText={styles.txtAddress}
+                    style={styles.containerTxtAddress}
+                    children={location.name ? location.name : "Localização atual"} />
+                <ButtonDefault
+                    text={"Próximo"}
+                    style={styles.button}
+                    onPress={nextStage}
+                    active={Boolean(location.name)} />
+            </View>
+            <AddressInput
+                onSelect={place => changeMap(place)} />
             <MapView
-                customMapStyle={mapStyle}
-                provider={PROVIDER_GOOGLE}
                 style={styles.map}
-                region={{
-                    latitude: location.lat,
-                    longitude: location.lng,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008,
-                }}
-            >
-            </MapView>
+                region={getRegion()}
+                customMapStyle={mapStyle}
+                provider={PROVIDER_GOOGLE} />
         </View >
     );
 };
