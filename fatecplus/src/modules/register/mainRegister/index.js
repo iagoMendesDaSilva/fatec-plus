@@ -11,22 +11,28 @@ import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea, Screen 
 
 export const MainRegister = (props) => {
 
+    const today = {
+        day: new Date().getDate(),
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+    }
+
     const params = props.route.params;
 
     const [email, setEmail] = React.useState("");
     const [name, setName] = React.useState("");
     const [phone, setPhone] = React.useState("");
     const [picker, setPicker] = React.useState(false);
-    const [date, setDate] = React.useState(new Date());
     const [username, setUsername] = React.useState("");
     const [birthDate, setBirthDate] = React.useState(null);
     const [description, setDescription] = React.useState("");
     const [image, setImage] = React.useState({ photo: "", base64: "" });
+    const [date, setDate] = React.useState(new Date(today.year - 18, today.month, today.day));
 
     React.useEffect(() => getDefaultValues(), [])
 
     const nextStage = () => {
-        const formatedDate = birthDate.split("/").reverse().join("-")
+        const formatedDate = birthDate ? birthDate.split("/").reverse().join("-") : null;
 
         const data = {
             email: email,
@@ -79,7 +85,7 @@ export const MainRegister = (props) => {
     }
 
     const checkPhone = value => {
-        if ((/^\d+$/).test(value) || value==="")
+        if ((/^\d+$/).test(value) || value === "")
             setPhone(value)
     }
 
@@ -139,12 +145,13 @@ export const MainRegister = (props) => {
                     <DatePicker
                         date={date}
                         mode={"date"}
-                        textColor={"white"}
                         locale={"pt-br"}
+                        textColor={"white"}
                         androidVariant={"iosClone"}
                         fadeToColor={Colors.background}
-                        onDateChange={value => changeDate(value)} />
-
+                        onDateChange={value => changeDate(value)}
+                        maximumDate={new Date(today.year - 16, today.month, today.day)}
+                        minimumDate={new Date(today.year - 120, today.month, today.day)} />
                 }
                 <TextArea
                     text={description}

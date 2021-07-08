@@ -22,7 +22,7 @@ export const AddressInput = ({ onSelect }) => {
             stylesList={styles.stylesList}
             stylesItem={styles.stylesItem}
             stylesInput={styles.stylesInput}
-            requiredTimeBeforeSearch={500}
+            requiredTimeBeforeSearch={100}
             stylesItemText={styles.stylesItemText}
             placeHolder={"Pesquisar endereço"}
             stylesContainer={styles.stylesContainer}

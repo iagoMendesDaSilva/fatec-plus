@@ -1,6 +1,8 @@
 from modelsDao import dao
 from models.user import User
 from app import ObjectInvalid
+from app.applications import database
+from werkzeug.exceptions import BadRequest
 
 class UserDao:
 
@@ -37,6 +39,16 @@ class UserDao:
             dao.commit()
         else:
             raise ObjectInvalid
+
+    def check_email(self, email):
+        object =  User.query.filter(User.email == email).first()
+        if  object:
+            raise BadRequest
+
+    def check_username(self, username):
+        object =  User.query.filter(User.username == username).first()
+        if  object:
+            raise BadRequest
 
     def key_is_valid(self, key):
         return key=='city' or key=='birth_date'  or key=='phone' or key=='studyng' or key=='description' or key=='address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state' or key=='onesignal_playerID' or key == 'version_app'

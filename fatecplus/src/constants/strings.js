@@ -14,6 +14,7 @@ export default {
     misssingEmail: 'Por favor inserir novamente o email.',
     descriptionExperience:"Adicione uma experiência profissional.",
     currentLocationError:"Não foi possível pegar a localização atual",
+    emailOrUsernameFail:"Nome de usuário ou email já cadastrado.",
     dateEndFail:"Data de conclusão deve ser menor que a data de Início",
     descriptionLanguage:"Adicione o nome do idioma é o nível de compreensão.",
     descriptionProject:"Adicione um projeto relacionado a sua área fora da faculdade.",

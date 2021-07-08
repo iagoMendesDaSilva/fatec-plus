@@ -39,6 +39,8 @@ class UserController:
                 internship=data['internship'],
                 birth_date=data['birth_date'],
                 description=data['description'])
+                userDao.check_email(data['email'])
+                userDao.check_username(data['username'])
                 dao.add(user)
                 if(data['image']!=None):
                     self.profile_image(dao.get_by_key('username',data['username'],User),data)   
@@ -47,7 +49,7 @@ class UserController:
         except BadRequest as err:
             abort(make_response(jsonify({"response":"  Invalid parameters."}), 400))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem"}), 502))
 
     def login(self, data):
         try:
