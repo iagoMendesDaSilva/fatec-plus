@@ -34,7 +34,7 @@ export const ChangePassword = ({ navigation, route }) => {
         Storage.setUser({ username: params.username, password, token: data.token, id: data.id })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
-            .then(data => navigation.replace("Vacancies"))
+            .then(data => navigation.replace("Home"))
             .catch(status => configErrorModal(status))
     }
 
@@ -47,7 +47,7 @@ export const ChangePassword = ({ navigation, route }) => {
 
     const editUser = () => {
         StorageRecovery.changePassword(password)
-            .then(data => navigation.replace("Vacancies"))
+            .then(data => navigation.replace("Home"))
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoading(false));
     }

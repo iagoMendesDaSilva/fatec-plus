@@ -12,4 +12,14 @@ export default StyleSheet.create({
         paddingHorizontal: 11,
         justifyContent: "center",
     },
+    tabBar: {
+        height: 60,
+        borderTopWidth:0,
+        backgroundColor:Colors.background_light,
+    },
+    txtTabBar: {
+        fontSize: 12,
+        color: "white",
+        paddingBottom: 5,
+    },
 });

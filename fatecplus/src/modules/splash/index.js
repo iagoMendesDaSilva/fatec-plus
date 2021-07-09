@@ -44,7 +44,7 @@ export const Splash = (props) => {
         if (params) {
             params.id && (params.type === "Student" || params.type === "Job") && props.navigation.replace(params.type, { id: params.id })
         } else {
-            props.navigation.replace("Vacancies")
+            props.navigation.replace("Home")
         }
     }
 

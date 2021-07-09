@@ -8,7 +8,7 @@ import { Storage } from '../../services';
 import Strings from '../../constants/strings';
 import { StorageResume } from './storage';
 import { ModalContext } from '../../routes/modalContext';
-import { Select, ContractedList, TextDefault, SwicthDefault, Screen, ButtonDefault } from '../../helpers';
+import { ContractedList, TextDefault, SwicthDefault, Screen, ButtonDefault } from '../../helpers';
 
 export const Resume = ({ navigation, route }) => {
 
@@ -16,20 +16,15 @@ export const Resume = ({ navigation, route }) => {
     const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState(false);
-    const [course, setCourse] = React.useState("");
     const [loading, setLoading] = React.useState(true)
     const [internship, setInternship] = React.useState(false);
-    const [courses, setCourses] = React.useState({ data: [] });
     const [projects, setProjects] = React.useState({ data: [] });
     const [networks, setNetworks] = React.useState({ data: [] });
     const [languages, setLanguages] = React.useState({ data: [] });
     const [formations, setFormations] = React.useState({ data: [] });
     const [experiences, setExperiencies] = React.useState({ data: [] });
 
-    React.useEffect(() => {
-        getCourses();
-        getValues();
-    }, [])
+    React.useEffect(() =>  getValues(), [])
 
     React.useEffect(() => getItems(), [params])
 
@@ -41,7 +36,6 @@ export const Resume = ({ navigation, route }) => {
 
     const formatResume = data => {
         setJob(data.job)
-        setCourse(data.studying)
         setInternship(data.internship)
         setProjects({ data: data.projects })
         setLanguages({ data: data.languages })
@@ -52,12 +46,6 @@ export const Resume = ({ navigation, route }) => {
 
     const goBack = (msg, status) =>
         modal.configErrorModal({ msg, status, positivePress: () => navigation.goBack() })
-
-    const getCourses = () => {
-        StorageResume.getCourses()
-            .then(data => formatCourses(data))
-            .catch(status => goBack(Strings.coursesFail, status))
-    }
 
     const getValues = async () => {
         const user = await Storage.getUser()
@@ -117,7 +105,7 @@ export const Resume = ({ navigation, route }) => {
     }
 
     const buttonActive = () =>
-        Boolean(course && Boolean(job || internship))
+        Boolean(job || internship)
 
     const save = () => {
         console.log(1);
@@ -136,11 +124,6 @@ export const Resume = ({ navigation, route }) => {
                                 children={"Cursando"}
                                 styleText={styles.txtSection}
                                 style={styles.containerSection} />
-                            <Select
-                                value={course}
-                                options={courses.data}
-                                initialValue={"Escolha seu curso"}
-                                changeValue={value => setCourse(value)} />
                             <TextDefault
                                 styleText={styles.txtSection}
                                 style={styles.containerSection}

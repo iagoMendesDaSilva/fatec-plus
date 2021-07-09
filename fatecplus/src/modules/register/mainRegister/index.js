@@ -161,7 +161,7 @@ export const MainRegister = (props) => {
                     <>
                         <Select
                             value={course}
-                            iconName={"book-open"}
+                            iconName={"book"}
                             options={courses.data}
                             iconLib={"fontawesome5"}
                             initialValue={"Escolha seu curso"}

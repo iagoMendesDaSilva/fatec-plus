@@ -20,9 +20,7 @@ export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue })
             <TouchableOpacity
                 style={styles.containerContent}
                 onPress={pressPicker}>
-                <Icon
-                    lib={"AntDesign"}
-                    name={"calendar"} />
+                <Icon name={"calendar"} />
                 <TextDefault
                     styleText={styles.txtDate}
                     children={title ? title : initialValue} />

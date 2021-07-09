@@ -26,7 +26,7 @@ export const Auth = ({ navigation }) => {
         Storage.setUser({ username, password, token: data.token, id: data.id })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
-            .then(data => navigation.replace("Vacancies"))
+            .then(data => navigation.replace("Home"))
             .catch(status => configErrorModal(status))
     }
 

@@ -90,8 +90,8 @@ export const AddressRegister = (props) => {
                     onPress={getCurrentLocation}>
                     <Icon
                         size={25}
-                        lib={'Ionicons'}
-                        name={'location-sharp'} />
+                        lib={location.name?'Ionicons':'MaterialCommunityIcons'}
+                        name={location.name?'location-sharp':'crosshairs-gps'} />
                 </TouchableOpacity>
                 <TextDefault
                     lines={2}
