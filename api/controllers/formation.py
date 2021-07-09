@@ -12,9 +12,9 @@ class FormationController:
             formation = Formation(
             title=data['title'],
             subtitle=data['subtitle'],
-            end_year=data['end_year'],
+            end_year=data['endYear'],
             workload=data['workload'],
-            start_year=data['start_year'],
+            start_year=data['startYear'],
             id_user=current_user.id)
             dao.add(formation)
             return True
@@ -30,9 +30,9 @@ class FormationController:
                 formation = Formation(
                 title=data['title'],
                 subtitle=data['subtitle'],
-                end_year=data['end_year'],
+                end_year=data['endYear'],
                 workload=data['workload'],
-                start_year=data['start_year'],
+                start_year=data['startYear'],
                 id_user=current_user.id)
                 formations.append(formation)
             dao.add_all(formations)
