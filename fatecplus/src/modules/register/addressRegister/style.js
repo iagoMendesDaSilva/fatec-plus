@@ -35,9 +35,9 @@ export default StyleSheet.create({
         backgroundColor: "rgba(255,255,255,.1)"
     },
     hitSlop: {
-        left: 30,
-        top: 30,
-        right: 30,
-        bottom: 30,
+        left: 60,
+        top: 40,
+        right: 60,
+        bottom: 40,
     },
 });

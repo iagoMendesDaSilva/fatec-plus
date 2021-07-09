@@ -1,22 +1,23 @@
+
 import styles from './style';
 
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
-import Strings from '../../../constants/strings';
-import { StorageRegister } from '../storage';
-import { ModalContext } from '../../../routes/modalContext';
-import { ButtonDefault, Select, ContractedList, TextDefault, SwicthDefault, Screen } from '../../../helpers';
+import { Storage } from '../../services';
+import Strings from '../../constants/strings';
+import { StorageResume } from './storage';
+import { ModalContext } from '../../routes/modalContext';
+import { Select, ContractedList, TextDefault, SwicthDefault, Screen, ButtonDefault } from '../../helpers';
 
+export const Resume = ({ navigation, route }) => {
 
-export const ResumeRegister = (props) => {
-
-    let params = props.route.params;
+    let params = route.params;
     const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState(false);
     const [course, setCourse] = React.useState("");
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(true)
     const [internship, setInternship] = React.useState(false);
     const [courses, setCourses] = React.useState({ data: [] });
     const [projects, setProjects] = React.useState({ data: [] });
@@ -26,14 +27,11 @@ export const ResumeRegister = (props) => {
     const [experiences, setExperiencies] = React.useState({ data: [] });
 
     React.useEffect(() => {
-        getDefaultValues()
-        getCourses()
+        getCourses();
+        getValues();
     }, [])
 
-    React.useEffect(() => {
-        getDefaultValues()
-        getItems()
-    }, [params])
+    React.useEffect(() => getItems(), [params])
 
     const formatCourses = data => {
         let courses = [];
@@ -41,28 +39,45 @@ export const ResumeRegister = (props) => {
         setCourses({ data: courses })
     }
 
-    const getCourses = () => {
-        setLoading(true)
-        StorageRegister.getCourses()
-            .then(data => formatCourses(data))
-            .catch(status => modal.configErrorModal({ status: 404, msg: Strings.coursesFail }))
-            .finally(() => setLoading(false))
+    const formatResume = data => {
+        setJob(data.job)
+        setCourse(data.studying)
+        setInternship(data.internship)
+        setProjects({ data: data.projects })
+        setLanguages({ data: data.languages })
+        setFormations({ data: data.formations })
+        setExperiencies({ data: data.experiences })
+        setNetworks({ data: data.social_network })
     }
 
-    const nextStage = () => {
-        const data = {
-            job,
-            internship,
-            course: course,
-            projects: projects,
-            networks: networks,
-            languages: languages,
-            formations: formations,
-            experiences: experiences,
-            ...params,
-        }
-        props.navigation.navigate("ChangePassword", data);
+    const goBack = (msg, status) =>
+        modal.configErrorModal({ msg, status, positivePress: () => navigation.goBack() })
+
+    const getCourses = () => {
+        StorageResume.getCourses()
+            .then(data => formatCourses(data))
+            .catch(status => goBack(Strings.coursesFail, status))
     }
+
+    const getValues = async () => {
+        const user = await Storage.getUser()
+        user ?
+            StorageResume.getUser(user.id)
+                .then(data => formatResume(data))
+                .catch(status => goBack(Strings.userFail, status))
+            :
+            goBack(Strings.userFail, 404)
+        setLoading(false)
+    }
+
+    const showAll = (type, state) =>
+        navigation.navigate("ListItems", { type, data: state.data })
+
+    const addItem = type =>
+        navigation.navigate(type)
+
+    const editItem = (index, screen, state) =>
+        navigation.navigate(screen, { data: state.data[index], index });
 
     const verifyAddPutDelete = (state, setState, item) => {
         if (Number.isInteger(item.index)) {
@@ -101,29 +116,12 @@ export const ResumeRegister = (props) => {
             verifyItem(params.item)
     }
 
-    const getDefaultValues = () => {
-        if (params && params.data) {
-            setProjects({ data: params.data.projects })
-            setNetworks({ data: params.data.networks })
-            setLanguages({ data: params.data.languages })
-            setFormations({ data: params.data.formations })
-            setExperiencies({ data: params.data.experiences })
-        }
-
-    }
-
-    const showAll = (type, data) =>
-        props.navigation.navigate("ListItems", { type, data })
-
-
     const buttonActive = () =>
         Boolean(course && Boolean(job || internship))
 
-    const addItem = type =>
-        props.navigation.navigate(type)
-
-    const editItem = (index, screen, state) =>
-        props.navigation.navigate(screen, { data: state.data[index], index });
+    const save = () => {
+        console.log(1);
+    }
 
     return (
         <Screen >
@@ -152,35 +150,35 @@ export const ResumeRegister = (props) => {
                                 keyArray={"name"}
                                 items={networks.data}
                                 addPress={() => addItem("Network")}
-                                showAll={() => showAll("Networks", networks.data)}
+                                showAll={() => showAll("Networks", networks)}
                                 onPress={index => editItem(index, "Network", networks)} />
                             <ContractedList
                                 title={"Idiomas"}
                                 keyArray={"language"}
                                 items={languages.data}
                                 addPress={() => addItem("Language")}
-                                showAll={() => showAll("Languages", languages.data)}
+                                showAll={() => showAll("Languages", languages)}
                                 onPress={index => editItem(index, "Language", languages)} />
                             <ContractedList
                                 title={"Projetos"}
                                 keyArray={"name"}
                                 items={projects.data}
                                 addPress={() => addItem("Project")}
-                                showAll={() => showAll("Projects", projects.data)}
+                                showAll={() => showAll("Projects", projects)}
                                 onPress={index => editItem(index, "Project", projects)} />
                             <ContractedList
                                 keyArray={"title"}
                                 title={"Formações"}
                                 items={formations.data}
                                 addPress={() => addItem("Formation")}
-                                showAll={() => showAll("Formations", formations.data)}
+                                showAll={() => showAll("Formations", formations)}
                                 onPress={index => editItem(index, "Formation", formations)} />
                             <ContractedList
                                 keyArray={"job"}
                                 title={"Experiências"}
                                 items={experiences.data}
                                 addPress={() => addItem("Experience")}
-                                showAll={() => showAll("Experiences", experiences.data)}
+                                showAll={() => showAll("Experiences", experiences)}
                                 onPress={index => editItem(index, "Experience", experiences)} />
                             <View style={styles.containerSwitch}>
                                 <SwicthDefault
@@ -200,8 +198,8 @@ export const ResumeRegister = (props) => {
                             </View>
                         </View>
                         <ButtonDefault
-                            text={"Próximo"}
-                            onPress={nextStage}
+                            text={"Salvar"}
+                            onPress={save}
                             active={buttonActive()} />
                     </View>
             }

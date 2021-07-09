@@ -4,6 +4,7 @@ export default {
     weekPassword: "Senha fraca",
     strongPassword: "Senha forte.",
     failEmail: "Email não cadastrado.",
+    userFail:"Usuário não encontrado.",
     failLogin: "Usuário ou senha inválido.",
     regularPassword: "Senha intermediária",
     veryWeekPassword: "Senha muito fraca.",

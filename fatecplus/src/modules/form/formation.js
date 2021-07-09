@@ -29,7 +29,7 @@ export const Formation = (props) => {
         if (endYear < startYear && endYear)
             modal.configErrorModal({ status: 404, msg: Strings.dateEndFail })
         else {
-            props.navigation.navigate("ResumeRegister", {
+            props.navigation.navigate("Resume", {
                 item: {
                     index,
                     type: "formation",

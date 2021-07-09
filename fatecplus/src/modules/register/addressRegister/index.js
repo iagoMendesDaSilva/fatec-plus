@@ -30,8 +30,7 @@ export const AddressRegister = (props) => {
             address: location.name,
             ...params,
         }
-        const screen = params.category == "Student" ? "ResumeRegister" : "ChangePassword"
-        props.navigation.navigate(screen, data);
+        props.navigation.navigate("ChangePassword", data);
     }
 
     const getCurrentLocation = async () => {

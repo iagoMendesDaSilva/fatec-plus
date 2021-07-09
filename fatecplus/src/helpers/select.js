@@ -8,7 +8,7 @@ import { TextDefault, Icon } from '../helpers';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const Select = ({ value = "", changeValue = false, options = [], zIndex = 2, initialValue }) => {
+export const Select = ({ value = "", changeValue = false, options = [], zIndex = 2, initialValue, iconName = "", iconLib = "" }) => {
 
     const [open, setOpen] = React.useState(false);
     const heightSelect = React.useRef(new Animated.Value(40)).current;
@@ -27,10 +27,17 @@ export const Select = ({ value = "", changeValue = false, options = [], zIndex =
         <View style={styles.containerAll}>
             <Animated.View style={{ ...styles.containerSelect, height: heightSelect, zIndex: zIndex }} >
                 <View style={styles.containerHeader}>
+                    {
+                        Boolean(iconName) &&
+                        <Icon
+                            lib={iconLib}
+                            style={styles.icon}
+                            name={iconName} />
+                    }
                     <TextDefault
                         onPress={pressSelect}
                         style={styles.containerText}
-                        children={value ? value: initialValue}
+                        children={value ? value : initialValue}
                         styleText={value ? styles.txtSelectItem : styles.initialValue} />
                     <Icon
                         style={styles.icon}
@@ -61,9 +68,10 @@ const styles = StyleSheet.create({
     },
     containerSelect: {
         zIndex: 2,
+        paddingLeft:10,
         borderRadius: 30,
-        position: "absolute",
         overflow: "hidden",
+        position: "absolute",
         width: widthScreen * .9,
         backgroundColor: Colors.background_light
     },
@@ -79,12 +87,10 @@ const styles = StyleSheet.create({
     txtSelectItem: {
         fontSize: 18,
         color: "white",
-        marginHorizontal: 20,
     },
-    initialValue:{
+    initialValue: {
         fontSize: 18,
         color: "rgba(255,255,255,.5)",
-        marginHorizontal: 20,
     },
     icon: {
         marginRight: 15,

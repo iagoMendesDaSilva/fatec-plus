@@ -16,7 +16,7 @@ export const Project = (props) => {
     React.useEffect(() => getValues(), [])
 
     const send = (exclude = false) => {
-        props.navigation.navigate("ResumeRegister", {
+        props.navigation.navigate("Resume", {
             item: {
                 index,
                 type: "project",

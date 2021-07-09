@@ -5,8 +5,11 @@ import { TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
+import { StorageRegister } from '../storage';
 import Colors from '../../../constants/colors';
-import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea, Screen } from '../../../helpers';
+import Strings from '../../../constants/strings';
+import { ModalContext } from '../../../routes/modalContext';
+import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea, Screen, Select } from '../../../helpers';
 
 
 export const MainRegister = (props) => {
@@ -18,34 +21,40 @@ export const MainRegister = (props) => {
     }
 
     const params = props.route.params;
+    const modal = React.useContext(ModalContext);
 
     const [email, setEmail] = React.useState("");
     const [name, setName] = React.useState("");
     const [phone, setPhone] = React.useState("");
     const [picker, setPicker] = React.useState(false);
+    const [course, setCourse] = React.useState(null);
     const [username, setUsername] = React.useState("");
     const [birthDate, setBirthDate] = React.useState(null);
     const [description, setDescription] = React.useState("");
+    const [courses, setCourses] = React.useState({ data: [] });
     const [image, setImage] = React.useState({ photo: "", base64: "" });
     const [date, setDate] = React.useState(new Date(today.year - 18, today.month, today.day));
 
-    React.useEffect(() => getDefaultValues(), [])
+    React.useEffect(() => {
+        getCourses();
+        getDefaultValues();
+    }, [])
 
     const nextStage = () => {
         const formatedDate = birthDate ? birthDate.split("/").reverse().join("-") : null;
 
         const data = {
-            email: email,
-            name: name,
-            phone: phone,
-            username: username,
-            description: description,
+            email,
+            name,
+            phone,
+            course,
+            username,
+            description,
             birthDate: formatedDate,
             category: params.category,
             image: image.base64 ? image.base64 : null,
         }
-        const screen = params.category == "Teacher" ? "ChangePassword" : "AddressRegister"
-        props.navigation.navigate(screen, data);
+        props.navigation.navigate("AddressRegister", data);
     }
 
     const getDefaultValues = () => {
@@ -54,16 +63,31 @@ export const MainRegister = (props) => {
             setName(params.data.name)
             setImage(params.data.image)
             setPhone(params.data.phone)
+            setCourse(params.data.course)
             setBirthDate(params.data.birthDate)
             setUsername(params.data.username)
             setDescription(params.data.description)
         }
     }
 
+    const formatCourses = data => {
+        let courses = [];
+        data.forEach(course => courses.push(course.name));
+        setCourses({ data: courses })
+    }
+
+    const getCourses = () => {
+        StorageRegister.getCourses()
+            .then(data => formatCourses(data))
+            .catch(status =>
+                modal.configErrorModal({ msg: Strings.coursesFail, status: 404, positivePress: () => props.navigation.goBack() }))
+    }
+
     const buttonActive = () => {
         const phoneValid = params.category == "Teacher" ? true : Boolean(phone)
         const birthDateValid = params.category != "Student" ? true : Boolean(birthDate)
-        return Boolean(email && name && birthDateValid && username && phoneValid)
+        const courseValid = params.category == "Student" ? Boolean(course) : true
+        return Boolean(email && name && birthDateValid && username && phoneValid && courseValid)
     }
 
     const getImage = () => {
@@ -134,11 +158,20 @@ export const MainRegister = (props) => {
                 }
                 {
                     params.category === "Student" &&
-                    <DatePickerDefault
-                        title={birthDate}
-                        onPress={() => setPicker(!picker)}
-                        deleteValue={() => setBirthDate("")}
-                        initialValue={"Data de Nascimento"} />
+                    <>
+                        <Select
+                            value={course}
+                            iconName={"book-open"}
+                            options={courses.data}
+                            iconLib={"fontawesome5"}
+                            initialValue={"Escolha seu curso"}
+                            changeValue={value => setCourse(value)} />
+                        <DatePickerDefault
+                            title={birthDate}
+                            onPress={() => setPicker(!picker)}
+                            deleteValue={() => setBirthDate("")}
+                            initialValue={"Data de Nascimento"} />
+                    </>
                 }
                 {
                     picker &&

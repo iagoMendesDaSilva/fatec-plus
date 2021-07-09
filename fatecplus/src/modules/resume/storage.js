@@ -1,13 +1,10 @@
+import { Executor, RequestUser, RequestCourses } from '../../services/request';
 
-import { Executor, RequestRegister, RequestCourses } from '../../services/request';
+export class StorageResume {
 
-export class StorageRegister {
-
-    static register(data, password) {
-        const { city, job, state, email, name, image, phone, course, address, category, username, internship, description, birthDate } = data;
-
+    static getUser(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestRegister(course, image, birthDate, password, city, job, state, email, name, phone, address, category,username, internship, description))
+            Executor.run(new RequestUser(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,5 +17,4 @@ export class StorageRegister {
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
     }
-
 }

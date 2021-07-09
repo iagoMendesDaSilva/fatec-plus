@@ -12,6 +12,7 @@ import { ProgressPassword, Input, ButtonDefault, Screen } from '../../../helpers
 
 export const ChangePassword = ({ navigation, route }) => {
 
+    const params = route.params;
     const modal = useContext(ModalContext);
 
     const [loading, setLoading] = useState(false);
@@ -23,34 +24,37 @@ export const ChangePassword = ({ navigation, route }) => {
     const changePassword = () => {
         if (password === confirmPassword) {
             setLoading(true)
-            route.params ? saveUser(password) : editUser(password)
+            params ? saveUser() : editUser()
         } else {
             modal.configErrorModal({ msg: Strings.differentPasswords })
         }
     }
 
     const configUser = async data => {
-        Storage.setUser({ username: route.params.username, password, token: data.token, id: data.id })
+        Storage.setUser({ username: params.username, password, token: data.token, id: data.id })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.replace("Vacancies"))
             .catch(status => configErrorModal(status))
     }
 
-    const editUser = password => {
+    const login = () => {
+        StorageAuth.login(params.username, password)
+            .then(data => configUser(data))
+            .catch(status => configErrorModal(status))
+            .finally(() => setLoading(false))
+    }
+
+    const editUser = () => {
         StorageRecovery.changePassword(password)
             .then(data => navigation.replace("Vacancies"))
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoading(false));
     }
 
-    const saveUser = password => {
-        StorageRegister.register(route.params, password)
-            .then(response =>
-                StorageAuth.login(route.params.username, password)
-                    .then(data => configUser(data))
-                    .catch(status => configErrorModal(status))
-                    .finally(() => setLoading(false)))
+    const saveUser = () => {
+        StorageRegister.register(params, password)
+            .then(response => login())
             .catch(status => modal.configErrorModal({ status: status === 400 ? 404 : status, msg: Strings.emailOrUsernameFail }))
             .finally(() => setLoading(false));
     }
