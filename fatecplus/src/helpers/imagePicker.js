@@ -4,7 +4,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { TextDefault, Icon } from '../helpers';
 import Colors from '../constants/colors';
 
-export const ImagePicker = ({ image = false, getImage }) => {
+export const ImagePicker = ({ image = false, getImage, disabled }) => {
 
     return (
         <View>
@@ -27,6 +27,7 @@ export const ImagePicker = ({ image = false, getImage }) => {
             </View>
             <TextDefault
                 children={"+"}
+                disabled={disabled}
                 styleText={styles.txtPlus}
                 onPress={() => getImage()}
                 style={styles.containerUpload} />
@@ -38,11 +39,13 @@ const styles = StyleSheet.create({
     photo: {
         width: 125,
         height: 125,
+        borderWidth: 2,
         overflow: "hidden",
         borderRadius: 125,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: Colors.background_light
+        borderColor: Colors.background,
+        backgroundColor: Colors.background_light,
     },
     containerUpload: {
         left: 75,

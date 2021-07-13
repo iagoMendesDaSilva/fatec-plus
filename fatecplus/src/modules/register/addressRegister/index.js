@@ -25,9 +25,9 @@ export const AddressRegister = (props) => {
 
     const nextStage = () => {
         const data = {
-            city,
-            state,
             address: location.name,
+            state:state.toUpperCase(),
+            city:city.charAt(0).toUpperCase() + city.slice(1),
             ...params,
         }
         props.navigation.navigate("ChangePassword", data);

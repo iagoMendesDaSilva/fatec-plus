@@ -4,7 +4,6 @@ import Colors from '../constants/colors';
 export default StyleSheet.create({
     safeArea: {
         flex: 0,
-        backgroundColor: Colors.background
     },
     touchableGoBack: {
         width: 75,

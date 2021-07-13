@@ -7,7 +7,7 @@ from app.emailSender import emailSender
 from werkzeug.exceptions import BadRequest
 from flask import abort, make_response, jsonify
 from app import create_token, ObjectInvalid, CurrentUser
-from models.user import user_schema_login,users_schema,user_schema,User
+from models.user import user_schema_login,users_schema_list,user_schema,User
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserController:
@@ -76,7 +76,7 @@ class UserController:
 
     def get_all(self,category=None,limit=None,offset=None):
         try:
-            return users_schema.dump(userDao.get_all(category,limit,offset))
+            return users_schema_list.dump(userDao.get_all(category,limit,offset))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
@@ -153,7 +153,7 @@ class UserController:
             data = base64_img['image'].encode('utf-8')
             fh.write(base64.decodebytes(data))
         fh.close()
-        userDao.update_image(user.id, "http://127.0.0.1:5000/mobile-api/v1/user/image-profile/"+str(user.id))
+        userDao.update_image(user.id, "http://192.168.0.4:5000/mobile-api/v1/user/image-profile/"+str(user.id))
 
     def get_image_profile(self, id):
         return str(os.getcwd())+"/src/images/"+str(id)+"_profile"+".jpg"

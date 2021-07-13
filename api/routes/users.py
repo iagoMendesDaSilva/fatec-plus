@@ -36,7 +36,7 @@ def get_internship_coordinators(current_user):
 
 @app.route("/mobile-api/v1/users/companies", methods=["GET"])
 @token
-def get_companies(current_use):
+def get_companies(current_user):
         return jsonify(userController.get_all('company')), 200
 
 @app.route("/mobile-api/v1/users/admins", methods=["GET"])
@@ -81,7 +81,6 @@ def image_profile(current_user):
         return jsonify({"response":"Edited Image"}), 200
 
 @app.route("/mobile-api/v1/user/image-profile/<int:id>", methods=["GET"])
-@token
-def get_image_profile(current_user,id):
+def get_image_profile(id):
         path = userController.get_image_profile(id)
         return send_file(path, mimetype="image/jpg")

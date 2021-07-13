@@ -1,8 +1,8 @@
-from re import A
+from models.user import User
 from modelsDao import jobDao,dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
-from models import User, Job,jobs_schema,job_schema
+from models.job import Job, job_schema, jobs_schema
 
 class JobController:
     def __init__(self):
@@ -32,7 +32,7 @@ class JobController:
 
     def get(self, id):
         try:
-            return job_schema.dump(dao.get_by_id(id,Job))
+            return  job_schema.dump(dao.get_by_id(id,Job))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:

@@ -1,13 +1,19 @@
 import styles from './style';
 import * as React from 'react';
+import SystemNavigationBar from "react-native-system-navigation-bar";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { TextDefault, Icon } from '../helpers';
 
 
+import Colors from '../constants/colors';
 import { Vacancies, Menu, Students, Teachers, Companies } from '../modules';
 
-export const TabNav = () => {
+export const TabNav = ({ navigation }) => {
+
+    navigation.addListener('blur', () => SystemNavigationBar.setNavigationColor(Colors.background, true));
+    navigation.addListener('focus', () => SystemNavigationBar.setNavigationColor(Colors.background_light, true));
+
 
     const Tab = createBottomTabNavigator();
 
