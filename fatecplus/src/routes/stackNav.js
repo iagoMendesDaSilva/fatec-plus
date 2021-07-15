@@ -13,10 +13,10 @@ export const StackNav = () => {
 
     const Stack = createStackNavigator();
 
-    const back = (navigation, back = true, color=Colors.background) => {
+    const back = (navigation, back = true, color = Colors.background) => {
         return (
             <>
-                <SafeAreaView style={{...styles.safeArea,backgroundColor:color}} />
+                <SafeAreaView style={{ ...styles.safeArea, backgroundColor: color }} />
                 <StatusBar barStyle={'light-content'} backgroundColor={color} />
                 {back &&
                     <TouchableOpacity style={styles.touchableGoBack}
@@ -25,6 +25,11 @@ export const StackNav = () => {
                     </TouchableOpacity>}
             </>
         )
+    }
+
+    const verifyScreenHome = data => {
+        const color = data.route.state && data.route.state.index === 4 ? Colors.background : Colors.background_light
+        return back(false, false, color)
     }
 
     const screenOptions = {
@@ -52,7 +57,7 @@ export const StackNav = () => {
             <Stack.Screen name="AddressRegister" component={AddressRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Home" component={TabNav} options={{ header: ({ navigation }) => back(navigation, false) }} />
+            <Stack.Screen name="Home" component={TabNav} options={{ header: ({ scene }) => verifyScreenHome(scene) }} />
         </Stack.Navigator>
     );
 }

@@ -8,5 +8,5 @@ export default {
     warning: 'rgba(237, 161, 52,1)',
     background_light: 'rgba(23,23,23,1)',
     background_medium: 'rgba(18,18,18,1)',
-    shimmer:['rgba(32,35,36,1)', 'rgba(56,61,63,1)', 'rgba(32,35,36,1)'],
+    shimmer: ['rgba(32,35,36,1)', 'rgba(41, 45, 46,1)', 'rgba(32,35,36,1)'],
 }

@@ -3,6 +3,7 @@ import styles from './style';
 import React from 'react';
 import { View, KeyboardAvoidingView, FlatList, Image, TouchableOpacity, RefreshControl } from 'react-native';
 
+import { Storage } from '../../../services';
 import { StorageCompany } from './storage';
 import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
@@ -22,12 +23,18 @@ export const Companies = ({ navigation }) => {
     const getCompanies = () => {
         setLoaded(false,
             StorageCompany.getCompanies()
-                .then(data => setCompanies({ data }))
+                .then(data => verifyCurrentUser(data))
                 .catch(status => configModal(status))
                 .finally(() => {
                     setRefreshing(false)
                     setLoaded(true)
                 }));
+    }
+
+    const verifyCurrentUser = async data => {
+        const user = await Storage.getUser()
+        const filteredData = data.filter(value => value.id != user.id)
+        setCompanies({ data: filteredData })
     }
 
     const configModal = status =>

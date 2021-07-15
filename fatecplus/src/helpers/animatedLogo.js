@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         height: 35,
         marginLeft: 10,
         marginTop: 10,
+        borderRadius:35,
         overflow: "hidden",
     },
     iconPlusHorizontal: {

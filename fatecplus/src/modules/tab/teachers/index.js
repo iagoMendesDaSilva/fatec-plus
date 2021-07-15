@@ -3,6 +3,7 @@ import styles from './style';
 import React from 'react';
 import { View, KeyboardAvoidingView, FlatList, Image, TouchableOpacity, RefreshControl } from 'react-native';
 
+import { Storage } from '../../../services';
 import { StorageTeacher } from './storage';
 import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
@@ -24,13 +25,19 @@ export const Teachers = ({ navigation }) => {
             StorageTeacher.getCoordinators()
                 .then(coordinators =>
                     StorageTeacher.getTeachers()
-                        .then(teachers => setTeachers({ data: coordinators.concat(teachers) }))
+                        .then(teachers => verifyCurrentUser(coordinators.concat(teachers)))
                         .catch(status => configModal(status)))
                 .catch(status => configModal(status))
                 .finally(() => {
                     setRefreshing(false)
                     setLoaded(true)
                 }));
+    }
+
+    const verifyCurrentUser = async data => {
+        const user = await Storage.getUser()
+        const filteredData = data.filter(value => value.id != user.id)
+        setTeachers({ data: filteredData })
     }
 
     const configModal = status =>
@@ -61,7 +68,7 @@ export const Teachers = ({ navigation }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={category==="Teacher"?"Professor(a)":"Coordenador(a)"} />
+                            children={category === "Teacher" ? "Professor(a)" : "Coordenador(a)"} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>

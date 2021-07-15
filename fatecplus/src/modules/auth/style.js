@@ -19,7 +19,7 @@ export default StyleSheet.create({
     },
     txtCreateAccount: {
         fontSize: 18,
-        color: Colors.link,
+        color: Colors.primary,
     },
     containerContent: {
         flex:1,

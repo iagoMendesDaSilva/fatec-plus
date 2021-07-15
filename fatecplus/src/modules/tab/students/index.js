@@ -3,6 +3,7 @@ import styles from './style';
 import React from 'react';
 import { View, KeyboardAvoidingView, FlatList, Image, TouchableOpacity, RefreshControl } from 'react-native';
 
+import { Storage } from '../../../services';
 import { StorageStudent } from './storage';
 import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
@@ -19,15 +20,22 @@ export const Students = ({ navigation }) => {
 
     React.useEffect(() => getStudents(), [])
 
+
     const getStudents = () => {
         setLoaded(false,
             StorageStudent.getStudents()
-                .then(data => setStudents({ data }))
+                .then(data => verifyCurrentUser(data))
                 .catch(status => configModal(status))
                 .finally(() => {
                     setRefreshing(false)
                     setLoaded(true)
                 }));
+    }
+
+    const verifyCurrentUser = async data => {
+        const user = await Storage.getUser()
+        const filteredData = data.filter(value => value.id != user.id)
+        setStudents({ data: filteredData })
     }
 
     const configModal = status =>
@@ -50,7 +58,7 @@ export const Students = ({ navigation }) => {
                     style={styles.conatinerItem}>
                     <Image
                         style={styles.img}
-                        source={{ uri: image }}
+                        source={{ uri: image, headers: { Authorization: 'Bearer xyz' } }}
                         defaultSource={require("../../../assets/img/user_male.png")} />
                     <View style={styles.containerText}>
                         <TextDefault
@@ -94,7 +102,7 @@ export const Students = ({ navigation }) => {
             style={styles.conatinerAll}
             behavior={Platform.OS === 'ios' && 'padding'}>
             <HeaderList
-                title={"Empresas"}
+                title={"Alunos"}
                 placeholder={"Pesquisar..."}
                 onClose={() => setFilter({ data: [] })}
                 onchange={text => filterCompanies(text)} />

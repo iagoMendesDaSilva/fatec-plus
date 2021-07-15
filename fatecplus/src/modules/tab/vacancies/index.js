@@ -8,28 +8,32 @@ import { StorageVacancie } from './storage';
 import Colors from '../../../constants/colors';
 import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
-import { HeaderList, TextDefault, Shimmer, Icon } from '../../../helpers'
+import { HeaderList, TextDefault, Shimmer, Icon, FloatingButton } from '../../../helpers'
 
 export const Vacancies = ({ navigation }) => {
 
     const modal = React.useContext(ModalContext);
 
+    const [user, setUser] = React.useState({});
     const [loaded, setLoaded] = React.useState(false);
     const [filter, setFilter] = React.useState({ data: [], text: "" });
     const [refreshing, setRefreshing] = React.useState(false);
     const [vacancies, setVacancies] = React.useState({ data: Array(5).fill({}) });
 
-    React.useEffect(() => getVacancies(), [])
+    React.useEffect(() => {
+        getUser()
+        getVacancies()
+    }, [])
 
-    const getVacancies = async () => {
-        const user = await Storage.getUser()
-        if (user) {
-            user.category === "Company"
-                ? getVacanciesByCompany(user.id)
-                : getAllVacancies()
-        } else
-            configModal(404)
+    const getUser = async () => {
+        const currentUser = await Storage.getUser()
+        setUser(currentUser)
     }
+
+    const getVacancies = () =>
+        user.category === "Company" || user.category === "Internship Coordinator"
+            ? getVacanciesByCompany(user.id)
+            : getAllVacancies()
 
     const configVacancies = (jobs, showAll) => {
         const data = showAll ? jobs : jobs.filter(value => {
@@ -50,9 +54,9 @@ export const Vacancies = ({ navigation }) => {
         return `${year}-${month}-${day}`
     }
 
-    const checkDeadLine = date => 
-         Boolean(date >= getFormatedDate())
-    
+    const checkDeadLine = date =>
+        Boolean(date >= getFormatedDate())
+
 
     const getDeadLineColor = date => {
         const today = getFormatedDate()
@@ -93,6 +97,31 @@ export const Vacancies = ({ navigation }) => {
             positivePress: () => navigation.replace("Login")
         })
 
+    const onRefresh = () => {
+        setRefreshing(true)
+        getVacancies()
+    }
+
+    const getRefreshControl = () =>
+        <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => onRefresh()} />
+
+    const filterCompanies = text => {
+        const data = vacancies.data.filter(value =>
+            value.name.toUpperCase().includes(text.toUpperCase()))
+        setFilter({ data, text })
+    }
+
+    const getHeader = () =>
+        <TextDefault
+            styleText={styles.txtSubtitle}
+            children={"Sem vagas"} />
+
+    const verifyHeader = () =>
+        Boolean(vacancies.data.length === 0 || filter.data.length === 0 && filter.text)
+
+
     const goToVacancie = id =>
         console.log(1);
     // navigation.navigate("", { id })
@@ -122,36 +151,12 @@ export const Vacancies = ({ navigation }) => {
         );
     }
 
-    const onRefresh = () => {
-        setRefreshing(true)
-        getVacancies()
-    }
-
-    const getRefreshControl = () =>
-        <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => onRefresh()} />
-
-    const filterCompanies = text => {
-        const data = vacancies.data.filter(value =>
-            value.name.toUpperCase().includes(text.toUpperCase()))
-        setFilter({ data, text })
-    }
-
-    const getHeader = () =>
-        <TextDefault
-            styleText={styles.txtSubtitle}
-            children={"Sem vagas"} />
-
-    const verifyHeader = () =>
-        Boolean(vacancies.data.length === 0 || filter.data.length === 0 && filter.text)
-
     return (
         <KeyboardAvoidingView
             style={styles.conatinerAll}
             behavior={Platform.OS === 'ios' && 'padding'}>
             <HeaderList
-                title={"Empresas"}
+                title={"Vagas"}
                 placeholder={"Pesquisar..."}
                 onClose={() => setFilter({ data: [] })}
                 onchange={text => filterCompanies(text)} />
@@ -164,6 +169,10 @@ export const Vacancies = ({ navigation }) => {
                 renderItem={({ item, index }) => renderItem(item, index)}
                 ListHeaderComponent={verifyHeader() && getHeader}
             />
+            {
+                user.category==="Company" || user.category ==="Internship Coordinator" &&
+                <FloatingButton />
+            }
         </KeyboardAvoidingView>
     );
 };
