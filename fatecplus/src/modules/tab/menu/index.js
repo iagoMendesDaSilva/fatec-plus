@@ -1,13 +1,13 @@
 import styles from './style';
 
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 
-import { Storage } from '../../../services';
 import { StorageMenu } from './storage';
 import Colors from '../../../constants/colors';
-import { ImagePicker, Screen, TextDefault, Icon, ItemList } from '../../../helpers';
+import { Storage, Notification } from '../../../services';
+import { ImagePicker, Screen, TextDefault, ItemList } from '../../../helpers';
 
 export const Menu = ({ navigation }) => {
 
@@ -38,6 +38,13 @@ export const Menu = ({ navigation }) => {
                 .then(data => setUser(data))
                 .catch(status => console.log(status))
         }
+    }
+
+    const logout = async () => {
+        await StorageMenu.logout()
+        Storage.clear();
+        Notification.unregister()
+        navigation.replace("Login")
     }
 
     return (
@@ -91,16 +98,16 @@ export const Menu = ({ navigation }) => {
 
                 <ItemList
                     arrow={false}
-                    textRight={"1.0.0.0"}
                     iconLib={"AntDesign"}
                     iconName={"mobile1"}
+                    textRight={Storage.getVersion()}
                     title={"Versão do aplicativo"} />
                 <ItemList
                     arrow={false}
+                    onPress={logout}
                     iconLib={"Ionicons"}
                     iconName={"power"}
-                    title={"Encerrar sessão"}
-                    onPress={() => console.log(1)} />
+                    title={"Encerrar sessão"} />
                 <ItemList
                     arrow={false}
                     color={Colors.error}

@@ -66,6 +66,13 @@ class UserController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
+    def logout(self, id):
+        try:
+            update_data ={"token": None, "recovery":None, "recovery_time":None}
+            dao.update_many(id,update_data,User)
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+
     def get(self, id):
         try:
             return user_schema.dump(dao.get_by_id(id,User))

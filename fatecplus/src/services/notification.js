@@ -13,6 +13,7 @@ export class Notification {
     }
 
     static getPlayerId() {
+        OneSignal.disablePush(false)
         return new Promise(async resolve => {
             const deviceState = await OneSignal.getDeviceState();
             return resolve(deviceState.userId);
@@ -26,6 +27,10 @@ export class Notification {
         } else {
             this.navigation.replace('Splash')
         }
+    }
+
+   static unregister(){
+        OneSignal.disablePush(true);
     }
 
 }

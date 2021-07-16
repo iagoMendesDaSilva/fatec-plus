@@ -4,6 +4,8 @@ export * from './executor';
 export * from './requestUser';
 export * from './requestEmail';
 export * from './requestLogin';
+export * from './requestLogout';
+export * from './requestVersion';
 export * from './requestCourses';
 export * from './requestPlayerId';
 export * from './requestRegister';

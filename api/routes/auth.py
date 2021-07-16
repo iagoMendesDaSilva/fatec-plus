@@ -12,6 +12,12 @@ def login():
     user =  userController.login(request.get_json())
     return jsonify(user), 200
 
+@app.route("/mobile-api/v1/auth/logout", methods=["GET"])
+@token
+def logout(current_user):
+    userController.logout(current_user.id)
+    return jsonify({"response":"Logged Out"}), 200
+
 @app.route("/mobile-api/v1/auth/recovery", methods=["POST"])
 @token
 def recovery(current_user):
