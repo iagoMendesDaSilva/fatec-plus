@@ -51,6 +51,6 @@ class UserDao:
             raise BadRequest
 
     def key_is_valid(self, key):
-        return key=='city' or key=='birth_date'  or key=='phone' or key=='studyng' or key=='description' or key=='address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state' or key=='onesignal_playerID' or key == 'version_app'
+        return key=='city' or key=='birth_date'  or key=='phone' or key=='studyng' or key=='description' or key=='address' or key=='job' or key=='name' or key=='internship' or key=='email' or key=='state' or key=='onesignal_playerID' or key == 'version_app' or key=='username'
 
 userDao = UserDao()

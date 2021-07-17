@@ -14,7 +14,10 @@ export const Menu = ({ navigation }) => {
     const [user, setUser] = React.useState({})
     const [image, setImage] = React.useState({ photo: "", base64: "" });
 
-    React.useEffect(() => getUser(), [])
+    React.useEffect(() => {
+        getUser()
+        navigation.addListener('focus', () => getUser())
+    }, [])
 
     const getImage = () => {
         launchImageLibrary(({ mediaType: "photo", includeBase64: true }), data => {
@@ -47,6 +50,24 @@ export const Menu = ({ navigation }) => {
         navigation.replace("Login")
     }
 
+    const getDataUser = () => {
+        return {
+            id: user.id,
+            city: user.city,
+            state: user.state,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+            phone: user.phone,
+            course: user.studying,
+            address: user.address,
+            category: user.category,
+            birthDate: user.birth_date,
+            username: user.username,
+            description: user.description,
+        }
+    }
+
     return (
         <Screen center={false}>
             <View style={styles.containerHeader}>
@@ -70,17 +91,31 @@ export const Menu = ({ navigation }) => {
                 <TextDefault
                     styleText={styles.txtSection}
                     children={"Informações da Conta"} />
-
                 <ItemList
                     iconName={"pencil"}
                     title={"Editar informações"}
-                    onPress={() => console.log(1)}
+                    onPress={() =>
+                        navigation.navigate("MainRegister", { data: getDataUser() })}
                     iconLib={"MaterialCommunityIcons"} />
+                <ItemList
+                    iconName={"location-sharp"}
+                    title={"Editar endereço"}
+                    onPress={() => 
+                        navigation.navigate("AddressRegister", { data: getDataUser() })}
+                    iconLib={"Ionicons"} />
+                {
+                    user.category === "Student" &&
+                    <ItemList
+                        iconLib={"Entypo"}
+                        title={"Editar Currículo"}
+                        onPress={() => navigation.navigate("Resume")}
+                        iconName={"text-document-inverted"} />
+                }
                 <ItemList
                     iconName={"key"}
                     iconLib={"Ionicons"}
                     title={"Alterar senha"}
-                    onPress={() => console.log(1)} />
+                    onPress={() => navigation.navigate("ChangePassword")} />
                 <ItemList
                     title={"Novidades"}
                     iconLib={"Ionicons"}

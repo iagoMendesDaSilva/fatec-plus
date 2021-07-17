@@ -23,6 +23,8 @@ export const MainRegister = (props) => {
     const params = props.route.params;
     const modal = React.useContext(ModalContext);
 
+    const category = params.data ? params.data.category : params.category;
+
     const [email, setEmail] = React.useState("");
     const [name, setName] = React.useState("");
     const [phone, setPhone] = React.useState("");
@@ -40,21 +42,34 @@ export const MainRegister = (props) => {
         getDefaultValues();
     }, [])
 
-    const nextStage = () => {
-        const formatedDate = birthDate ? birthDate.split("/").reverse().join("-") : null;
+    const formatDate = date =>
+        date ? date.split("/").reverse().join("-") : null;
 
+    const unFormatDate = date =>
+        date.split("-").reverse().join("/")
+
+    const nextStage = () => {
         const data = {
             email,
             name,
             phone,
             course,
+            category,
             username,
             description,
-            birthDate: formatedDate,
-            category: params.category,
+            birthDate: formatDate(birthDate),
             image: image.base64 ? image.base64 : null,
         }
-        props.navigation.navigate("AddressRegister", data);
+        params.data
+            ? editUser(data)
+            : props.navigation.navigate("AddressRegister", data);
+    }
+
+    const editUser = async data => {
+        StorageRegister.editUser(data, params.data.id)
+            .then(data =>
+                modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
+            .catch(status => modal.configErrorModal({ status, msg: Strings.failUpdate }))
     }
 
     const getDefaultValues = () => {
@@ -63,10 +78,9 @@ export const MainRegister = (props) => {
             setName(params.data.name)
             setImage(params.data.image)
             setPhone(params.data.phone)
-            setCourse(params.data.course)
-            setBirthDate(params.data.birthDate)
             setUsername(params.data.username)
             setDescription(params.data.description)
+            setBirthDate(unFormatDate(params.data.birthDate))
         }
     }
 
@@ -74,6 +88,7 @@ export const MainRegister = (props) => {
         let courses = [];
         data.forEach(course => courses.push(course.name));
         setCourses({ data: courses })
+        params.data && setCourse(params.data.course)
     }
 
     const getCourses = () => {
@@ -84,9 +99,9 @@ export const MainRegister = (props) => {
     }
 
     const buttonActive = () => {
-        const phoneValid = params.category == "Teacher" ? true : Boolean(phone)
-        const birthDateValid = params.category != "Student" ? true : Boolean(birthDate)
-        const courseValid = params.category == "Student" ? Boolean(course) : true
+        const phoneValid = category == "Teacher" ? true : Boolean(phone)
+        const birthDateValid = category != "Student" ? true : Boolean(birthDate)
+        const courseValid = category == "Student" ? Boolean(course) : true
         return Boolean(email && name && birthDateValid && username && phoneValid && courseValid)
     }
 
@@ -146,7 +161,7 @@ export const MainRegister = (props) => {
                     iconLib={"MaterialIcons"}
                     onchange={text => setEmail(text)} />
                 {
-                    params.category != "Teacher" &&
+                    category != "Teacher" &&
                     <Input
                         text={phone}
                         maxLength={11}
@@ -157,7 +172,7 @@ export const MainRegister = (props) => {
                         onchange={text => checkPhone(text)} />
                 }
                 {
-                    params.category === "Student" &&
+                    category === "Student" &&
                     <>
                         <Select
                             value={course}

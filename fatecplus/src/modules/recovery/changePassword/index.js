@@ -38,6 +38,12 @@ export const ChangePassword = ({ navigation, route }) => {
             .catch(status => configErrorModal(status))
     }
 
+    const setUser =async password => {
+        const user =await Storage.getUser()
+        Storage.setUser({ username: user.username, password, token: user.token, id: user.id })
+        navigation.goBack()
+    }
+
     const login = () => {
         StorageAuth.login(params.username, password)
             .then(data => configUser(data))
@@ -47,7 +53,7 @@ export const ChangePassword = ({ navigation, route }) => {
 
     const editUser = () => {
         StorageRecovery.changePassword(password)
-            .then(data => navigation.replace("Home"))
+            .then(data => setUser(password))
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoading(false));
     }

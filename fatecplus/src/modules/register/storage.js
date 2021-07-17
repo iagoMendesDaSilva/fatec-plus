@@ -1,5 +1,5 @@
 
-import { Executor, RequestRegister, RequestCourses } from '../../services/request';
+import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress} from '../../services/request';
 
 export class StorageRegister {
 
@@ -7,7 +7,7 @@ export class StorageRegister {
         const { city, job, state, email, name, image, phone, course, address, category, username, internship, description, birthDate } = data;
 
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestRegister(course, image, birthDate, password, city, job, state, email, name, phone, address, category,username, internship, description))
+            Executor.run(new RequestRegister(course, image, birthDate, password, city, job, state, email, name, phone, address, category, username, internship, description))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -16,6 +16,24 @@ export class StorageRegister {
     static getCourses() {
         return new Promise((resolve, reject) => {
             Executor.run(new RequestCourses())
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static editUser(data, id) {
+        const { email, name, image, phone, course, username, description, birthDate } = data;
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestEditUser(email, name, image, phone, course, username, description, birthDate, id))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static editAddress(data, id) {
+        const { city, state, address } = data;
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestEditAddress(city, state, address, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

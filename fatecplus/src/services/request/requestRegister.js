@@ -7,12 +7,12 @@ export class RequestRegister extends Request {
         const headers = { 'Content-Type': 'application/json' };
         const url = `${Constants.base_url}auth/register`;
         const params = {
+            city,
             state,
             image,
             email,
             name,
             phone,
-            city: city,
             address,
             category,
             studying,

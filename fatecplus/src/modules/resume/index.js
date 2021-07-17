@@ -28,11 +28,6 @@ export const Resume = ({ navigation, route }) => {
 
     React.useEffect(() => getItems(), [params])
 
-    const formatCourses = data => {
-        let courses = [];
-        data.forEach(course => courses.push(course.name));
-        setCourses({ data: courses })
-    }
 
     const formatResume = data => {
         setJob(data.job)
@@ -120,10 +115,6 @@ export const Resume = ({ navigation, route }) => {
                     :
                     <View style={styles.containerContent}>
                         <View>
-                            <TextDefault
-                                children={"Cursando"}
-                                styleText={styles.txtSection}
-                                style={styles.containerSection} />
                             <TextDefault
                                 styleText={styles.txtSection}
                                 style={styles.containerSection}

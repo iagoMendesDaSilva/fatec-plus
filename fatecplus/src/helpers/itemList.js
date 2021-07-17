@@ -28,6 +28,7 @@ export const ItemList = ({ iconName = "", iconLib = "", title, textRight = false
             {
                 arrow &&
                 <Icon
+                    color={color}
                     lib={"MaterialIcons"}
                     name={"arrow-forward-ios"} />
             }

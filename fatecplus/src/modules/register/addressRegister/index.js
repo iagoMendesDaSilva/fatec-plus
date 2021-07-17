@@ -6,6 +6,7 @@ import Geolocation from 'react-native-geolocation-service';
 import MapView, { PROVIDER_GOOGLE, } from 'react-native-maps';
 import { TouchableOpacity, View, PermissionsAndroid as Permission } from 'react-native';
 
+import { StorageRegister } from '../storage';
 import Values from '../../../constants/values';
 import Strings from '../../../constants/strings';
 import mapStyle from '../../../assets/mapStyle.json';
@@ -30,7 +31,16 @@ export const AddressRegister = (props) => {
             city:city.charAt(0).toUpperCase() + city.slice(1),
             ...params,
         }
-        props.navigation.navigate("ChangePassword", data);
+        params.data 
+        ?   editAddress(data)
+        : props.navigation.navigate("ChangePassword", data);
+    }
+
+    const editAddress = async data => {
+        StorageRegister.editAddress(data, params.data.id)
+            .then(data =>
+                modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
+            .catch(status => modal.configErrorModal({ status, msg: Strings.failUpdate }))
     }
 
     const getCurrentLocation = async () => {

@@ -8,6 +8,8 @@ export default {
     failLogin: "Usuário ou senha inválido.",
     regularPassword: "Senha intermediária",
     veryWeekPassword: "Senha muito fraca.",
+    updated:"Dados atualizado com sucesso!",
+    failUpdate:"Não foi possível atualizar os dados.",
     verificationCode: 'Código inválido ou expirado.',
     failVacancies:"Não foi possível consultar as vagas.",
     failStudents:"Não foi possível consultar os alunos.",
