@@ -1,5 +1,5 @@
 
-import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress} from '../../services/request';
+import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress, RequestImageProfile} from '../../services/request';
 
 export class StorageRegister {
 
@@ -34,6 +34,14 @@ export class StorageRegister {
         const { city, state, address } = data;
         return new Promise((resolve, reject) => {
             Executor.run(new RequestEditAddress(city, state, address, id))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static changeImage(image){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestImageProfile(image))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

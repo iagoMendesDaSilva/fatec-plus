@@ -2,7 +2,7 @@ from app.applications import database, serializer
 
 class Requirement(database.Model):
     description= database.Column(database.String(300))
-    level = database.Column(database.String(10), nullable=False)
+    level = database.Column(database.String(15), nullable=False)
     name = database.Column(database.String(30), nullable=False)
     mandatory = database.Column(database.Boolean, nullable=False)
     id_job = database.Column(database.Integer, database.ForeignKey('job.id'), nullable=False)

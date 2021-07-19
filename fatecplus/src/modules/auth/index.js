@@ -1,6 +1,6 @@
 import styles from './style';
 import { View } from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { StorageAuth } from './storage';
 import Strings from '../../constants/strings';
@@ -8,7 +8,7 @@ import { Storage, Notification } from '../../services';
 import { ModalContext } from '../../routes/modalContext';
 import { TextDefault, Input, ButtonDefault, Screen } from '../../helpers';
 
-export const Auth = ({ navigation }) => {
+export const Auth = ({ navigation, route }) => {
 
     const modal = useContext(ModalContext);
 
@@ -16,6 +16,15 @@ export const Auth = ({ navigation }) => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [showingPassword, setShowingPassword] = useState(false);
+
+    useEffect(() => getDefaultValues(), [])
+
+    const getDefaultValues = () => {
+        if (route.params) {
+            setPassword(route.params.password)
+            setUsername(route.params.username)
+        }
+    }
 
     const configErrorModal = (status, clear = false) => {
         clear
@@ -31,8 +40,7 @@ export const Auth = ({ navigation }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser({ username, password, token: data.token, id: data.id })
-
+        Storage.setUser({ username, password, token: data.token, id: data.id , category:data.category})
         const versionApp = Storage.getVersion()
         const playerId = await Notification.getPlayerId()
 
@@ -66,6 +74,7 @@ export const Auth = ({ navigation }) => {
                         text={username}
                         iconName={"user"}
                         placeholder={"Usuário"}
+                        defaultValue={username}
                         onchange={text => setUsername(text)} />
                     <Input
                         maxLength={8}
@@ -73,6 +82,7 @@ export const Auth = ({ navigation }) => {
                         password={true}
                         iconName={"lock"}
                         placeholder={"Senha"}
+                        defaultValue={password}
                         changeVisibility={changeVisibility}
                         showPassword={showingPassword}
                         onchange={text => setPassword(text)} />

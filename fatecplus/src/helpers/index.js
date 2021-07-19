@@ -2,6 +2,7 @@ export * from './card';
 export * from './icon';
 export * from './note';
 export * from './input';
+export * from './arrow';
 export * from './select';
 export * from './screen';
 export * from './itemList';

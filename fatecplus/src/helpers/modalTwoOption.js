@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         overflow: "hidden",
         width: widthScreen * .9,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.background_medium,
     },
     containerTitle:{
         paddingRight:40,

@@ -21,8 +21,8 @@ def token(function):
         try:
             decoded = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = dao.get_by_id(decoded["id"],User)
-            # if current_user.token != token:
-            #     raise DecodeError
+            if current_user.token != token:
+                raise DecodeError
         except DecodeError:
             return abort(401)
         except Exception as err:

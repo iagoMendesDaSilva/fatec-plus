@@ -68,7 +68,7 @@ export const Teachers = ({ navigation }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={category === "Teacher" ? "Professor(a)" : "Coordenador(a)"} />
+                            children={category ? category === "Teacher" ? "Professor(a)" : "Coordenador(a)" :""} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>

@@ -68,11 +68,16 @@ const styles = StyleSheet.create({
     },
     containerSelect: {
         zIndex: 2,
+        elevation: 5,
         paddingLeft:10,
+        shadowRadius: 3,
         borderRadius: 30,
         overflow: "hidden",
+        shadowOpacity:  .5,
         position: "absolute",
         width: widthScreen * .9,
+        shadowColor: Colors.background,
+        shadowOffset: { width: 0, height: 3 },
         backgroundColor: Colors.background_light
     },
     containerHeader: {

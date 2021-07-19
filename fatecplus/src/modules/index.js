@@ -2,6 +2,7 @@ export * from './auth';
 export * from './splash';
 export * from './resume';
 export * from './register';
+export * from './vacancy';
 export * from './form/list';
 export * from './recovery';
 export * from './tab/menu';

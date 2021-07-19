@@ -1,4 +1,4 @@
-import { Executor, RequestUser, RequestImageProfile, RequestLogout} from '../../../services/request';
+import { Executor, RequestUser, RequestImageProfile, RequestLogout, RequestDeleteUser} from '../../../services/request';
 
 export class StorageMenu {
 
@@ -21,6 +21,14 @@ export class StorageMenu {
     static logout(){
         return new Promise((resolve, reject) => {
             Executor.run(new RequestLogout())
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static deleteUser(id){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestDeleteUser(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

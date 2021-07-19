@@ -7,7 +7,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { Icon } from '../helpers';
 import { TabNav } from './tabNav';
 import Colors from '../constants/colors';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Network, Language, Project, Formation, Experience, ListItems } from '../modules';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Network, Language, Project, Formation, Experience, ListItems, Vacancy } from '../modules';
 
 export const StackNav = () => {
 
@@ -48,6 +48,7 @@ export const StackNav = () => {
             <Stack.Screen name="Resume" component={Resume} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Register" component={Register} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Network" component={Network} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Vacancy" component={Vacancy} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="ListItems" component={ListItems} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Recovery" component={Recovery} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Language" component={Language} options={{ header: ({ navigation }) => back(navigation, true) }} />

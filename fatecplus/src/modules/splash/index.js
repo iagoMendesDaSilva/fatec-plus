@@ -5,14 +5,18 @@ import React, { useState, useEffect } from 'react';
 import { AnimatedLogo } from '../../helpers';
 import { StorageAuth } from '../auth/storage';
 import { Storage, Notification } from '../../services';
+import { ModalContext } from '../../routes/modalContext';
 
 export const Splash = (props) => {
+
+    const modal = React.useContext(ModalContext);
 
     let timer = null;
     let notification = null;
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        modal.setNavigation(props.navigation)
         notification = new Notification(props.navigation)
         timer = setTimeout(() => checkUser(), 2300)
     }, []);

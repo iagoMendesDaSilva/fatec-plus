@@ -31,11 +31,11 @@ export const ChangePassword = ({ navigation, route }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser({ username: params.username, password, token: data.token, id: data.id })
+        Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category:data.category })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.replace("Home"))
-            .catch(status => configErrorModal(status))
+            .catch(status => modal.configErrorModal(status))
     }
 
     const setUser =async password => {

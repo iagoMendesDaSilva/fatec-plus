@@ -65,7 +65,7 @@ export const Companies = ({ navigation }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={`${city}-${state}`} />
+                            children={city&&state?`${city}-${state}`:""} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>

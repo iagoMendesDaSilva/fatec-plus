@@ -25,12 +25,14 @@ export const ImagePicker = ({ image = false, getImage, disabled }) => {
                 }
 
             </View>
-            <TextDefault
-                children={"+"}
-                disabled={disabled}
-                styleText={styles.txtPlus}
-                onPress={() => getImage()}
-                style={styles.containerUpload} />
+            {
+            !disabled &&
+                <TextDefault
+                    children={"+"}
+                    styleText={styles.txtPlus}
+                    onPress={() => getImage()}
+                    style={styles.containerUpload} />
+            }
         </View>
     );
 }

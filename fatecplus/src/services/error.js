@@ -1,3 +1,5 @@
+import { Notification, Storage } from "../services";
+
 export class Error {
 
     constructor() {
@@ -15,6 +17,13 @@ export class Error {
             default:
                 return "Ops! Ocorreu um problema";
         }
+    }
+
+    static async logout(navigation) {
+        const user = await Storage.getUser()
+        Storage.clear();
+        Notification.unregister()
+        navigation && navigation.replace("Login", { username: user.username, password: user.password })
     }
 
 }

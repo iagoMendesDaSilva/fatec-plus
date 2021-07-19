@@ -41,11 +41,12 @@ export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue })
 
 const styles = StyleSheet.create({
     containerAll: {
-        padding: 8,
+        height:40,
         borderRadius: 30,
         marginVertical: 10,
         flexDirection: "row",
         alignItems: "center",
+        paddingHorizontal: 12,
         width: widthScreen * .9,
         backgroundColor: Colors.background_light
     },

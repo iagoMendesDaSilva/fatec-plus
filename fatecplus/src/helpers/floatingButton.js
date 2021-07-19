@@ -4,15 +4,11 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Icon } from '../helpers';
 import Colors from '../constants/colors';
 
-export const FloatingButton = ({ }) => {
-
-    const pressButton = () => {
-        
-    }
+export const FloatingButton = ({onPress }) => {
 
     return (
         <TouchableOpacity
-            onPress={pressButton}
+            onPress={onPress}
             style={styles.containerAll} >
             <Icon name={"plus"} lib={"Feather"} size={30} />
         </TouchableOpacity>

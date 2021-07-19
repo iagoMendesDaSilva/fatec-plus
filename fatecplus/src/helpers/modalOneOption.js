@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         alignItems: "center",
         width: widthScreen * .9,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.background_medium,
     },
     txtMessage: {
         fontSize: 16,

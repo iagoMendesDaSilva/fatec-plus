@@ -46,7 +46,7 @@ export const MainRegister = (props) => {
         date ? date.split("/").reverse().join("-") : null;
 
     const unFormatDate = date =>
-        date.split("-").reverse().join("/")
+        date ? date.split("-").reverse().join("/") : null
 
     const nextStage = () => {
         const data = {
@@ -66,6 +66,7 @@ export const MainRegister = (props) => {
     }
 
     const editUser = async data => {
+        await StorageRegister.changeImage(image.base64 ? image.base64 : null)
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
                 modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
@@ -76,11 +77,11 @@ export const MainRegister = (props) => {
         if (params && params.data) {
             setEmail(params.data.email)
             setName(params.data.name)
-            setImage(params.data.image)
             setPhone(params.data.phone)
             setUsername(params.data.username)
             setDescription(params.data.description)
             setBirthDate(unFormatDate(params.data.birthDate))
+            setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
         }
     }
 

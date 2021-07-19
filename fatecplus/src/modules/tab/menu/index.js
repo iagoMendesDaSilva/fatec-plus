@@ -2,53 +2,69 @@ import styles from './style';
 
 import React from 'react';
 import { View } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
 
 import { StorageMenu } from './storage';
 import Colors from '../../../constants/colors';
+import Strings from '../../../constants/strings';
 import { Storage, Notification } from '../../../services';
+import { ModalContext } from '../../../routes/modalContext';
 import { ImagePicker, Screen, TextDefault, ItemList } from '../../../helpers';
 
 export const Menu = ({ navigation }) => {
 
+    const modal = React.useContext(ModalContext);
+
     const [user, setUser] = React.useState({})
-    const [image, setImage] = React.useState({ photo: "", base64: "" });
 
     React.useEffect(() => {
         getUser()
         navigation.addListener('focus', () => getUser())
     }, [])
 
-    const getImage = () => {
-        launchImageLibrary(({ mediaType: "photo", includeBase64: true }), data => {
-            if (data.uri && data.base64) {
-                setImage({ photo: data.uri, base64: data.base64 });
-                changeImage(data.base64)
-            }
-        });
-    }
-
-    const changeImage = image => {
-        StorageMenu.changeImage(image)
-            .then(a => console.log(a))
-            .catch(status => setImage({ photo: "", base64: "" }))
-    }
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
         if (currentUser) {
             StorageMenu.getUser(currentUser.id)
                 .then(data => setUser(data))
-                .catch(status => console.log(status))
+                .catch(status =>
+                    modal.configErrorModal({ msg: Strings.userFail, status }))
         }
     }
 
-    const logout = async () => {
-        await StorageMenu.logout()
+    const deleteUser = () => {
+        StorageMenu.deleteUser(user.id)
+            .then(data => logout(false))
+            .catch(status => modal.configErrorModal({ status }))
+    }
+
+    const logout = async (requestToken = true) => {
+        requestToken && await StorageMenu.logout()
         Storage.clear();
         Notification.unregister()
         navigation.replace("Login")
     }
+
+    const confirmDeleteAccount = () =>
+        modal.configErrorModal({
+            options: true,
+            iconName: "trash",
+            title: "Excluir conta",
+            iconLib: "fontawesome",
+            iconColor: Colors.error,
+            positivePress: deleteUser,
+            msg: Strings.confirmDeleteUser,
+        })
+
+    const confirmLogout = () =>
+        modal.configErrorModal({
+            options: true,
+            iconLib: "Ionicons",
+            iconName: "power",
+            title: "Encerrar sessão",
+            positivePress: logout,
+            msg: Strings.confirmLogout,
+        })
 
     const getDataUser = () => {
         return {
@@ -71,16 +87,14 @@ export const Menu = ({ navigation }) => {
     return (
         <Screen center={false}>
             <View style={styles.containerHeader}>
-                <ImagePicker
-                    getImage={getImage}
-                    image={image.photo ? image.photo : user.image} />
+                <ImagePicker image={user.image} disabled />
                 <View style={styles.containerTextHeader}>
                     <TextDefault
                         children={user.username}
                         styleText={styles.txtUsername} />
                     <TextDefault
                         styleText={styles.txtAddress}
-                        children={`${user.city}-${user.state}`} />
+                        children={user.city && user.state ? `${user.city}-${user.state}` : ""} />
                     <TextDefault
                         children={user.name}
                         styleText={styles.txtName} />
@@ -100,7 +114,7 @@ export const Menu = ({ navigation }) => {
                 <ItemList
                     iconName={"location-sharp"}
                     title={"Editar endereço"}
-                    onPress={() => 
+                    onPress={() =>
                         navigation.navigate("AddressRegister", { data: getDataUser() })}
                     iconLib={"Ionicons"} />
                 {
@@ -139,7 +153,7 @@ export const Menu = ({ navigation }) => {
                     title={"Versão do aplicativo"} />
                 <ItemList
                     arrow={false}
-                    onPress={logout}
+                    onPress={confirmLogout}
                     iconLib={"Ionicons"}
                     iconName={"power"}
                     title={"Encerrar sessão"} />
@@ -149,7 +163,7 @@ export const Menu = ({ navigation }) => {
                     iconLib={"Ionicons"}
                     iconName={"trash"}
                     title={"Excluir conta"}
-                    onPress={() => console.log(1)} />
+                    onPress={confirmDeleteAccount} />
             </View>
         </Screen>
     );

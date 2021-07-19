@@ -8,6 +8,7 @@ export const ModalContext = createContext();
 export const ModalProvider = ({ children }) => {
 
     const [info, setInfo] = useState({ visible: false });
+    const [navigation, setNavigation] = useState(null);
     const [infoTwoOptions, setInfoOptions] = useState({ visible: false });
 
     const positivePress = (dualButtons = false) => {
@@ -27,13 +28,15 @@ export const ModalProvider = ({ children }) => {
 
     const configErrorModal = ({status=404, options = false, msg = false, back=false, ...props}) => {
         const message = status === 404 && msg ? msg : Error.validate(status)
-        options
+        status===401
+        ? setInfo({ visible: true, message, positivePress:()=>Error.logout(navigation) })
+        : options
             ? setInfoOptions({ visible: true, message, ...props })
             : setInfo({ visible: true, message, ...props })
     }
 
     return (
-        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions, configErrorModal}}>
+        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions, configErrorModal, setNavigation}}>
             {children}
             <ModalOneOption
                 visible={info.visible}

@@ -23,6 +23,7 @@ export const Vacancies = ({ navigation }) => {
     React.useEffect(() => {
         getUser()
         getVacancies()
+        navigation.addListener('focus', () => getVacancies())
     }, [])
 
     const getUser = async () => {
@@ -121,6 +122,9 @@ export const Vacancies = ({ navigation }) => {
     const verifyHeader = () =>
         Boolean(vacancies.data.length === 0 || filter.data.length === 0 && filter.text)
 
+    const unFormatDate = date =>
+        date ? date.split("-").reverse().join("/") : null
+
 
     const goToVacancie = id =>
         console.log(1);
@@ -139,7 +143,7 @@ export const Vacancies = ({ navigation }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={date ? date : "Sem prazo"} />
+                            children={date ? unFormatDate(date) : "Sem prazo"} />
                     </View>
                     <Icon
                         size={25}
@@ -170,8 +174,9 @@ export const Vacancies = ({ navigation }) => {
                 ListHeaderComponent={verifyHeader() && getHeader}
             />
             {
-                user.category==="Company" || user.category ==="Internship Coordinator" &&
-                <FloatingButton />
+                Boolean(user.category === "Company" || user.category === "Internship Coordinator") &&
+                <FloatingButton
+                    onPress={() => navigation.navigate("Vacancy")} />
             }
         </KeyboardAvoidingView>
     );
