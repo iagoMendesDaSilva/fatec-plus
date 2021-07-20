@@ -23,7 +23,7 @@ export class Error {
         const user = await Storage.getUser()
         Storage.clear();
         Notification.unregister()
-        navigation && navigation.replace("Login", { username: user.username, password: user.password })
+        navigation && navigation.reset({ index: 0, routes: [{ name: 'Login', params:{ username: user.username, password: user.password } }] })
     }
 
 }

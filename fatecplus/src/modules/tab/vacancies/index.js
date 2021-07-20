@@ -20,28 +20,23 @@ export const Vacancies = ({ navigation }) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [vacancies, setVacancies] = React.useState({ data: Array(5).fill({}) });
 
-    React.useEffect(() => {
-        getUser()
-        getVacancies()
-        navigation.addListener('focus', () => getVacancies())
-    }, [])
+    React.useEffect(() => navigation.addListener('focus', () => getUser()), [])
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
         setUser(currentUser)
+        getVacancies(currentUser.category, currentUser.id)
     }
 
-    const getVacancies = () =>
-        user.category === "Company" || user.category === "Internship Coordinator"
-            ? getVacanciesByCompany(user.id)
+    const getVacancies = (category, id) => {
+        category === "Company" || category === "Internship Coordinator"
+            ? getVacanciesByCompany(id)
             : getAllVacancies()
+    }
 
-    const configVacancies = (jobs, showAll) => {
-        const data = showAll ? jobs : jobs.filter(value => {
-            const date = value.date ? checkDeadLine(value.date) : true
-            return value.active && date
-        })
-        setVacancies({ data })
+    const configVacancies = (jobs) => {
+        jobs.map(item => item.date && checkDeadLine(item.date))
+        setVacancies({ data: jobs })
     }
 
     const getFormatedDate = () => {
@@ -72,7 +67,7 @@ export const Vacancies = ({ navigation }) => {
     const getVacanciesByCompany = id => {
         setLoaded(false,
             StorageVacancie.getVacanciesByCompany(id)
-                .then(data => configVacancies(data, true))
+                .then(data => configVacancies(data))
                 .catch(status => configModal(status))
                 .finally(() => {
                     setRefreshing(false)
@@ -83,7 +78,7 @@ export const Vacancies = ({ navigation }) => {
     const getAllVacancies = () => {
         setLoaded(false,
             StorageVacancie.getVacancies()
-                .then(data => configVacancies(data, false))
+                .then(data => configVacancies(data))
                 .catch(status => configModal(status))
                 .finally(() => {
                     setRefreshing(false)
@@ -100,7 +95,7 @@ export const Vacancies = ({ navigation }) => {
 
     const onRefresh = () => {
         setRefreshing(true)
-        getVacancies()
+        getVacancies(user.category, user.id)
     }
 
     const getRefreshControl = () =>
@@ -127,8 +122,9 @@ export const Vacancies = ({ navigation }) => {
 
 
     const goToVacancie = id =>
-        console.log(1);
-    // navigation.navigate("", { id })
+        Boolean(user.category === "Company" || user.category === "Internship Coordinator")
+            ? navigation.navigate("Vacancy", { id })
+            : console.log(1);
 
     const renderItem = ({ id, name, date }, index) => {
         return (

@@ -1,5 +1,7 @@
 from models.user import User
+from models.benefit import Benefit
 from modelsDao import jobDao,dao
+from models.requirement import Requirement
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models.job import Job, job_schema, jobs_schema
@@ -16,12 +18,28 @@ class JobController:
                 subject_email=data['subject_email'],
                 description=data['description'],
                 job=data['job'],
-                active=data['active'],
                 name=data['name'],
                 internship=data['internship'],
                 receive_by_email=data['receive_by_email'],
                 company=current_user.id)
                 dao.add(job)
+                vacancy = dao.get_by_key('company',current_user.id, Job)
+                if data['benefits']:
+                    for benefit in data['benefits']:
+                        item = Benefit(
+                        name=benefit['name'],
+                        description=benefit['description'],
+                        id_job=vacancy.id)
+                        dao.add(item)
+                if data['requirements']:
+                    for requirement in data['requirements']:
+                        item = Requirement(
+                        name=requirement['name'],
+                        level=requirement['level'],
+                        mandatory=requirement['mandatory'],
+                        description=requirement['description'],
+                        id_job=vacancy.id)
+                        dao.add(item)
                 return True
             else:
                 raise CurrentUser

@@ -1,13 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { StorageVacancy } from '../storage';
 import Strings from '../../../constants/strings';
+import { ModalContext } from '../../../routes/modalContext'
 import { Screen, Note, Input, TextArea, ButtonDefault, TextDefault, SwicthDefault, Select } from '../../../helpers';
 
-export const Requirement = ({ state, setState }) => {
+export const Requirement = ({ state, setState, idJob = false, reload }) => {
 
     const hasIndex = () =>
         Number.isInteger(state.index)
+
+    const modal = React.useContext(ModalContext);
 
     const levels = ["Básico", "Intermediário", "Avançado"]
 
@@ -17,20 +21,37 @@ export const Requirement = ({ state, setState }) => {
     const [mandatory, setMandatory] = React.useState(hasIndex() ? state.data[state.index].mandatory : false);
 
 
-    const save = value =>
-        setState({ data: [...state.data, value], visible: false, index: false })
-
+    const save = value => {
+        if (idJob) {
+            StorageVacancy.saveRequirement(name, description, level, mandatory, idJob)
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else
+            setState({ data: [...state.data, value], visible: false, index: false })
+    }
 
     const edit = value => {
-        let data = state.data
-        data[state.index] = value
-        setState({ data, visible: false, index: false })
+        if (idJob) {
+            StorageVacancy.editRequirement(name, description, level, mandatory, state.data[state.index].id)
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else {
+            let data = state.data
+            data[state.index] = value
+            setState({ data, visible: false, index: false })
+        }
     }
 
     const remove = () => {
-        let data = state.data
-        data.splice(state.index, 1)
-        setState({ data, visible: false, index: false })
+        if (idJob) {
+            StorageVacancy.deleteRequirement(state.data[state.index].id)
+                .then(data => modal.configErrorModal({ msg: Strings.requirementDeleted, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else {
+            let data = state.data
+            data.splice(state.index, 1)
+            setState({ data, visible: false, index: false })
+        }
     }
 
     const pressButton = () => {
@@ -50,13 +71,13 @@ export const Requirement = ({ state, setState }) => {
                 capitalize={"sentences"}
                 onchange={text => setName(text)}
                 iconLib={"MaterialCommunityIcons"} />
-                <Select
-                    value={level}
-                    iconName={"push-pin"}
-                    options={levels}
-                    iconLib={"MaterialIcons"}
-                    initialValue={"Nível"}
-                    changeValue={value => setLevel(value)} />
+            <Select
+                value={level}
+                iconName={"push-pin"}
+                options={levels}
+                iconLib={"MaterialIcons"}
+                initialValue={"Nível"}
+                changeValue={value => setLevel(value)} />
             <View style={styles.containerSwitch}>
                 <SwicthDefault
                     on={mandatory}

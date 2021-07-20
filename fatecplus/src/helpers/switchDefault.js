@@ -10,6 +10,8 @@ export const SwicthDefault = ({ on = false, changeValue }) => {
 
     const positionX = React.useRef(new Animated.Value(5)).current;
 
+    React.useEffect(() => Animate.timming(positionX, on ? 35 : 5, 300).start(), [on])
+
     const pressSwicth = () => {
         if (changeValue) {
             Animate.timming(positionX, on ? 5 : 35, 300).start();
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 25,
         borderRadius: 35,
-        marginVertical:10,
+        marginVertical: 10,
         justifyContent: "center",
     },
     switch: {

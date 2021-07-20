@@ -24,9 +24,9 @@ class User(database.Model):
     recovery_time = database.Column(database.DateTime)
     onesignal_playerID = database.Column(database.String(40))
     password = database.Column(database.Text, nullable=False)
+    email = database.Column(database.String(50), nullable=False)
     name = database.Column(database.String(50), nullable=False)
     category = database.Column(database.String(22), nullable=False)
-    email = database.Column(database.String(50), nullable=False, unique=True)
     username = database.Column(database.String(20), nullable=False, unique=True)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 

@@ -42,7 +42,7 @@ export const Menu = ({ navigation }) => {
         requestToken && await StorageMenu.logout()
         Storage.clear();
         Notification.unregister()
-        navigation.replace("Login")
+        navigation.reset({ index: 0, routes: [{ name: 'Login'}] })
     }
 
     const confirmDeleteAccount = () =>

@@ -31,15 +31,15 @@ export const ChangePassword = ({ navigation, route }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category:data.category })
+        Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category: data.category })
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
-            .then(data => navigation.replace("Home"))
-            .catch(status => modal.configErrorModal(status))
+            .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] }))
+                .catch(status => modal.configErrorModal(status))
     }
 
-    const setUser =async password => {
-        const user =await Storage.getUser()
+    const setUser = async password => {
+        const user = await Storage.getUser()
         Storage.setUser({ username: user.username, password, token: user.token, id: user.id })
         navigation.goBack()
     }

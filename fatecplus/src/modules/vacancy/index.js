@@ -14,6 +14,7 @@ import { Screen, Input, SwicthDefault, TextDefault, TextArea, DatePickerDefault,
 
 export const Vacancy = ({ navigation, route }) => {
 
+    const params = route.params
     const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState(false)
@@ -29,6 +30,28 @@ export const Vacancy = ({ navigation, route }) => {
     const [benefits, setBenefits] = React.useState({ data: [], visible: false, index: false })
     const [requirements, setRequirements] = React.useState({ data: [], visible: false, index: false })
 
+    React.useEffect(() => getDefaultValues(), [])
+
+    const getDefaultValues = () => {
+        if (params) {
+            StorageVacancy.getVacancy(params.id)
+                .then(data => configVacancy(data))
+                .catch(status => modal.configErrorModal({ status, positivePress: () => navigation.goBack() }))
+        }
+    }
+
+    const configVacancy = data => {
+        setJob(data.job)
+        setName(data.name)
+        setInternship(data.internship)
+        setSubject(data.subject_email)
+        setDescription(data.description)
+        setReceive(data.receive_by_email)
+        setDeadline(unFormatDate(data.date))
+        setBenefits({ data: data.benefits, visible: false, index: false })
+        setRequirements({ data: data.requirements, visible: false, index: false })
+    }
+
     const changeDate = value => {
         const date = new Date(value)
         const year = String(date.getFullYear())
@@ -42,9 +65,21 @@ export const Vacancy = ({ navigation, route }) => {
         setDeadline(day + "/" + month + "/" + year)
     }
 
-    const saveVacancy = () => {
+    const pressButton = () => {
         setLoading(true)
-        StorageVacancy.saveVacancy(name, formatDate(deadline), internship, job, receive, subject, description, Boolean(deadline))
+        params ? editVacancy() : saveVacancy()
+    }
+
+    const editVacancy = () => {
+        StorageVacancy.editVacancy(name, formatDate(deadline), internship, job, receive, subject, description, params.id)
+            .then(data =>
+                modal.configErrorModal({ msg: Strings.updated, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.configErrorModal({ status }))
+            .finally(() => setLoading(false))
+    }
+
+    const saveVacancy = () => {
+        StorageVacancy.saveVacancy(name, formatDate(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
             .then(data =>
                 modal.configErrorModal({ msg: Strings.createdVacancy, positivePress: () => navigation.goBack() }))
             .catch(status => modal.configErrorModal({ status }))
@@ -84,13 +119,17 @@ export const Vacancy = ({ navigation, route }) => {
                     benefits.visible &&
                     <Benefit
                         state={benefits}
-                        setState={setBenefits} />
+                        setState={setBenefits}
+                        reload={getDefaultValues}
+                        idJob={params && params.id} />
                 }
                 {
                     requirements.visible &&
                     <Requirement
                         state={requirements}
-                        setState={setRequirements} />
+                        reload={getDefaultValues}
+                        setState={setRequirements}
+                        idJob={params && params.id} />
                 }
                 {
                     !benefits.visible && !requirements.visible &&
@@ -180,8 +219,8 @@ export const Vacancy = ({ navigation, route }) => {
 
                         <ButtonDefault
                             text={"Salvar"}
-                            onPress={saveVacancy}
                             loading={loading}
+                            onPress={pressButton}
                             active={activeButton()}
                         />
                     </>
