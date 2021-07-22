@@ -1,5 +1,5 @@
 
-import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress, RequestImageProfile} from '../../services/request';
+import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress, RequestImageProfile, RequestVerifyEmail, RequestVerifyUsername} from '../../services/request';
 
 export class StorageRegister {
 
@@ -42,6 +42,22 @@ export class StorageRegister {
     static changeImage(image){
         return new Promise((resolve, reject) => {
             Executor.run(new RequestImageProfile(image))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static verifyEmail(email){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestVerifyEmail(email))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static verifyUsername(username){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestVerifyUsername(username))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

@@ -62,7 +62,20 @@ export const MainRegister = (props) => {
         }
         params.data
             ? editUser(data)
-            : props.navigation.navigate("AddressRegister", data);
+            : verifyFields(data);
+    }
+
+    const verifyFields = data => {
+        StorageRegister.verifyEmail(email)
+            .then(resp => modal.configErrorModal({  msg: Strings.emailRegistred }))
+            .catch(err => {
+                err === 404 ?
+                    StorageRegister.verifyUsername(username)
+                        .then(resp => modal.configErrorModal({  msg: Strings.usernameRegistred }))
+                        .catch(err => props.navigation.navigate("AddressRegister", data))
+                    :
+                    modal.configErrorModal({ status })
+            })
     }
 
     const editUser = async data => {

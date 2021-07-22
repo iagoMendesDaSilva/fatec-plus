@@ -29,6 +29,16 @@ def confirm_email():
     id =  userController.confirm_email(request.get_json())
     return jsonify({'id': id}), 200
 
+@app.route("/mobile-api/v1/auth/verify-email", methods=["POST"])
+def verify_email():
+    id =  userController.verify_email(request.get_json())
+    return jsonify({'id': id}), 200
+
+@app.route("/mobile-api/v1/auth/verify-username", methods=["POST"])
+def verify_usernamel():
+    id =  userController.verify_username(request.get_json())
+    return jsonify({'id': id}), 200
+
 @app.route("/mobile-api/v1/auth/confirm-verification-code/<int:id>", methods=["POST"])
 def confirm_verification_code(id):
         user =userController.confirm_verification_code(id,  request.get_json())

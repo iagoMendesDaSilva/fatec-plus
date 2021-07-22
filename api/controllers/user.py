@@ -115,6 +115,24 @@ class UserController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
+    def verify_username(self, data):
+        try:
+            user = dao.get_by_key('username',data['username'],User)
+            return user.id
+        except ObjectInvalid as err:
+            abort(make_response(jsonify({"response":"Invalid Username."}), 404))
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))  
+
+    def verify_email(self, data):
+        try:
+            user = dao.get_by_key('email',data['email'],User)
+            return user.id
+        except ObjectInvalid as err:
+            abort(make_response(jsonify({"response":"Invalid Email."}), 404))
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))  
+
     def recovery(self,id,data):
         try:
             new_password =generate_password_hash(data['password'])
