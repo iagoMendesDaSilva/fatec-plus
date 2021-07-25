@@ -46,8 +46,7 @@ export const Students = ({ navigation }) => {
         })
 
     const goToStudent = id =>
-        console.log(1);
-    // navigation.navigate("", { id })
+        navigation.navigate("Student", { id })
 
     const renderItem = ({ id, image, name, studying }, index) => {
         return (

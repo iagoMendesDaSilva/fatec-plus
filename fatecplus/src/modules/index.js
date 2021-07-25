@@ -1,3 +1,4 @@
+export * from './student';
 export * from './auth';
 export * from './splash';
 export * from './resume';

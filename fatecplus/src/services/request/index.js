@@ -5,6 +5,7 @@ export * from './requestJob';
 export * from './requestUser';
 export * from './requestEmail';
 export * from './requestVerifyEmail';
+export * from './requestSubscription';
 export * from './requestVerifyUsername';
 export * from './requestLogin';
 export * from './requestLogout';

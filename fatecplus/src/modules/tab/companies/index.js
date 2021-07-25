@@ -45,8 +45,7 @@ export const Companies = ({ navigation }) => {
         })
 
     const goToCompany = id =>
-        console.log(1);
-    // navigation.navigate("", { id })
+        navigation.navigate("User", { id })
 
     const renderItem = ({ id, image, name, state, city }, index) => {
         return (
@@ -65,7 +64,7 @@ export const Companies = ({ navigation }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={city&&state?`${city}-${state}`:""} />
+                            children={city && state ? `${city}-${state}` : ""} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>

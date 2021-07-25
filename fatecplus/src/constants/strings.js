@@ -20,6 +20,8 @@ export default {
     confirmDeleteUser:"Deseja excluir sua conta?",
     failUpdate:"Não foi possível atualizar os dados.",
     verificationCode: 'Código inválido ou expirado.',
+    requested:"Aluno(a) solicitado.",
+    indicated:"Aluno(a) indicado.",
     failVacancies:"Não foi possível consultar as vagas.",
     failStudents:"Não foi possível consultar os alunos.",
     differentPasswords: "As senhas devem ser iguais.",

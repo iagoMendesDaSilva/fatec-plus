@@ -10,7 +10,7 @@ import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
 import { HeaderList, TextDefault, Shimmer, Icon, FloatingButton } from '../../../helpers'
 
-export const Vacancies = ({ navigation }) => {
+export const Vacancies = ({ navigation, route }) => {
 
     const modal = React.useContext(ModalContext);
 
@@ -121,16 +121,37 @@ export const Vacancies = ({ navigation }) => {
         date ? date.split("-").reverse().join("/") : null
 
 
-    const goToVacancie = id =>
-        Boolean(user.category === "Company" || user.category === "Internship Coordinator")
+    const goToVacancie = (id, permission) =>
+        permission
             ? navigation.navigate("Vacancy", { id })
             : console.log(1);
+
+    const verifyOpenVacancy = id => {
+        const permission = Boolean(user.category === "Company" || user.category === "Internship Coordinator")
+        route.params ? requestOrIndicate(id, route.params.student) : goToVacancie(id, permission)
+    }
+
+    const requestOrIndicate =async (vacancyId, studentId) => {
+        const currentUser = await Storage.getUser()
+        StorageVacancie.solicit(vacancyId, studentId)
+            .then(() =>
+                modal.configErrorModal({
+                    msg: currentUser.category==="Teacher"?Strings.indicate:Strings.requested,
+                    positivePress: () => navigation.goBack()
+                })
+            )
+            .catch(status =>
+                modal.configErrorModal({
+                    status,
+                    positivePress: () => navigation.goBack()
+                }))
+    }
 
     const renderItem = ({ id, name, date }, index) => {
         return (
             <Shimmer style={styles.itemShimmer} visible={loaded}>
                 <TouchableOpacity
-                    onPress={() => goToVacancie(id)}
+                    onPress={() => verifyOpenVacancy(id)}
                     key={String(index)}
                     style={styles.conatinerItem}>
                     <View style={styles.containerText}>

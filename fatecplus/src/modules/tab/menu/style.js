@@ -13,7 +13,7 @@ export default StyleSheet.create({
         paddingHorizontal: 25,
     },
     txtUsername: {
-        fontSize: 26,
+        fontSize: 22,
         color: "white",
         fontWeight: "bold",
     },

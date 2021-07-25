@@ -58,10 +58,10 @@ export const TabNav = ({ navigation }) => {
             initialRouteName='Vacancies'
             tabBarOptions={{ style: styles.tabBar, showLabel: false }}
             screenOptions={({ route }) => ({ tabBarIcon: ({ focused }) => getIconsByRoute(route.name, focused), })}>
-            <Tab.Screen name="Teachers" component={Teachers} />
+       
             <Tab.Screen name="Students" component={Students} />
             <Tab.Screen name="Vacancies" component={Vacancies} />
-            <Tab.Screen name="Companies" component={Companies} />
+       
             <Tab.Screen name="Menu" component={Menu} />
         </Tab.Navigator>
     );

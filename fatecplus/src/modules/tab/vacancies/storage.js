@@ -1,4 +1,4 @@
-import { Executor, RequestVacancies, RequestVacanciesByCompany} from '../../../services/request';
+import { Executor, RequestSubscription, RequestVacancies, RequestVacanciesByCompany} from '../../../services/request';
 
 export class StorageVacancie {
 
@@ -10,9 +10,17 @@ export class StorageVacancie {
         });
     }
 
-        static getVacanciesByCompany(id) {
+    static getVacanciesByCompany(id) {
         return new Promise((resolve, reject) => {
             Executor.run(new RequestVacanciesByCompany(id))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static solicit(jobId, student) {
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestSubscription(jobId, student))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

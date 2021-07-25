@@ -1,4 +1,5 @@
 export * from './card';
+export * from './load';
 export * from './icon';
 export * from './note';
 export * from './input';
@@ -12,8 +13,10 @@ export * from './datePicker';
 export * from './headerList';
 export * from './inputCode';
 export * from './textDefault';
+export * from './buttonSmall';
 export * from './imagePicker';
 export * from './addressInput';
+export * from './modalBottom';
 export * from './switchDefault';
 export * from './buttonDefault';
 export * from './floatingButton';
