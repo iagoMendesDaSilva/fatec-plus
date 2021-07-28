@@ -30,11 +30,12 @@ class Email:
         return filedata
 
     def send(self, msg):
-        server = smtplib.SMTP('smtp.gmail.com: 587')
-        server.starttls()
-        server.login(msg['From'], self.password)
-        server.sendmail(msg['From'], msg['To'], msg.as_string())
-        server.quit()
+            server = smtplib.SMTP('smtp.gmail.com: 587')
+            server.starttls()
+            server.login(msg['From'], self.password)
+            server.sendmail(msg['From'], msg['To'], msg.as_string())
+            server.quit()
+
 
     def create_msg(self, subject,receiver ):
         msg = MIMEMultipart()
@@ -74,7 +75,10 @@ class Email:
 
             for formation in user.formations:
                 time = self.format_time(formation.start_year, formation.end_year)
-                text ="• " + formation.title+" - "+formation.subtitle + " | "+time
+                text ="• " + formation.title
+                if formation.subtitle:
+                    text +=" - "+formation.subtitle
+                text+= " | "+time
                 if formation.workload:
                     text += " | "+formation.workload.strftime("%H")+"h"
                 self.add_text(resume, text)
@@ -92,7 +96,7 @@ class Email:
         file.setFont("Helvetica", 16)
         file.drawString(50, self.location_text, "") 
         text_len = int(len(text)/60)
-        if text_len:
+        if text_len and len(text)!=60:
             for index in range (0, text_len+1):
                 self.location_text+=30
                 file.drawString(50, self.location_text,text[index*60:(index+1)*60])

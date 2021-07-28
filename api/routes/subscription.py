@@ -26,3 +26,8 @@ def subscriptions_jobs(current_user,job_id):
     elif request.method == 'DELETE':
         subscriptionController.delete_all_by_job(current_user,job_id)
         return jsonify({"response":"Deleted Subscriptions"}), 200
+
+@app.route("/mobile-api/v1/job/subscribed/<int:job_id>", methods=["GET"])
+@token
+def subscribed(current_user,job_id):
+    return jsonify(subscriptionController.verifySubscription(current_user, job_id)), 200

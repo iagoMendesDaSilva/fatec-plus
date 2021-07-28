@@ -1,12 +1,12 @@
 import { Request } from './request';
 import Constants from '../../constants/values';
 
-export class RequestSubscription extends Request {
+export class RequestUnSubscription extends Request {
 
-    constructor(jobId, indication,) {
+    constructor(jobId) {
         const headers = { 'Content-Type': 'application/json' };
         const url = `${Constants.base_url}job/subscribe/${jobId}`;
-        const params = { indication};
-        super(url, 'POST', headers, params);
+        const params = {};
+        super(url, 'DELETE', headers, params);
     }
 }

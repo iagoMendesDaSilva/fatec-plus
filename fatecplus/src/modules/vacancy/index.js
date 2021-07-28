@@ -35,7 +35,7 @@ export const Vacancy = ({ navigation, route }) => {
     const getDefaultValues = () => {
         if (params) {
             StorageVacancy.getVacancy(params.id)
-                .then(data => configVacancy(data))
+                .then(data => configVacancy(data.job))
                 .catch(status => modal.configErrorModal({ status, positivePress: () => navigation.goBack() }))
         }
     }

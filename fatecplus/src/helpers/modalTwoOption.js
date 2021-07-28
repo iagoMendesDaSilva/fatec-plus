@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     header: {
         marginBottom: 10,
         flexDirection: "row",
+        alignItems:"center",
     },
     icon: {
         marginRight: 10,

@@ -35,8 +35,8 @@ export const Vacancies = ({ navigation, route }) => {
     }
 
     const configVacancies = (jobs) => {
-        jobs.map(item => item.date && checkDeadLine(item.date))
-        setVacancies({ data: jobs })
+        const data = jobs.filter(item => item.date ? checkDeadLine(item.date) : item)
+        setVacancies({ data })
     }
 
     const getFormatedDate = () => {
@@ -70,6 +70,7 @@ export const Vacancies = ({ navigation, route }) => {
                 .then(data => configVacancies(data))
                 .catch(status => configModal(status))
                 .finally(() => {
+                    route.params = null;
                     setRefreshing(false)
                     setLoaded(true)
                 }))
@@ -81,6 +82,7 @@ export const Vacancies = ({ navigation, route }) => {
                 .then(data => configVacancies(data))
                 .catch(status => configModal(status))
                 .finally(() => {
+                    route.params = null;
                     setRefreshing(false)
                     setLoaded(true)
                 }))
@@ -121,23 +123,26 @@ export const Vacancies = ({ navigation, route }) => {
         date ? date.split("-").reverse().join("/") : null
 
 
-    const goToVacancie = (id, permission) =>
-        permission
+    const goToVacancie = (id, editVacancy) =>
+        editVacancy
             ? navigation.navigate("Vacancy", { id })
-            : console.log(1);
+            : navigation.navigate("Job", { id })
 
     const verifyOpenVacancy = id => {
-        const permission = Boolean(user.category === "Company" || user.category === "Internship Coordinator")
-        route.params ? requestOrIndicate(id, route.params.student) : goToVacancie(id, permission)
+        const editVacancy = Boolean(user.category === "Company" || user.category === "Internship Coordinator")
+        route.params ? requestOrIndicate(id, route.params.student) : goToVacancie(id, editVacancy)
     }
 
-    const requestOrIndicate =async (vacancyId, studentId) => {
-        const currentUser = await Storage.getUser()
+
+    const requestOrIndicate = (vacancyId, studentId) => {
         StorageVacancie.solicit(vacancyId, studentId)
             .then(() =>
                 modal.configErrorModal({
-                    msg: currentUser.category==="Teacher"?Strings.indicate:Strings.requested,
-                    positivePress: () => navigation.goBack()
+                    msg: user.category === "Company" ? Strings.requested : Strings.indicated,
+                    positivePress: () => {
+                        route.params = null
+                        navigation.goBack()
+                    }
                 })
             )
             .catch(status =>

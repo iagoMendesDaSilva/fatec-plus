@@ -21,7 +21,7 @@ export const ButtonDefault = ({ text, onPress, style, loading, active }) => {
     return (
         <TouchableOpacity
             onPress={() => press()}
-            disabled={!active}
+            disabled={!active || loading}
             style={[styles.buttonSave, style]}>
             <Animated.View style={{ ...styles.buttonActive, transform: [{ translateX: activePosition }] }} />
             <View style={styles.content}>

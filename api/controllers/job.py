@@ -1,6 +1,6 @@
-from models.user import User
 from models.benefit import Benefit
 from modelsDao import jobDao,dao
+from models.user import User, user_schema_job
 from models.requirement import Requirement
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
@@ -50,7 +50,9 @@ class JobController:
 
     def get(self, id):
         try:
-            return  job_schema.dump(dao.get_by_id(id,Job))
+            job = dao.get_by_id(id,Job)
+            company = dao.get_by_id(job.company, User)
+            return  {"job":job_schema.dump(job),"company":user_schema_job.dump(company)}
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:

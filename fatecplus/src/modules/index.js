@@ -1,5 +1,6 @@
 export * from './student';
 export * from './auth';
+export * from './job';
 export * from './splash';
 export * from './resume';
 export * from './register';

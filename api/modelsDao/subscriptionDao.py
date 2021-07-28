@@ -1,7 +1,7 @@
 from modelsDao import dao
 from app.applications import database
-from models.subscription import Subscription
 from app.exceptions import ObjectInvalid
+from models.subscription import Subscription,subscription_schema
 
 class SubscriptionDao:
 
@@ -18,6 +18,12 @@ class SubscriptionDao:
 
     def get_all_by_job_user(self,job_id,user_id):
             return Subscription.query.filter(Subscription.job == job_id, Subscription.subscription == user_id).all()
+
+    def get_by_job_user(self, job_id, user_id):
+            subscribed = Subscription.query.filter(Subscription.job == job_id, Subscription.subscription == user_id).first()
+            if not subscribed:
+                raise ObjectInvalid
+            return subscription_schema.dump(subscribed)
 
     def unsubscribe(self, user, job_id):
         if user.category.lower()=='student':

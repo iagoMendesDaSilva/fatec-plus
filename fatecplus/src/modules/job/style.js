@@ -18,11 +18,11 @@ export default StyleSheet.create({
         color: "white",
         fontWeight: "bold",
     },
-    txtAddress: {
+    txtDate: {
         fontSize: 20,
         color: "rgba(255,255,255,.5)",
     },
-    txtCourse: {
+    txtAddress: {
         fontSize: 20,
         color: "white",
     },

@@ -7,7 +7,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { Icon } from '../helpers';
 import { TabNav } from './tabNav';
 import Colors from '../constants/colors';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Network, Language, Project, Formation, Experience, ListItems, Vacancy, Student } from '../modules';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Network, Language, Project, Formation, Experience, ListItems, Vacancy, Student, Job } from '../modules';
 
 export const StackNav = () => {
 
@@ -60,6 +60,7 @@ export const StackNav = () => {
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Home" component={TabNav} options={{ header: ({ scene }) => verifyScreenHome(scene) }} />
             <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, true) }} />
         </Stack.Navigator>
     );
 }

@@ -23,7 +23,8 @@ export class Notification {
     goTo(payload) {
         if (payload.notification.additionalData) {
             const data = payload.notification.additionalData
-            this.navigation.replace("Splash", { id: Number(data.id), type: data.type })
+            const indication = data.indication || false
+            this.navigation.replace("Splash", { id: Number(data.id), type: data.type, indication })
         } else {
             this.navigation.replace('Splash')
         }

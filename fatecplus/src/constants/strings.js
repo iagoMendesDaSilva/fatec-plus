@@ -2,6 +2,7 @@ export default {
     spaceIcon:"     ",
     noPassword: "Sem senha.",
     weekPassword: "Senha fraca",
+    confirmSub:"Iremos enviar todas suas informações.",
     usernameRegistred:"Usuário já cadastrado.",
     emailRegistred:"Email já cadastrado.",
     descriptionBenefit:"Adicione um benefício que a vaga possui.",

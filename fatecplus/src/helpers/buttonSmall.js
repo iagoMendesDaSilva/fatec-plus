@@ -5,7 +5,7 @@ import Colors from '../constants/colors';
 import { TextDefault } from './textDefault';
 
 export const ButtonSmall = ({ text, onPress, loading, outline = false, style }) => {
-    
+
     const press = () => {
         Keyboard.dismiss()
         onPress && onPress()
@@ -13,6 +13,7 @@ export const ButtonSmall = ({ text, onPress, loading, outline = false, style }) 
 
     return (
         <TouchableOpacity
+            disabled={loading}
             onPress={() => press()}
             style={[outline ? styles.buttonOutline : styles.button, style]}>
             {loading

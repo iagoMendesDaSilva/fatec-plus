@@ -38,8 +38,9 @@ class SubscriptionController:
                 if current_user.category.lower()=='company':
                     notification.send([student.onesignal_playerID],"Solicitação",job.jobs.name+" solicitou você para a vaga: "+job.name,{"id":job.id, "type":"Job"})
                 if current_user.category.lower()=='internship coordinator' or  current_user.category.lower()=='teacher':
-                    notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id, "type":"Job"})
-                    notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id, "type":"Student"})
+                    notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id, "type":"Job", "indication":current_user.id})
+                    if current_user.id != job.company:
+                        notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id, "type":"Student"})
                 return True
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
@@ -93,5 +94,15 @@ class SubscriptionController:
         user = dao.get_by_id(id, User)
         category = user.category.lower()
         return  True if category=='company' or category=='internship coordinator' else  False
+
+    def  verifySubscription (self, current_user, id):
+        try:
+            return subscriptionDao.get_by_job_user(id, current_user.id)
+        except ObjectInvalid as err:
+            abort(make_response(jsonify({"response":"Unsubscribed."}), 404))
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+
+
        
 subscriptionController = SubscriptionController()

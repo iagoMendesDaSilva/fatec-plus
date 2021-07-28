@@ -16,14 +16,12 @@ export const Student = ({ navigation, route }) => {
     const [user, setUser] = React.useState(false);
     const [loading, setLoading] = React.useState(true);
     const [showModal, setShowModal] = React.useState(false);
-    const [currentUser, setCurrentUser] = React.useState(false);
     const [permission, setPermission] = React.useState({ indicate: false, request: false })
 
     React.useEffect(() => getCurrentUser(), [])
 
     const getCurrentUser = async () => {
         const object = await Storage.getUser()
-        setCurrentUser(object)
         getUser(object)
     }
 
@@ -42,8 +40,8 @@ export const Student = ({ navigation, route }) => {
 
     const configPermission = user => {
         const category = user.category;
-        let indicate = Boolean(category === "Teacher")
-        let request = Boolean(category === "Company" || category === "Internship Coordinator")
+        let indicate = Boolean(category === "Teacher" || category === "Internship Coordinator")
+        let request = Boolean(category === "Company")
         setPermission({ indicate, request })
     }
 
@@ -96,6 +94,7 @@ export const Student = ({ navigation, route }) => {
             {
                 Boolean(item.description) &&
                 <TextDefault
+                    lines={0}
                     children={item.description}
                     styleText={styles.txtSubtitle} />
             }
