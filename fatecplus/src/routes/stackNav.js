@@ -7,7 +7,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { Icon } from '../helpers';
 import { TabNav } from './tabNav';
 import Colors from '../constants/colors';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Network, Language, Project, Formation, Experience, ListItems, Vacancy, Student, Job } from '../modules';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume,Vacancy, Student, Job } from '../modules';
 
 export const StackNav = () => {
 
@@ -28,7 +28,7 @@ export const StackNav = () => {
     }
 
     const verifyScreenHome = data => {
-        const color = data.route.state && data.route.state.index === 4 ? Colors.background : Colors.background_light
+        const color = data.route.state && data.route.state.index === 2 ? Colors.background : Colors.background_light
         return back(false, false, color)
     }
 
@@ -43,17 +43,11 @@ export const StackNav = () => {
             initialRouteName='Splash'
             screenOptions={screenOptions}>
             <Stack.Screen name="Login" component={Auth} options={{ header: ({ navigation }) => back(navigation, false) }} />
-            <Stack.Screen name="Project" component={Project} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Splash" component={Splash} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Resume" component={Resume} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Register" component={Register} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Network" component={Network} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Vacancy" component={Vacancy} options={{ header: ({ navigation }) => back(navigation, false) }} />
-            <Stack.Screen name="ListItems" component={ListItems} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Recovery" component={Recovery} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Language" component={Language} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Formation" component={Formation} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Experience" component={Experience} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="MainRegister" component={MainRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="AddressRegister" component={AddressRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />

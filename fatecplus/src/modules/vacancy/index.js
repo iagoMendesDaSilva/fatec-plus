@@ -203,13 +203,11 @@ export const Vacancy = ({ navigation, route }) => {
                             title={"Benefícios"}
                             keyArray={'name'}
                             onPress={showFormBenefit}
-                            items={benefits.data}
                             items={benefits.data} />
                         <ContractedList
                             title={"Requisitos"}
                             keyArray={'name'}
                             onPress={showFormRequirements}
-                            items={requirements.data}
                             items={requirements.data} />
                         <TextArea
                             text={description}

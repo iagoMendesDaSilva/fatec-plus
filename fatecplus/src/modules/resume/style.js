@@ -3,18 +3,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     containerContent: {
         flex: 1,
-        alignItems:"center",
+        paddingVertical: 10,
+        alignItems: "center",
         justifyContent: "center",
-    },
-    txtSection: {
-        fontSize: 18,
-        color: "rgba(255,255,255,.5)"
-    },
-    containerSection: {
-        width: "90%",
-        marginTop: 10,
+
     },
     containerSwitch: {
+        marginLeft: 10,
         flexDirection: 'row',
         alignItems: "center",
     },

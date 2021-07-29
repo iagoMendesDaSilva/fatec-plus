@@ -2,6 +2,7 @@ export default {
     spaceIcon:"     ",
     noPassword: "Sem senha.",
     weekPassword: "Senha fraca",
+    descriptionResume:"Adicione suas informações para quando se inscrver em uma vaga podermos mandar seu currículo para a empresa.",
     confirmSub:"Iremos enviar todas suas informações.",
     usernameRegistred:"Usuário já cadastrado.",
     emailRegistred:"Email já cadastrado.",

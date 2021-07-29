@@ -7,7 +7,7 @@ import { TextDefault, Icon } from '../helpers';
 
 
 import Colors from '../constants/colors';
-import { Vacancies, Menu, Students, Teachers, Companies } from '../modules';
+import { Vacancies, Menu, Students } from '../modules';
 
 export const TabNav = ({ navigation }) => {
 
@@ -58,10 +58,8 @@ export const TabNav = ({ navigation }) => {
             initialRouteName='Vacancies'
             tabBarOptions={{ style: styles.tabBar, showLabel: false }}
             screenOptions={({ route }) => ({ tabBarIcon: ({ focused }) => getIconsByRoute(route.name, focused), })}>
-       
             <Tab.Screen name="Students" component={Students} />
             <Tab.Screen name="Vacancies" component={Vacancies} />
-       
             <Tab.Screen name="Menu" component={Menu} />
         </Tab.Navigator>
     );

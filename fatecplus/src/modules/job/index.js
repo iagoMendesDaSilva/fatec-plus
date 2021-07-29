@@ -108,10 +108,10 @@ export const Job = ({ navigation, route }) => {
     const confirmSubscription = () => {
         modal.configErrorModal({
             options: true,
-            iconName:"warning",
-            title:"Aviso",
-            iconColor:Colors.warning,
-            iconLib:"FontAwesome",
+            iconName: "warning",
+            title: "Aviso",
+            iconColor: Colors.warning,
+            iconLib: "FontAwesome",
             positivePress: subscribe,
             msg: Strings.confirmSub,
         })
@@ -132,6 +132,13 @@ export const Job = ({ navigation, route }) => {
             .then(data => setSubscribed(false))
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoadingSub(false))
+    }
+
+    const getTypeJob = () => {
+        if (job.internship && job.job)
+            return "Estágio ou Efetivo"
+        else
+            job.internship ? "Estágio" : "Efetivo"
     }
 
     return (
@@ -190,6 +197,9 @@ export const Job = ({ navigation, route }) => {
                                 <TextDefault
                                     children={"Sobre"}
                                     styleText={styles.txtTopic} />
+                                <TextDefault
+                                    children={getTypeJob()}
+                                    styleText={styles.txtSubtitleLink} />
                                 <TextDefault
                                     lines={0}
                                     children={job.description ? job.description : 'Sem descrição sobre a vaga.'}

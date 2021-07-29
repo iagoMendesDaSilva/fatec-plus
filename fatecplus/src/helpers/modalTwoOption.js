@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
     },
     divisionButtons: {
-        width: .3,
+        width: .5,
         height: "60%",
         backgroundColor: "rgba(255,255,255,.5)",
     },

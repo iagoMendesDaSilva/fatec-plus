@@ -1,52 +1,35 @@
-
 import React from 'react';
-
-import Strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 
-import Colors from '../../constants/colors';
-import { ModalContext } from '../../routes/modalContext';
-import { ButtonDefault, Input, Note, DatePickerDefault, Screen, TextDefault } from '../../helpers';
+import { StorageResume } from '../storage';
+import Colors from '../../../constants/colors';
+import Strings from '../../../constants/strings';
+import { ModalContext } from '../../../routes/modalContext';
+import { Screen, Note, Input, ButtonDefault, TextDefault, DatePickerDefault } from '../../../helpers';
 
-export const Experience = (props) => {
+export const Experience = ({ state, reload }) => {
 
-    const params = props.route.params;
+    const hasIndex = () =>
+        Number.isInteger(state.index)
+
+    const unFormatDate = date =>
+        date ? date.split("-").reverse().join("/") : null
+
+    const formatDate = date =>
+        date ? date.split("/").reverse().join("-") : null;
+
 
     const modal = React.useContext(ModalContext);
 
-    const [job, setJob] = React.useState("");
-    const [index, setIndex] = React.useState(null);
-    const [endYear, setEndYear] = React.useState("");
-    const [startYear, setStartYear] = React.useState("");
     const [date, setDate] = React.useState(new Date());
-    const [company, setCompany] = React.useState("");
     const [picker, setPicker] = React.useState({ on: false, start: true });
+    const [job, setJob] = React.useState(hasIndex() ? state.data[state.index].job : "");
+    const [company, setCompany] = React.useState(hasIndex() ? state.data[state.index].company : "");
+    const [endYear, setEndYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].end_year) : "");
+    const [startYear, setStartYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].start_year) : "");
 
-    React.useEffect(() => getValues(), [])
-
-    const send = (exclude = false) => {
-        if (endYear < startYear && endYear)
-            modal.configErrorModal({ status: 404, msg: Strings.dateEndFail })
-        else {
-            props.navigation.navigate("Resume", {
-                item: {
-                    index,
-                    type: "experience",
-                    data: exclude ? null : { job, endYear, startYear, company },
-                }
-            });
-        }
-    }
-
-    const getValues = () => {
-        if (params) {
-            setIndex(params.index)
-            setJob(params.data.job);
-            setEndYear(params.data.endYear);
-            setStartYear(params.data.startYear);
-            setCompany(params.data.company);
-        }
-    }
+    const dateIsValid = () =>
+        Boolean(endYear > startYear || !endYear)
 
     const changeDate = value => {
         const date = new Date(value)
@@ -61,6 +44,33 @@ export const Experience = (props) => {
         setDate(date)
         picker.start ? setStartYear(dateFormated) : setEndYear(dateFormated);
     }
+
+    const save = () => {
+        if (dateIsValid()) {
+            StorageResume.saveExperience(job, company, formatDate(endYear), formatDate(startYear))
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else
+            modal.configErrorModal({ msg: Strings.dateEndFail })
+    }
+
+    const edit = () => {
+        if (dateIsValid()) {
+            StorageResume.editExperience(job, company, formatDate(endYear), formatDate(startYear), state.data[state.index].id)
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else
+            modal.configErrorModal({ msg: Strings.dateEndFail })
+    }
+
+    const remove = () => {
+        StorageResume.deleteExperience(state.data[state.index].id)
+            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .catch(status => modal.configErrorModal({ status }))
+    }
+
+    const pressButton = () =>
+        hasIndex() ? edit() : save()
 
     return (
         <Screen>
@@ -99,18 +109,19 @@ export const Experience = (props) => {
                     mode={"date"}
                     locale={"pt-br"}
                     textColor={"white"}
+                    maximumDate={new Date()}
                     androidVariant={"iosClone"}
                     fadeToColor={Colors.background}
                     onDateChange={value => changeDate(value)} />
             }
             <ButtonDefault
                 text={"Salvar"}
-                onPress={send}
+                onPress={pressButton}
                 active={Boolean(job && startYear && company)} />
             {
-                Boolean(Number.isInteger(index)) &&
+                hasIndex() &&
                 <TextDefault
-                    onPress={() => send(true)}
+                    onPress={remove}
                     children={"Excluir Experiência"} />
             }
         </Screen>

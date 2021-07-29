@@ -5,178 +5,153 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
 import { Storage } from '../../services';
-import Strings from '../../constants/strings';
 import { StorageResume } from './storage';
+import Strings from '../../constants/strings';
 import { ModalContext } from '../../routes/modalContext';
-import { ContractedList, TextDefault, SwicthDefault, Screen, ButtonDefault } from '../../helpers';
+import { Network, Language, Project, Formation, Experience } from './form';
+import { ContractedList, TextDefault, SwicthDefault, Screen, Note, Arrow } from '../../helpers';
 
 export const Resume = ({ navigation, route }) => {
 
-    let params = route.params;
     const modal = React.useContext(ModalContext);
 
     const [job, setJob] = React.useState(false);
     const [loading, setLoading] = React.useState(true)
     const [internship, setInternship] = React.useState(false);
-    const [projects, setProjects] = React.useState({ data: [] });
-    const [networks, setNetworks] = React.useState({ data: [] });
-    const [languages, setLanguages] = React.useState({ data: [] });
-    const [formations, setFormations] = React.useState({ data: [] });
-    const [experiences, setExperiencies] = React.useState({ data: [] });
+    const [projects, setProjects] = React.useState({ data: [], visible: false, index: false })
+    const [networks, setNetworks] = React.useState({ data: [], visible: false, index: false })
+    const [languages, setLanguages] = React.useState({ data: [], visible: false, index: false })
+    const [formations, setFormations] = React.useState({ data: [], visible: false, index: false })
+    const [experiences, setExperiencies] = React.useState({ data: [], visible: false, index: false })
 
-    React.useEffect(() =>  getValues(), [])
+    React.useEffect(() => getDefaultValues(), [])
 
-    React.useEffect(() => getItems(), [params])
-
+    const getDefaultValues = async () => {
+        const user = await Storage.getUser()
+        StorageResume.getUser(user.id)
+            .then(data => {
+                formatResume(data)
+                setLoading(false)
+            })
+            .catch(status => modal.configErrorModal({ status, positivePress: () => navigation.goBack() }))
+    }
 
     const formatResume = data => {
         setJob(data.job)
         setInternship(data.internship)
-        setProjects({ data: data.projects })
-        setLanguages({ data: data.languages })
-        setFormations({ data: data.formations })
-        setExperiencies({ data: data.experiences })
-        setNetworks({ data: data.social_network })
+        setProjects({ data: data.projects, visible: false, index: false })
+        setLanguages({ data: data.languages, visible: false, index: false })
+        setFormations({ data: data.formations, visible: false, index: false })
+        setExperiencies({ data: data.experiences, visible: false, index: false })
+        setNetworks({ data: data.social_networks, visible: false, index: false })
     }
 
-    const goBack = (msg, status) =>
-        modal.configErrorModal({ msg, status, positivePress: () => navigation.goBack() })
+    const showForm = (index, data, setState) =>
+        setState({ data, visible: true, index })
 
-    const getValues = async () => {
-        const user = await Storage.getUser()
-        user ?
-            StorageResume.getUser(user.id)
-                .then(data => formatResume(data))
-                .catch(status => goBack(Strings.userFail, status))
-            :
-            goBack(Strings.userFail, 404)
-        setLoading(false)
-    }
-
-    const showAll = (type, state) =>
-        navigation.navigate("ListItems", { type, data: state.data })
-
-    const addItem = type =>
-        navigation.navigate(type)
-
-    const editItem = (index, screen, state) =>
-        navigation.navigate(screen, { data: state.data[index], index });
-
-    const verifyAddPutDelete = (state, setState, item) => {
-        if (Number.isInteger(item.index)) {
-            let data = state.data;
-            item.data ? data[item.index] = item.data : data.splice(item.index, 1)
-            setState({ data })
-        } else {
-            setState({ data: [...state.data, item.data] })
-        }
-    }
-
-    const verifyItem = item => {
-        switch (item.type) {
-            case "project":
-                verifyAddPutDelete(projects, setProjects, item)
-                break;
-            case "network":
-                verifyAddPutDelete(networks, setNetworks, item)
-                break;
-            case "language":
-                verifyAddPutDelete(languages, setLanguages, item)
-                break;
-            case "formation":
-                verifyAddPutDelete(formations, setFormations, item)
-                break;
-            case "experience":
-                verifyAddPutDelete(experiences, setExperiencies, item)
-                break;
-            default:
-                console.log("Unknown type " + item);
-        }
-    }
-
-    const getItems = () => {
-        if (params && params.item)
-            verifyItem(params.item)
-    }
-
-    const buttonActive = () =>
-        Boolean(job || internship)
-
-    const save = () => {
-        console.log(1);
+    const pressArrow = () => {
+        if (networks.visible || projects.visible || languages.visible || formations.visible || experiences.visible) {
+            setProjects({ data: projects.data, visible: false, index: false })
+            setLanguages({ data: languages.data, visible: false, index: false })
+            setFormations({ data: formations.data, visible: false, index: false })
+            setExperiencies({ data: experiences.data, visible: false, index: false })
+            setNetworks({ data: networks.data, visible: false, index: false })
+        } else
+            navigation.goBack()
     }
 
     return (
-        <Screen >
-            {
-                loading
-                    ?
-                    <ActivityIndicator color={"white"} size={"large"} />
-                    :
-                    <View style={styles.containerContent}>
-                        <View>
-                            <TextDefault
-                                styleText={styles.txtSection}
-                                style={styles.containerSection}
-                                children={"Informações adicionais"} />
-                            <ContractedList
-                                title={"Redes"}
-                                keyArray={"name"}
-                                items={networks.data}
-                                addPress={() => addItem("Network")}
-                                showAll={() => showAll("Networks", networks)}
-                                onPress={index => editItem(index, "Network", networks)} />
-                            <ContractedList
-                                title={"Idiomas"}
-                                keyArray={"language"}
-                                items={languages.data}
-                                addPress={() => addItem("Language")}
-                                showAll={() => showAll("Languages", languages)}
-                                onPress={index => editItem(index, "Language", languages)} />
-                            <ContractedList
-                                title={"Projetos"}
-                                keyArray={"name"}
-                                items={projects.data}
-                                addPress={() => addItem("Project")}
-                                showAll={() => showAll("Projects", projects)}
-                                onPress={index => editItem(index, "Project", projects)} />
-                            <ContractedList
-                                keyArray={"title"}
-                                title={"Formações"}
-                                items={formations.data}
-                                addPress={() => addItem("Formation")}
-                                showAll={() => showAll("Formations", formations)}
-                                onPress={index => editItem(index, "Formation", formations)} />
-                            <ContractedList
-                                keyArray={"job"}
-                                title={"Experiências"}
-                                items={experiences.data}
-                                addPress={() => addItem("Experience")}
-                                showAll={() => showAll("Experiences", experiences)}
-                                onPress={index => editItem(index, "Experience", experiences)} />
-                            <View style={styles.containerSwitch}>
-                                <SwicthDefault
-                                    on={internship}
-                                    changeValue={value => setInternship(value)} />
-                                <TextDefault
-                                    children={"Estágio"}
-                                    style={styles.containerTxtSwitch} />
-                            </View>
-                            <View style={styles.containerSwitch}>
-                                <SwicthDefault
-                                    on={job}
-                                    changeValue={value => setJob(value)} />
-                                <TextDefault
-                                    children={"Trabalho"}
-                                    style={styles.containerTxtSwitch} />
-                            </View>
-                        </View>
-                        <ButtonDefault
-                            text={"Salvar"}
-                            onPress={save}
-                            active={buttonActive()} />
-                    </View>
-            }
-        </Screen>
+        <>
+            <Arrow onPress={pressArrow} />
+            <Screen>
+                {
+                    loading
+                        ?
+                        <ActivityIndicator color={"white"} size={"large"} />
+                        :
+                        <>
+                            {
+                                networks.visible &&
+                                <Network
+                                    state={networks}
+                                    reload={getDefaultValues} />
+                            }
+                            {
+                                languages.visible &&
+                                <Language
+                                    state={languages}
+                                    reload={getDefaultValues} />
+                            }
+                            {
+                                projects.visible &&
+                                <Project
+                                    state={projects}
+                                    reload={getDefaultValues} />
+                            }
+                            {
+                                formations.visible &&
+                                <Formation
+                                    state={formations}
+                                    reload={getDefaultValues} />
+                            }
+                            {
+                                experiences.visible &&
+                                <Experience
+                                    state={experiences}
+                                    reload={getDefaultValues} />
+                            }
+                            {
+                                Boolean(!networks.visible && !projects.visible && !languages.visible && !formations.visible && !experiences.visible) &&
+                                <View style={styles.containerContent}>
+                                    <View>
+                                        <Note text={Strings.descriptionResume} />
+                                        <ContractedList
+                                            title={"Redes"}
+                                            keyArray={'name'}
+                                            items={networks.data}
+                                            onPress={index => showForm(index, networks.data, setNetworks)} />
+                                        <ContractedList
+                                            title={"Idiomas"}
+                                            keyArray={'language'}
+                                            items={languages.data}
+                                            onPress={index => showForm(index, languages.data, setLanguages)} />
+                                        <ContractedList
+                                            title={"Projetos"}
+                                            keyArray={'name'}
+                                            items={projects.data}
+                                            onPress={index => showForm(index, projects.data, setProjects)} />
+                                        <ContractedList
+                                            title={"Formações"}
+                                            keyArray={'title'}
+                                            items={formations.data}
+                                            onPress={index => showForm(index, formations.data, setFormations)} />
+                                        <ContractedList
+                                            title={"Experiências"}
+                                            keyArray={'job'}
+                                            items={experiences.data}
+                                            onPress={index => showForm(index, experiences.data, setExperiencies)} />
+                                        <View style={styles.containerSwitch}>
+                                            <SwicthDefault
+                                                on={internship}
+                                                changeValue={value => setInternship(value)} />
+                                            <TextDefault
+                                                children={"Estágio"}
+                                                style={styles.containerTxtSwitch} />
+                                        </View>
+                                        <View style={styles.containerSwitch}>
+                                            <SwicthDefault
+                                                on={job}
+                                                changeValue={value => setJob(value)} />
+                                            <TextDefault
+                                                children={"Trabalho"}
+                                                style={styles.containerTxtSwitch} />
+                                        </View>
+                                    </View>
+                                </View>
+                            }
+                        </>
+                }
+            </Screen>
+        </>
     );
 };

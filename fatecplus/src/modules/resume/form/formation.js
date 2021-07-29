@@ -1,54 +1,41 @@
-
 import React from 'react';
-
-import Strings from '../../constants/strings';
 import DatePicker from 'react-native-date-picker';
 
-import Colors from '../../constants/colors';
-import { ModalContext } from '../../routes/modalContext';
-import { ButtonDefault, Input, Note, DatePickerDefault, Screen, TextDefault } from '../../helpers';
+import { StorageResume } from '../storage';
+import Colors from '../../../constants/colors';
+import Strings from '../../../constants/strings';
+import { ModalContext } from '../../../routes/modalContext';
+import { Screen, Note, Input, ButtonDefault, TextDefault, DatePickerDefault } from '../../../helpers';
 
-export const Formation = (props) => {
+export const Formation = ({ state, reload }) => {
 
-    const params = props.route.params;
+    const hasIndex = () =>
+        Number.isInteger(state.index)
+
+    const unFormatDate = date =>
+        date ? date.split("-").reverse().join("/") : null
+
+    const formatDate = date =>
+        date ? date.split("/").reverse().join("-") : null;
+
+    const unFormatHour = hour =>
+        hour ? hour.split(":")[0] : null
+
+    const FormatHour = hour =>
+        hour ? `${hour}:00:00` : null
 
     const modal = React.useContext(ModalContext);
 
-    const [title, setTitle] = React.useState("");
-    const [index, setIndex] = React.useState(null);
-    const [subTitle, setSubTitle] = React.useState("");
-    const [endYear, setEndYear] = React.useState("");
-    const [startYear, setStartYear] = React.useState("");
     const [date, setDate] = React.useState(new Date());
-    const [workload, setWorkload] = React.useState("");
     const [picker, setPicker] = React.useState({ on: false, start: true });
+    const [title, setTitle] = React.useState(hasIndex() ? state.data[state.index].title : "");
+    const [subTitle, setSubTitle] = React.useState(hasIndex() ? state.data[state.index].subtitle : "");
+    const [endYear, setEndYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].end_year) : "");
+    const [startYear, setStartYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].start_year) : "");
+    const [workload, setWorkload] = React.useState(hasIndex() ? unFormatHour(state.data[state.index].workload) : "");
 
-    React.useEffect(() => getValues(), [])
-
-    const send = (exclude = false) => {
-        if (endYear < startYear && endYear)
-            modal.configErrorModal({ status: 404, msg: Strings.dateEndFail })
-        else {
-            props.navigation.navigate("Resume", {
-                item: {
-                    index,
-                    type: "formation",
-                    data: exclude ? null : { title, subTitle, endYear, startYear, workload },
-                }
-            });
-        }
-    }
-
-    const getValues = () => {
-        if (params) {
-            setIndex(params.index)
-            setTitle(params.data.title);
-            setSubTitle(params.data.subTitle);
-            setEndYear(params.data.endYear);
-            setStartYear(params.data.startYear);
-            setWorkload(params.data.workload);
-        }
-    }
+    const dateIsValid = () =>
+        Boolean(endYear > startYear || !endYear)
 
     const changeDate = value => {
         const date = new Date(value)
@@ -69,6 +56,33 @@ export const Formation = (props) => {
         if ((/^\d+$/.test(value)) && Number(value))
             setWorkload(value)
     }
+
+    const save = () => {
+        if (dateIsValid()) {
+            StorageResume.saveFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload))
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else
+            modal.configErrorModal({ msg: Strings.dateEndFail })
+    }
+
+    const edit = () => {
+        if (dateIsValid()) {
+            StorageResume.editFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload), state.data[state.index].id)
+                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
+                .catch(status => modal.configErrorModal({ status }))
+        } else
+            modal.configErrorModal({ msg: Strings.dateEndFail })
+    }
+
+    const remove = () => {
+        StorageResume.deleteFormation(state.data[state.index].id)
+            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .catch(status => modal.configErrorModal({ status }))
+    }
+
+    const pressButton = () =>
+        hasIndex() ? edit() : save()
 
     return (
         <Screen>
@@ -107,6 +121,7 @@ export const Formation = (props) => {
                     mode={"date"}
                     locale={"pt-br"}
                     textColor={"white"}
+                    maximumDate={new Date()}
                     androidVariant={"iosClone"}
                     fadeToColor={Colors.background}
                     onDateChange={value => changeDate(value)} />
@@ -122,12 +137,12 @@ export const Formation = (props) => {
                 onchange={text => changeTime(text)} />
             <ButtonDefault
                 text={"Salvar"}
-                onPress={send}
+                onPress={pressButton}
                 active={Boolean(title && startYear)} />
             {
-                Boolean(Number.isInteger(index)) &&
+                hasIndex() &&
                 <TextDefault
-                    onPress={() => send(true)}
+                    onPress={remove}
                     children={"Excluir Formação"} />
             }
         </Screen>

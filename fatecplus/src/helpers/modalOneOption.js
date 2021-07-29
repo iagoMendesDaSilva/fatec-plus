@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     divisionButton: {
-        height: .3,
+        height: .5,
         width: "75%",
         backgroundColor: "rgba(255,255,255,.5)",
     },
