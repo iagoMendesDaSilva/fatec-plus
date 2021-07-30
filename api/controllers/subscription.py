@@ -29,9 +29,8 @@ class SubscriptionController:
                         return True
                 if len(subs) >0 and indication!=None or len(subs)==0:
                         new_sub =Subscription(job=job_id, subscription=current_user.id, company=job.company,indication=indication)
-                        emailSender.send_resume(current_user,job)
-                        notification.send([job.jobs.onesignal_playerID],"Nova inscrição",current_user.name+" se inscreveu para a vaga: "+job.name,{"id":current_user.id, "type":"Student"})
                         dao.add(new_sub)
+                        notification.send([job.jobs.onesignal_playerID],"Nova inscrição",current_user.name+" se inscreveu para a vaga: "+job.name,{"id":current_user.id, "type":"Student"})
                 return True
             else:
                 student = dao.get_by_id(data['student'],User)
@@ -46,6 +45,13 @@ class SubscriptionController:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job or Indication."}), 404))
+        except Exception as err:
+            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+
+    def send_resume(self, current_user, job_id):
+        try:
+            job = dao.get_by_id(job_id,Job)
+            emailSender.send_resume(current_user,job)
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 

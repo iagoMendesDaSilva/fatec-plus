@@ -122,17 +122,12 @@ export const Vacancies = ({ navigation, route }) => {
     const unFormatDate = date =>
         date ? date.split("-").reverse().join("/") : null
 
-
-    const goToVacancie = (id, editVacancy) =>
-        editVacancy
-            ? navigation.navigate("Vacancy", { id })
-            : navigation.navigate("Job", { id })
-
-    const verifyOpenVacancy = id => {
-        const editVacancy = Boolean(user.category === "Company" || user.category === "Internship Coordinator")
-        route.params ? requestOrIndicate(id, route.params.student) : goToVacancie(id, editVacancy)
+    const goToJob = id => {
+        if (route.params) {
+            requestOrIndicate(id, route.params.studentId)
+        } else
+            navigation.navigate("Job", { id })
     }
-
 
     const requestOrIndicate = (vacancyId, studentId) => {
         StorageVacancie.solicit(vacancyId, studentId)
@@ -156,7 +151,7 @@ export const Vacancies = ({ navigation, route }) => {
         return (
             <Shimmer style={styles.itemShimmer} visible={loaded}>
                 <TouchableOpacity
-                    onPress={() => verifyOpenVacancy(id)}
+                    onPress={() => goToJob(id)}
                     key={String(index)}
                     style={styles.conatinerItem}>
                     <View style={styles.containerText}>

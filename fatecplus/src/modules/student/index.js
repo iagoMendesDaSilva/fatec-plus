@@ -147,7 +147,7 @@ export const Student = ({ navigation, route }) => {
         </View>
 
     const choiceVacancy = () =>
-        navigation.navigate("Vacancies", { student: user.id })
+        navigation.navigate("Vacancies", { studentId: user.id })
 
     return (
         <View style={styles.containerAll}>

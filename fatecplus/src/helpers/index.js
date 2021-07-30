@@ -10,6 +10,7 @@ export * from './itemList';
 export * from './textArea';
 export * from './shimmer';
 export * from './datePicker';
+export * from './optionMenu';
 export * from './headerList';
 export * from './inputCode';
 export * from './textDefault';

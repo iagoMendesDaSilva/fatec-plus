@@ -1,14 +1,14 @@
 import styles from './style';
 
 import React from 'react';
-import { View, Linking, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Linking, Animated, Dimensions, } from 'react-native';
 
 import { StorageJob } from './storage';
 import Colors from '../../constants/colors';
 import Strings from '../../constants/strings';
 import { Storage, Animate } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, Icon, Load, ModalBottom } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, ModalBottom } from '../../helpers'
 
 export const Job = ({ navigation, route }) => {
 
@@ -20,7 +20,7 @@ export const Job = ({ navigation, route }) => {
     const [loadingSub, setLoadingSub] = React.useState(false);
     const [subscribed, setSubscribed] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
-    const [permission, setPermission] = React.useState({ indicate: false, subscribe: false })
+    const [permission, setPermission] = React.useState({ indicate: false, subscribe: false, request: false })
 
 
     React.useEffect(() => getJob(), [])
@@ -30,7 +30,7 @@ export const Job = ({ navigation, route }) => {
 
         StorageJob.getJob(route.params.id)
             .then(async data => {
-                configPermission(user, data.job)
+                configPermission(user, data.job, data.company)
                 setJob(data.job)
                 setCompany(data.company)
                 setLoading(false)
@@ -39,16 +39,16 @@ export const Job = ({ navigation, route }) => {
     }
 
 
-    const configPermission = (user, job) => {
+    const configPermission = (user, job, company) => {
         const category = user.category;
-        let subscribe = Boolean(category === "Student")
-        let indicate = Boolean(category === "Teacher" || category == "Internship Coordinator")
-        setPermission({ indicate, subscribe })
+        const subscribe = Boolean(category === "Student")
+        let request = Boolean(category === "Company" || category === "Internship Coordinator" && company.id === user.id)
+        let indicate = Boolean(category === "Teacher" || category === "Internship Coordinator" && company.id != user.id)
+        setPermission({ indicate, subscribe, request })
         subscribe && verifySubscribed(job.id)
     }
 
     const verifySubscribed = id => {
-        console.log(id);
         StorageJob.verifySubscribed(id)
             .then(data => setSubscribed(true))
             .catch(status => console.log(status));
@@ -97,12 +97,15 @@ export const Job = ({ navigation, route }) => {
     const choiceStudent = () =>
         permission.subscribe
             ? subscribed ? unSubscribe() : confirmSubscription()
-            : navigation.navigate("Students", { job: job.id })
+            : navigation.navigate("Students", { job: job.id, msg: permission.indicate ? Strings.indicated : Strings.requested })
 
     const getTitleButton = () =>
         permission.indicate
             ? "INDICAR"
-            : subscribed ? "INSCRITO" : "INSCREVER-SE"
+            : permission.request
+                ? "SOLICITAR"
+                : subscribed ? "INSCRITO" : "INSCREVER-SE"
+
 
 
     const confirmSubscription = () => {
@@ -121,9 +124,18 @@ export const Job = ({ navigation, route }) => {
         setLoadingSub(true)
         const indication = route.params.indication || null;
         StorageJob.subscribe(job.id, indication)
-            .then(data => setSubscribed(true))
+            .then(data => {
+                setSubscribed(true)
+                sendResume()
+            })
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoadingSub(false))
+    }
+
+    const sendResume = () => {
+        StorageJob.sendResume(job.id)
+            .then(data => console.log(data))
+            .catch(status => console.log(status))
     }
 
     const unSubscribe = async () => {
@@ -138,7 +150,29 @@ export const Job = ({ navigation, route }) => {
         if (job.internship && job.job)
             return "Estágio ou Efetivo"
         else
-            job.internship ? "Estágio" : "Efetivo"
+            return job.internship ? "Estágio" : "Efetivo"
+    }
+
+    const editJob = () =>
+        navigation.navigate("Vacancy", { id: job.id })
+
+    const deleteJob = () => {
+        StorageJob.deleteJob(job.id)
+            .then(data =>
+                modal.configErrorModal({ msg: Strings.deletedJob, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.configErrorModal({ status }))
+    }
+
+    const confirmDeleteJob = () => {
+        modal.configErrorModal({
+            options: true,
+            title: "Excluir vaga",
+            iconName: "trash",
+            msg: Strings.deleteJob,
+            iconLib: "fontawesome",
+            iconColor: Colors.error,
+            positivePress: deleteJob,
+        })
     }
 
     return (
@@ -172,14 +206,14 @@ export const Job = ({ navigation, route }) => {
                                     children={job.name}
                                     styleText={styles.txtName} />
                                 <TextDefault
+                                    styleText={styles.txtCompany}
+                                    children={company.name} />
+                                <TextDefault
                                     styleText={styles.txtAddress}
                                     children={`${company.city}-${company.state}`} />
-                                <TextDefault
-                                    styleText={styles.txtDate}
-                                    children={job.date ? unFormatDate(job.date) : "Sem prazo"} />
                                 <View style={styles.containerButtons}>
                                     {
-                                        Boolean(permission.subscribe || permission.indicate) &&
+                                        Boolean(permission.subscribe || permission.indicate || permission.request) &&
                                         <ButtonSmall
                                             loading={loadingSub}
                                             onPress={choiceStudent}
@@ -193,6 +227,15 @@ export const Job = ({ navigation, route }) => {
                                         style={styles.button} />
                                 </View>
                             </View>
+                            {
+                                Boolean(permission.request) &&
+                                <OptionMenu
+                                    options={[
+                                        { title: "Editar", onPress: editJob },
+                                        { title: "Excluir", onPress: confirmDeleteJob }
+                                    ]}
+                                />
+                            }
                             <View style={styles.containerContent}>
                                 <TextDefault
                                     children={"Sobre"}
@@ -201,16 +244,22 @@ export const Job = ({ navigation, route }) => {
                                     children={getTypeJob()}
                                     styleText={styles.txtSubtitleLink} />
                                 <TextDefault
-                                    lines={0}
-                                    children={job.description ? job.description : 'Sem descrição sobre a vaga.'}
-                                    styleText={styles.txtText} />
+                                    styleText={styles.txtDate}
+                                    children={job.date ? `Prazo até ${unFormatDate(job.date)}` : "Sem prazo para inscrições"} />
+                                {
+                                    Boolean(job.description) &&
+                                    <TextDefault
+                                        lines={0}
+                                        children={job.description}
+                                        styleText={styles.txtSubtitle} />
+                                }
 
                                 {
                                     job.requirements.length > 0 &&
                                     <>
                                         <TextDefault
                                             children={"Requisitos"}
-                                            styleText={styles.txtTopic} />
+                                            styleText={styles.txtTopicLine} />
                                         {
                                             job.requirements.map((item, index) => renderItemRequeriment(item, index))
                                         }
@@ -222,7 +271,7 @@ export const Job = ({ navigation, route }) => {
                                     <>
                                         <TextDefault
                                             children={"Benefícios"}
-                                            styleText={styles.txtTopic} />
+                                            styleText={styles.txtTopicLine} />
                                         {
                                             job.benefits.map((item, index) => renderItemBenefit(item, index))
                                         }

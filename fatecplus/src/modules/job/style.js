@@ -18,11 +18,11 @@ export default StyleSheet.create({
         color: "white",
         fontWeight: "bold",
     },
-    txtDate: {
+    txtAddress: {
         fontSize: 20,
         color: "rgba(255,255,255,.5)",
     },
-    txtAddress: {
+    txtCompany: {
         fontSize: 20,
         color: "white",
     },
@@ -46,15 +46,18 @@ export default StyleSheet.create({
         paddingTop: 15,
         color: "rgba(255,255,255,.5)",
     },
+    txtTopicLine: {
+        fontSize: 20,
+        marginTop: 5,
+        paddingTop: 5,
+        borderTopWidth: .5,
+        color: "rgba(255,255,255,.5)",
+        borderTopColor: Colors.background,
+    },
     txtText: {
         fontSize: 18,
         color: "white",
         textAlign: "justify",
-    },
-    containerItem: {
-        paddingBottom: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.background,
     },
     txtTitle: {
         fontSize: 18,
@@ -63,7 +66,7 @@ export default StyleSheet.create({
     },
     txtSubtitle: {
         fontSize: 16,
-        textAlign:"justify",
+        textAlign: "justify",
         color: "rgba(255,255,255,.5)",
     },
     txtSubtitleLink: {
@@ -98,7 +101,7 @@ export default StyleSheet.create({
     },
     containerContactContent: {
         flex: 1,
-        justifyContent:"center",
+        justifyContent: "center",
     },
     hitSlop: {
         left: 20,

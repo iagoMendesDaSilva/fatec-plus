@@ -4,6 +4,8 @@ export * from './executor';
 export * from './requestJob';
 export * from './requestUser';
 export * from './requestEmail';
+export * from './requestDeleteJob';
+export * from './requestResume';
 export * from './requestVerifyEmail';
 export * from './requestSubscription';
 export * from './requestSubscribed';

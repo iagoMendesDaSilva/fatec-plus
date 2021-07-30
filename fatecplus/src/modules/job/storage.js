@@ -1,4 +1,4 @@
-import { Executor, RequestJob, RequestSubscription, RequestSubscribed, RequestUnSubscription} from '../../services/request';
+import { Executor, RequestJob, RequestSubscription, RequestSubscribed, RequestUnSubscription, RequestResume, RequestDeleteJob} from '../../services/request';
 
 export class StorageJob {
 
@@ -29,6 +29,22 @@ export class StorageJob {
     static verifySubscribed(jobId){
         return new Promise((resolve, reject) => {
             Executor.run(new RequestSubscribed(jobId))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static sendResume(jobId){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestResume(jobId))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static deleteJob(jobId){
+        return new Promise((resolve, reject) => {
+            Executor.run(new RequestDeleteJob(jobId))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

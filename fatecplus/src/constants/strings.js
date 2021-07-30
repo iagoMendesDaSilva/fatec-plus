@@ -2,6 +2,8 @@ export default {
     spaceIcon:"     ",
     noPassword: "Sem senha.",
     weekPassword: "Senha fraca",
+    deleteJob:"Deseja excluir a vaga?",
+    deletedJob:"Vaga excluida com sucesso!",
     descriptionResume:"Adicione suas informações para quando se inscrver em uma vaga podermos mandar seu currículo para a empresa.",
     confirmSub:"Iremos enviar todas suas informações.",
     usernameRegistred:"Usuário já cadastrado.",

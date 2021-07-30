@@ -18,9 +18,9 @@ export class StorageVacancie {
         });
     }
 
-    static solicit(jobId, student) {
+    static solicit(jobId, indication) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSubscription(jobId, student))
+            Executor.run(new RequestSubscription(jobId, indication, false))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

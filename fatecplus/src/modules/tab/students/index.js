@@ -9,7 +9,7 @@ import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext'
 import { HeaderList, TextDefault, Shimmer } from '../../../helpers'
 
-export const Students = ({ navigation }) => {
+export const Students = ({ navigation, route }) => {
 
     const modal = React.useContext(ModalContext);
 
@@ -45,8 +45,19 @@ export const Students = ({ navigation }) => {
             positivePress: () => navigation.replace("Login")
         })
 
-    const goToStudent = id =>
-        navigation.navigate("Student", { id })
+    const closeIndication = () => {
+        route.params = null
+        navigation.goBack()
+    }
+
+    const goToStudent = id => {
+        if (route.params) {
+            StorageStudent.solicit(route.params.job, id)
+                .then(data => modal.configErrorModal({ msg: route.params.msg, positivePress: closeIndication }))
+                .catch(status => () => modal.configErrorModal({ status, positivePress: closeIndication }))
+        } else
+            navigation.navigate("Student", { id })
+    }
 
     const renderItem = ({ id, image, name, studying }, index) => {
         return (
@@ -57,7 +68,7 @@ export const Students = ({ navigation }) => {
                     style={styles.conatinerItem}>
                     <Image
                         style={styles.img}
-                        source={{ uri: image, headers: { Authorization: 'Bearer xyz' } }}
+                        source={{ uri: image }}
                         defaultSource={require("../../../assets/img/user_male.png")} />
                     <View style={styles.containerText}>
                         <TextDefault
