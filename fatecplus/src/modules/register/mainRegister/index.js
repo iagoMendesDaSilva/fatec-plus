@@ -67,11 +67,11 @@ export const MainRegister = (props) => {
 
     const verifyFields = data => {
         StorageRegister.verifyEmail(email)
-            .then(resp => modal.configErrorModal({  msg: Strings.emailRegistred }))
+            .then(resp => modal.configErrorModal({ msg: Strings.emailRegistred }))
             .catch(err => {
                 err === 404 ?
                     StorageRegister.verifyUsername(username)
-                        .then(resp => modal.configErrorModal({  msg: Strings.usernameRegistred }))
+                        .then(resp => modal.configErrorModal({ msg: Strings.usernameRegistred }))
                         .catch(err => props.navigation.navigate("AddressRegister", data))
                     :
                     modal.configErrorModal({ status })
@@ -80,6 +80,8 @@ export const MainRegister = (props) => {
 
     const editUser = async data => {
         await StorageRegister.changeImage(image.base64 ? image.base64 : null)
+            .then(data => console.log(data))
+            .catch(status => console.log(status))
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
                 modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
@@ -156,7 +158,7 @@ export const MainRegister = (props) => {
                     iconName={"pencil"}
                     defaultValue={name}
                     placeholder={"Nome"}
-                    capitalize={"sentences"}
+                    capitalize={"words"}
                     onchange={text => setName(text)}
                     iconLib={"MaterialCommunityIcons"} />
                 <Input

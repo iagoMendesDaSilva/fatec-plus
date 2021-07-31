@@ -65,7 +65,7 @@ export const Experience = ({ state, reload }) => {
 
     const remove = () => {
         StorageResume.deleteExperience(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .then(data => modal.configErrorModal({ msg: Strings.experienceDeleted, positivePress: reload }))
             .catch(status => modal.configErrorModal({ status }))
     }
 

@@ -80,7 +80,7 @@ class ProjectController:
         try:
             project  =dao.get_by_id(id,Project)
             if project:
-                if current_user.id == project.id:
+                if current_user.id == project.id_user:
                     projectDao.update_many(id,data)
                 else:
                     raise CurrentUser

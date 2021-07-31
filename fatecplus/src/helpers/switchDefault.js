@@ -12,20 +12,16 @@ export const SwicthDefault = ({ on = false, changeValue }) => {
 
     React.useEffect(() => Animate.timming(positionX, on ? 35 : 5, 300).start(), [on])
 
-    const pressSwicth = () => {
-        if (changeValue) {
-            Animate.timming(positionX, on ? 5 : 35, 300).start();
-            changeValue(!on)
-        }
-    }
+    const pressSwicth = () =>
+        changeValue && changeValue(!on)
 
-    return (
-        <TouchableOpacity
-            onPress={pressSwicth}
-            style={{ ...styles.containerSwitch, backgroundColor: on ? Colors.primary : Colors.background_light }}  >
-            <Animated.View style={{ ...styles.switch, transform: [{ translateX: positionX }] }} />
-        </TouchableOpacity>
-    );
+return (
+    <TouchableOpacity
+        onPress={pressSwicth}
+        style={{ ...styles.containerSwitch, backgroundColor: on ? Colors.primary : Colors.background_light }}  >
+        <Animated.View style={{ ...styles.switch, transform: [{ translateX: positionX }] }} />
+    </TouchableOpacity>
+);
 }
 
 const styles = StyleSheet.create({

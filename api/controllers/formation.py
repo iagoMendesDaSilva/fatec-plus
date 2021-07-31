@@ -12,9 +12,9 @@ class FormationController:
             formation = Formation(
             title=data['title'],
             subtitle=data['subtitle'],
-            end_year=data['endYear'],
+            end_year=data['end_year'],
             workload=data['workload'],
-            start_year=data['startYear'],
+            start_year=data['start_year'],
             id_user=current_user.id)
             dao.add(formation)
             return True
@@ -30,9 +30,9 @@ class FormationController:
                 formation = Formation(
                 title=data['title'],
                 subtitle=data['subtitle'],
-                end_year=data['endYear'],
+                end_year=data['end_year'],
                 workload=data['workload'],
-                start_year=data['startYear'],
+                start_year=data['start_year'],
                 id_user=current_user.id)
                 formations.append(formation)
             dao.add_all(formations)
@@ -84,7 +84,7 @@ class FormationController:
         try:
             formation  =dao.get_by_id(id,Formation)
             if formation:
-                if current_user.id == formation.id:
+                if current_user.id == formation.id_user:
                     formationDao.update_many(id,data)
                 else:
                     raise CurrentUser

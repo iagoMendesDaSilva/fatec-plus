@@ -24,18 +24,30 @@ export const Vacancies = ({ navigation, route }) => {
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
-        setUser(currentUser)
-        getVacancies(currentUser.category, currentUser.id)
+        StorageVacancie.getUser(currentUser.id)
+            .then(data => {
+                setUser(data)
+                getVacancies(data.category, data.id, data.internship, data.job)
+            })
+            .catch(status => modal.configErrorModal({ status }))
     }
 
-    const getVacancies = (category, id) => {
-        category === "Company" || category === "Internship Coordinator"
-            ? getVacanciesByCompany(id)
-            : getAllVacancies()
+    const getVacancies = (category, id, internship, job) => {
+        if (category === "Company" || category === "Internship Coordinator")
+            getVacanciesByCompany(id)
+        else
+            getAllVacancies(category === "Student", internship, job)
     }
 
-    const configVacancies = (jobs) => {
-        const data = jobs.filter(item => item.date ? checkDeadLine(item.date) : item)
+    const configVacancies = (jobs, isStudent, internship, job) => {
+        const data = jobs.filter(item => {
+            let itemValid = item;
+            if (isStudent)
+                itemValid = item.internship === internship || item.job === job ? item : null
+            if (item.date)
+                itemValid = checkDeadLine(item.date) ? item : null
+            return itemValid
+        })
         setVacancies({ data })
     }
 
@@ -60,14 +72,16 @@ export const Vacancies = ({ navigation, route }) => {
             return Colors.error
         if (date > today)
             return Colors.warning
-        return Colors.success
+        if (!date)
+            return Colors.success
+        return "gray"
     }
 
 
     const getVacanciesByCompany = id => {
         setLoaded(false,
             StorageVacancie.getVacanciesByCompany(id)
-                .then(data => configVacancies(data))
+                .then(data => setVacancies({ data }))
                 .catch(status => configModal(status))
                 .finally(() => {
                     route.params = null;
@@ -76,10 +90,10 @@ export const Vacancies = ({ navigation, route }) => {
                 }))
     }
 
-    const getAllVacancies = () => {
+    const getAllVacancies = (isStudent, internship, job) => {
         setLoaded(false,
             StorageVacancie.getVacancies()
-                .then(data => configVacancies(data))
+                .then(data => configVacancies(data, isStudent, internship, job))
                 .catch(status => configModal(status))
                 .finally(() => {
                     route.params = null;
@@ -97,7 +111,7 @@ export const Vacancies = ({ navigation, route }) => {
 
     const onRefresh = () => {
         setRefreshing(true)
-        getVacancies(user.category, user.id)
+        getUser()
     }
 
     const getRefreshControl = () =>

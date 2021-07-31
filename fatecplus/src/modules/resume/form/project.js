@@ -31,7 +31,7 @@ export const Project = ({ state, reload }) => {
 
     const remove = () => {
         StorageResume.deleteProject(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .then(data => modal.configErrorModal({ msg: Strings.projectDeleted, positivePress: reload }))
             .catch(status => modal.configErrorModal({ status }))
     }
 

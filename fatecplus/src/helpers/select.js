@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     containerText: {
         flex: 1,
         height: 40,
+        marginRight:5,
         justifyContent: "center",
     },
     txtSelectItem: {

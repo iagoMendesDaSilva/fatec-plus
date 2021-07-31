@@ -30,7 +30,7 @@ export const Network = ({ state, reload }) => {
 
     const remove = () => {
         StorageResume.deleteNetwork(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .then(data => modal.configErrorModal({ msg: Strings.networkDeleted, positivePress: reload }))
             .catch(status => modal.configErrorModal({ status }))
     }
 

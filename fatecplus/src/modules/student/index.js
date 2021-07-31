@@ -7,7 +7,7 @@ import { Storage, Animate } from '../../services';
 import { StorageUser } from './storage';
 import Colors from '../../constants/colors';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, Icon, Load, ModalBottom } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, Arrow, Load, ModalBottom } from '../../helpers'
 
 export const Student = ({ navigation, route }) => {
 
@@ -149,8 +149,12 @@ export const Student = ({ navigation, route }) => {
     const choiceVacancy = () =>
         navigation.navigate("Vacancies", { studentId: user.id })
 
+    const pressArrow = () =>
+        navigation.navigate("Home", { screen: "Students", params: null })
+
     return (
         <View style={styles.containerAll}>
+            <Arrow onPress={pressArrow} />
             <ModalBottom
                 open={showModal}
                 title={"Contato"}

@@ -78,7 +78,7 @@ class LanguageController:
         try:
             language  =dao.get_by_id(id,Language)
             if language:
-                if current_user.id == language.id:
+                if current_user.id == language.id_user:
                     languageDao.update_many(id,data)
                 else:
                     raise CurrentUser

@@ -78,7 +78,7 @@ class SocialNetworkController:
         try:
             socialNetwork  =dao.get_by_id(id,SocialNetwork)
             if socialNetwork:
-                if current_user.id == socialNetwork.id:
+                if current_user.id == socialNetwork.id_user:
                     socialNetworkDao.update_many(id,data)
                 else:
                     raise CurrentUser

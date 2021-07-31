@@ -53,8 +53,8 @@ export const StackNav = () => {
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Home" component={TabNav} options={{ header: ({ scene }) => verifyScreenHome(scene) }} />
-            <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, true) }} />
+            <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, false) }} />
+            <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, false) }} />
         </Stack.Navigator>
     );
 }

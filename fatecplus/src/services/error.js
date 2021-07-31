@@ -15,7 +15,7 @@ export class Error {
             case 404:
                 return "Não encontrado.";
             default:
-                return "Erro interno, estamos averiguando...";
+                return "Erro interno, contate o administrador";
         }
     }
 

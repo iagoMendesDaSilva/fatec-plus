@@ -60,6 +60,20 @@ export const Resume = ({ navigation, route }) => {
             navigation.goBack()
     }
 
+    const setInternshipSwicth = async value => {
+        const user = await Storage.getUser()
+        StorageResume.editInternshipUser(value, user.id)
+            .then(data => setInternship(value))
+            .catch(status => modal.configErrorModal({status}))
+    }
+
+    const setJobSwitch = async value => {
+        const user = await Storage.getUser()
+        StorageResume.editJobUser(value, user.id)
+            .then(data => setJob(value))
+            .catch(status =>  modal.configErrorModal({status}))
+    }
+
     return (
         <>
             <Arrow onPress={pressArrow} />
@@ -133,7 +147,7 @@ export const Resume = ({ navigation, route }) => {
                                         <View style={styles.containerSwitch}>
                                             <SwicthDefault
                                                 on={internship}
-                                                changeValue={value => setInternship(value)} />
+                                                changeValue={value => setInternshipSwicth(value)} />
                                             <TextDefault
                                                 children={"Estágio"}
                                                 style={styles.containerTxtSwitch} />
@@ -141,7 +155,7 @@ export const Resume = ({ navigation, route }) => {
                                         <View style={styles.containerSwitch}>
                                             <SwicthDefault
                                                 on={job}
-                                                changeValue={value => setJob(value)} />
+                                                changeValue={value => setJobSwitch(value)} />
                                             <TextDefault
                                                 children={"Trabalho"}
                                                 style={styles.containerTxtSwitch} />

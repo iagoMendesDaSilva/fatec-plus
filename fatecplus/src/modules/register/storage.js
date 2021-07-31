@@ -22,9 +22,9 @@ export class StorageRegister {
     }
 
     static editUser(data, id) {
-        const { email, name, image, phone, course, username, description, birthDate } = data;
+        const { email, name, phone, course, username, description, birthDate } = data;
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditUser(email, name, image, phone, course, username, description, birthDate, id))
+            Executor.run(new RequestEditUser(email, name, phone, course, username, description, birthDate, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

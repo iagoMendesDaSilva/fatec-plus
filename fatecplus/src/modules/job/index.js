@@ -8,7 +8,7 @@ import Colors from '../../constants/colors';
 import Strings from '../../constants/strings';
 import { Storage, Animate } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, ModalBottom } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalBottom } from '../../helpers'
 
 export const Job = ({ navigation, route }) => {
 
@@ -23,7 +23,10 @@ export const Job = ({ navigation, route }) => {
     const [permission, setPermission] = React.useState({ indicate: false, subscribe: false, request: false })
 
 
-    React.useEffect(() => getJob(), [])
+    React.useEffect(() => {
+        getJob()
+        navigation.addListener('focus', () => getJob())
+    }, [])
 
     const getJob = async () => {
         const user = await Storage.getUser()
@@ -126,7 +129,7 @@ export const Job = ({ navigation, route }) => {
         StorageJob.subscribe(job.id, indication)
             .then(data => {
                 setSubscribed(true)
-                sendResume()
+                job.receive_by_email && sendResume()
             })
             .catch(status => modal.configErrorModal({ status }))
             .finally(() => setLoadingSub(false))
@@ -175,8 +178,12 @@ export const Job = ({ navigation, route }) => {
         })
     }
 
+    const pressArrow = () =>
+        navigation.navigate("Home", { screen: "Vacancies", params: null })
+
     return (
         <View style={styles.containerAll}>
+            <Arrow onPress={pressArrow} />
             <ModalBottom
                 open={showModal}
                 title={"Contato"}
@@ -245,7 +252,11 @@ export const Job = ({ navigation, route }) => {
                                     styleText={styles.txtSubtitleLink} />
                                 <TextDefault
                                     styleText={styles.txtDate}
-                                    children={job.date ? `Prazo até ${unFormatDate(job.date)}` : "Sem prazo para inscrições"} />
+                                    children={job.date ? `Inscrições até ${unFormatDate(job.date)}` : "Sem prazo para inscrições"} />
+                                <TextDefault
+                                    lines={2}
+                                    styleText={styles.txtDate}
+                                    children={company.address} />
                                 {
                                     Boolean(job.description) &&
                                     <TextDefault

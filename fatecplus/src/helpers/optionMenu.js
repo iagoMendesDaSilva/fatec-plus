@@ -18,6 +18,11 @@ export const OptionMenu = ({ options = [] }) => {
         setOpen(!open)
     }
 
+    const pressItem=item=>{
+        pressMenu()
+        item.onPress && item.onPress()
+    }
+
     const translateX = animationOption.interpolate({
         inputRange: [0, 1],
         outputRange: [100, 0],
@@ -32,7 +37,7 @@ export const OptionMenu = ({ options = [] }) => {
 
     const renderItem = (item, index) =>
         <TouchableOpacity
-            onPress={item.onPress}
+            onPress={()=>pressItem(item)}
             style={styles.containerItem}>
             <TextDefault
                 children={item.title} />

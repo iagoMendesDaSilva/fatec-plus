@@ -77,7 +77,7 @@ export const Formation = ({ state, reload }) => {
 
     const remove = () => {
         StorageResume.deleteFormation(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .then(data => modal.configErrorModal({ msg: Strings.formationDeleted, positivePress: reload }))
             .catch(status => modal.configErrorModal({ status }))
     }
 

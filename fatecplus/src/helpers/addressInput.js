@@ -18,7 +18,6 @@ export const AddressInput = ({ onSelect }) => {
         <PlacesInput
             language={"pt-br"}
             clearQueryOnSelect
-            queryTypes={"address"}
             stylesList={styles.stylesList}
             stylesItem={styles.stylesItem}
             stylesInput={styles.stylesInput}

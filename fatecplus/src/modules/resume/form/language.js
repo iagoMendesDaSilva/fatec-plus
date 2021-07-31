@@ -31,7 +31,7 @@ export const Language = ({ state, reload }) => {
 
     const remove = () => {
         StorageResume.deleteLanguage(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
+            .then(data => modal.configErrorModal({ msg: Strings.languageDeleted, positivePress: reload }))
             .catch(status => modal.configErrorModal({ status }))
     }
 

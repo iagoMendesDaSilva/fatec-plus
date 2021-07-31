@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View, Animated, Dimensions } from "react-
 
 import { Animate } from "../services";
 import Colors from '../constants/colors';
-import { TextDefault , Icon} from "../helpers";
+import { TextDefault, Icon } from "../helpers";
 
 const { height } = Dimensions.get("window");
 
@@ -13,9 +13,9 @@ export const ModalBottom = ({ children, open = false, title, onClose }) => {
 
     React.useEffect(() => open && show(), [open])
 
-    const show = () => 
+    const show = () =>
         Animate.timming(modalPositionY, 1, 400).start()
-    
+
 
     const close = () => {
         Animate.timming(modalPositionY, 0, 400).start()
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
     conatinerContent: {
         flex: 1,
-        justifyContent: "center",
+        paddingTop: 10,
     },
     hitSlop: {
         left: 20,

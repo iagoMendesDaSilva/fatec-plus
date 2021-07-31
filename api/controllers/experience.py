@@ -11,9 +11,9 @@ class ExperienceController:
         try:
             experience = Experience(
             job=data['job'],
-            end_year=data['endYear'],
+            end_year=data['end_year'],
             company=data['company'],
-            start_year=data['startYear'],
+            start_year=data['start_year'],
             id_user=current_user.id)
             dao.add(experience)
             return True
@@ -28,9 +28,9 @@ class ExperienceController:
             for data in datas:
                 experience = Experience(
                 job=data['job'],
-                end_year=data['endYear'],
+                end_year=data['end_year'],
                 company=data['company'],
-                start_year=data['startYear'],
+                start_year=data['start_year'],
                 id_user=current_user.id)
                 experiences.append(experience)
             dao.add_all(experiences)
@@ -82,7 +82,7 @@ class ExperienceController:
         try:
             experience  =dao.get_by_id(id,Experience)
             if experience:
-                if current_user.id == experience.id:
+                if current_user.id == experience.id_user:
                     experienceDao.update_many(id,data)
                 else:
                     raise CurrentUser
