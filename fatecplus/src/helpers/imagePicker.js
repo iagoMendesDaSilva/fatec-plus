@@ -15,7 +15,7 @@ export const ImagePicker = ({ image = false, getImage, disabled }) => {
                         <Image
                             style={styles.image}
                             resizeMode={"cover"}
-                            source={{ uri: image }} />
+                            source={{ uri: `${image}?time=${new Date()}`, }} />
                         :
                         <Icon
                             size={40}

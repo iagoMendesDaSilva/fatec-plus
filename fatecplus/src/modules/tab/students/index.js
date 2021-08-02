@@ -68,7 +68,7 @@ export const Students = ({ navigation, route }) => {
                     style={styles.conatinerItem}>
                     <Image
                         style={styles.img}
-                        source={{ uri: image }}
+                        source={{ uri: `${image}?time=${new Date()}` }}
                         defaultSource={require("../../../assets/img/user_male.png")} />
                     <View style={styles.containerText}>
                         <TextDefault

@@ -136,9 +136,9 @@ export const Menu = ({ navigation }) => {
                     iconName={"newspaper"}
                     onPress={() => console.log(1)} />
                 <ItemList
-                    title={"Documentação"}
-                    iconLib={"Ionicons"}
-                    iconName={"document-text"}
+                    title={"Suporte"}
+                    iconLib={"SimpleLineIcons"}
+                    iconName={"earphones-alt"}
                     onPress={() => console.log(1)} />
 
                 <TextDefault
