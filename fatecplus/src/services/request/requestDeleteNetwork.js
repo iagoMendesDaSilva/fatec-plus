@@ -5,7 +5,7 @@ export class RequestDeleteNetwork extends Request {
 
     constructor( id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}social-network/${id}`;
+        const url = `${Constants.BASE_URL}social-network/${id}`;
         const params = {};
         super(url, 'DELETE', headers, params);
     }

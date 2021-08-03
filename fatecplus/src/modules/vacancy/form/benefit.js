@@ -19,8 +19,8 @@ export const Benefit = ({ state, setState, idJob = false, reload }) => {
     const save = value => {
         if (idJob) {
             StorageVacancy.saveBenefit(name, description, idJob)
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
             setState({ data: [...state.data, value], visible: false, index: false })
     }
@@ -29,8 +29,8 @@ export const Benefit = ({ state, setState, idJob = false, reload }) => {
     const edit = value => {
         if (idJob) {
             StorageVacancy.editBenefit(name, description, state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
         } else {
             let data = state.data
             data[state.index] = value
@@ -41,8 +41,8 @@ export const Benefit = ({ state, setState, idJob = false, reload }) => {
     const remove = () => {
         if(idJob){
             StorageVacancy.deleteBenefit(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.benefitDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_BENEFIT, positivePress: reload }))
+            .catch(status => modal.set({ status }))
         }else{
             let data = state.data
             data.splice(state.index, 1)
@@ -57,7 +57,7 @@ export const Benefit = ({ state, setState, idJob = false, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionBenefit} />
+            <Note text={Strings.DESCRIPTION_BENEFIT} />
             <Input
                 text={name}
                 maxLength={30}

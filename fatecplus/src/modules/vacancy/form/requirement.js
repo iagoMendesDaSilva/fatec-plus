@@ -24,8 +24,8 @@ export const Requirement = ({ state, setState, idJob = false, reload }) => {
     const save = value => {
         if (idJob) {
             StorageVacancy.saveRequirement(name, description, level, mandatory, idJob)
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
             setState({ data: [...state.data, value], visible: false, index: false })
     }
@@ -33,8 +33,8 @@ export const Requirement = ({ state, setState, idJob = false, reload }) => {
     const edit = value => {
         if (idJob) {
             StorageVacancy.editRequirement(name, description, level, mandatory, state.data[state.index].id)
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else {
             let data = state.data
             data[state.index] = value
@@ -45,8 +45,8 @@ export const Requirement = ({ state, setState, idJob = false, reload }) => {
     const remove = () => {
         if (idJob) {
             StorageVacancy.deleteRequirement(state.data[state.index].id)
-                .then(data => modal.configErrorModal({ msg: Strings.requirementDeleted, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.DELETED_REQUIREMENT, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else {
             let data = state.data
             data.splice(state.index, 1)
@@ -61,7 +61,7 @@ export const Requirement = ({ state, setState, idJob = false, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionRequirement} />
+            <Note text={Strings.DESCRIPTION_REQUIREMENT} />
             <Input
                 text={name}
                 maxLength={30}

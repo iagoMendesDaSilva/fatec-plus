@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         overflow: "hidden",
         width: widthScreen * .9,
-        backgroundColor: Colors.background_light
+        backgroundColor: Colors.BACKGROUND_LIGHT
     },
     containerText: {
         height: 40,
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
     },
     txtItem: {
         fontSize: 18,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         marginHorizontal: 20,
     },
     division: {
         width: .5,
-        backgroundColor: "rgba(255,255,255,.5)",
+        backgroundColor: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
 })

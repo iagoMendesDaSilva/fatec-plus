@@ -18,13 +18,13 @@ export const ButtonSmall = ({ text, onPress, loading, outline = false, style }) 
             style={[outline ? styles.buttonOutline : styles.button, style]}>
             {loading
                 ?
-                <ActivityIndicator size="small" color={outline ? Colors.primary : "white"} />
+                <ActivityIndicator size="small" color={outline ? Colors.PRIMARY : Colors.TEXT_PRIMARY} />
                 :
                 <TextDefault
                     children={text}
                     selectable={false}
                     style={styles.containerText}
-                    styleText={{ ...styles.textButton, color: outline ? Colors.primary : "white" }} />
+                    styleText={{ ...styles.textButton, color: outline ? Colors.PRIMARY : Colors.TEXT_PRIMARY }} />
             }
         </TouchableOpacity>
     );
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
     buttonOutline: {
         height: 35,
@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: Colors.primary,
-        backgroundColor: Colors.background,
+        borderColor: Colors.PRIMARY,
+        backgroundColor: Colors.BACKGROUND,
     },
     containerText: {
         width: 120,

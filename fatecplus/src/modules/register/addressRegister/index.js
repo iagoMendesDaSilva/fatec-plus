@@ -15,7 +15,7 @@ import { Icon, AddressInput, TextDefault, ButtonDefault } from '../../../helpers
 
 export const AddressRegister = (props) => {
 
-    Geocoder.init(Values.google_places_key);
+    Geocoder.init(Values.GOOGLE_PLACES_KEY);
 
     const params = props.route.params;
     const modal = React.useContext(ModalContext);
@@ -31,7 +31,7 @@ export const AddressRegister = (props) => {
             city:city.charAt(0).toUpperCase() + city.slice(1),
             ...params,
         }
-        params.data 
+        params.data
         ?   editAddress(data)
         : props.navigation.navigate("ChangePassword", data);
     }
@@ -39,8 +39,8 @@ export const AddressRegister = (props) => {
     const editAddress = async data => {
         StorageRegister.editAddress(data, params.data.id)
             .then(data =>
-                modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
-            .catch(status => modal.configErrorModal({ status, msg: Strings.failUpdate }))
+                modal.set({ msg: Strings.UPDATED, positivePress: () => props.navigation.goBack() }))
+            .catch(status => modal.set({ status, msg: Strings.ERROR_UPDATE }))
     }
 
     const getCurrentLocation = async () => {
@@ -48,7 +48,7 @@ export const AddressRegister = (props) => {
         if (granted === Permission.RESULTS.GRANTED) {
             Geolocation.getCurrentPosition(
                 place => getLocation(place.coords.latitude, place.coords.longitude),
-                error => modal.configErrorModal({ msg: Strings.currentLocationError, status: 404 }),
+                error => modal.set({ msg: Strings.ERROR_GEOLOCATION, status: 404 }),
                 { enableHighAccuracy: true }
             );
         }
@@ -73,7 +73,7 @@ export const AddressRegister = (props) => {
                 getCityandState(location.results)
                 setLocation({ lat, lng, name: location.results[0].formatted_address })
             })
-            .catch(error => modal.configErrorModal({ msg: Strings.locationError, status: 404 }))
+            .catch(error => modal.set({ msg: Strings.ERROR_GEOLOCATION, status: 404 }))
     }
 
     const changeMap = place => {

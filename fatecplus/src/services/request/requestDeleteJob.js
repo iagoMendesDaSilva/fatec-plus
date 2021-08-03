@@ -5,7 +5,7 @@ export class RequestDeleteJob extends Request {
 
     constructor(id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}job/${id}`;
+        const url = `${Constants.BASE_URL}job/${id}`;
         const params = {};
         super(url, 'DELETE', headers, params);
     }

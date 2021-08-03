@@ -6,7 +6,7 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.BACKGROUND,
     },
     containerLogo: {
         alignItems: "center",
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     },
     txtLogo: {
         fontSize: 60,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
     iconLogo: {
         marginTop:10,
@@ -25,7 +25,7 @@ export default StyleSheet.create({
     },
     txtLogo: {
         fontSize: 60,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
     containerIcon: {
         width: 35,
@@ -41,7 +41,7 @@ export default StyleSheet.create({
         width: 35,
         borderRadius: 3,
         position: "absolute",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
     iconPlusVertical: {
         left: 15,
@@ -50,6 +50,6 @@ export default StyleSheet.create({
         height: 35,
         borderRadius: 3,
         position: "absolute",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
 });

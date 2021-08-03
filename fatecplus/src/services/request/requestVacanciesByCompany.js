@@ -5,7 +5,7 @@ export class RequestVacanciesByCompany extends Request {
 
     constructor(id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}jobs/${id}`;
+        const url = `${Constants.BASE_URL}jobs/${id}`;
         const params = {};
         super(url, 'GET', headers, params);
     }

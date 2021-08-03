@@ -5,7 +5,7 @@ export class RequestDeleteBenefit extends Request {
 
     constructor( id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}benefit/${id}`;
+        const url = `${Constants.BASE_URL}benefit/${id}`;
         const params = {};
         super(url, 'DELETE', headers, params);
     }

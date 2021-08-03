@@ -5,7 +5,7 @@ export class RequestEditJobUser extends Request {
 
     constructor(job, id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}user/${id}`;
+        const url = `${Constants.BASE_URL}user/${id}`;
         const params = {job};
         super(url, 'PUT', headers, params);
     }

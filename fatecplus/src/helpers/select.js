@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
         shadowOpacity:  .5,
         position: "absolute",
         width: widthScreen * .9,
-        shadowColor: Colors.background,
         shadowOffset: { width: 0, height: 3 },
-        backgroundColor: Colors.background_light
+        shadowColor: Colors.BACKGROUND,
+        backgroundColor: Colors.BACKGROUND_LIGHT
     },
     containerHeader: {
         flexDirection: "row",
@@ -92,11 +92,11 @@ const styles = StyleSheet.create({
     },
     txtSelectItem: {
         fontSize: 18,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     initialValue: {
         fontSize: 18,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     icon: {
         marginRight: 15,

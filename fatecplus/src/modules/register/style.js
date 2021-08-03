@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import Colors from '../../constants/colors';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default StyleSheet.create({
     containerContent: {
@@ -9,8 +9,9 @@ export default StyleSheet.create({
     },
     txtTitle: {
         fontSize: 45,
-        marginTop: 35,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
+        marginLeft: 15,
+        marginTop: 40,
         fontWeight: "bold",
     },
     button: {

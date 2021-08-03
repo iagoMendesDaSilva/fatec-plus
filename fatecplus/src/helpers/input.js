@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
 import { Icon } from './icon';
+import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
@@ -24,9 +25,9 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
                 placeholder={placeholder}
                 defaultValue={defaultValue}
                 maxLength={maxLength?maxLength:null}
-                placeholderTextColor="rgba(255,255,255,.5)"
                 autoCapitalize={capitalize ? capitalize : 'none'}
                 secureTextEntry={password ? !showPassword : false}
+                placeholderTextColor={Colors.TEXT_PRIMARY_LIGHT_PLUS}
                 style={{ ...styles.textInput, paddingRight: password ? 15 : 0, }}
             />
             {password && changeVisibility &&
@@ -34,7 +35,7 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
                     <Icon
                         lib={"FontAwesome5"}
                         name={showPassword ? "eye" : "eye-slash"}
-                        color={showPassword ? "white" : "rgba(255,255,255,.5)"} />
+                        color={showPassword ? Colors.TEXT_PRIMARY : Colors.TEXT_PRIMARY_LIGHT_PLUS} />
                 </TouchableOpacity>
             }
         </View>
@@ -47,13 +48,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         borderBottomWidth: 1,
-        borderBottomColor: "white",
+        borderBottomColor: Colors.TEXT_PRIMARY,
         justifyContent: "space-between",
     },
     textInput: {
         flex: 1,
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     icon: {
         marginRight: 10,

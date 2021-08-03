@@ -5,7 +5,7 @@ export class RequestRegister extends Request {
 
     constructor(studying, image, birth_date, password, city, job, state, email, name, phone, address, category, username, internship, description) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}auth/register`;
+        const url = `${Constants.BASE_URL}auth/register`;
         const params = {
             city,
             state,

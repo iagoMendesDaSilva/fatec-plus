@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
         borderRadius: 125,
         alignItems: "center",
         justifyContent: "center",
-        borderColor: Colors.background,
-        backgroundColor: Colors.background_light,
+        borderColor: Colors.BACKGROUND,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     containerUpload: {
         left: 75,
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
         position: "absolute",
         justifyContent: "center",
-        borderColor: Colors.background,
-        backgroundColor: Colors.background_light,
+        borderColor: Colors.BACKGROUND,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     txtPlus: {
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontSize: 20,
     },
     image: {

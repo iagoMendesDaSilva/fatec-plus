@@ -18,7 +18,7 @@ export const SwicthDefault = ({ on = false, changeValue }) => {
 return (
     <TouchableOpacity
         onPress={pressSwicth}
-        style={{ ...styles.containerSwitch, backgroundColor: on ? Colors.primary : Colors.background_light }}  >
+        style={{ ...styles.containerSwitch, backgroundColor: on ? Colors.PRIMARY : Colors.BACKGROUND_LIGHT }}  >
         <Animated.View style={{ ...styles.switch, transform: [{ translateX: positionX }] }} />
     </TouchableOpacity>
 );
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderRadius: 15,
-        backgroundColor: "white",
+        backgroundColor: Colors.TEXT_PRIMARY,
     },
 })

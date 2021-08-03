@@ -48,25 +48,25 @@ export const Experience = ({ state, reload }) => {
     const save = () => {
         if (dateIsValid()) {
             StorageResume.saveExperience(job, company, formatDate(endYear), formatDate(startYear))
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
-            modal.configErrorModal({ msg: Strings.dateEndFail })
+            modal.set({ msg: Strings.ERROR_DATE })
     }
 
     const edit = () => {
         if (dateIsValid()) {
             StorageResume.editExperience(job, company, formatDate(endYear), formatDate(startYear), state.data[state.index].id)
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
-            modal.configErrorModal({ msg: Strings.dateEndFail })
+            modal.set({ msg: Strings.ERROR_DATE })
     }
 
     const remove = () => {
         StorageResume.deleteExperience(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.experienceDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_EXPERIENCE, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const pressButton = () =>
@@ -74,7 +74,7 @@ export const Experience = ({ state, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionExperience} />
+            <Note text={Strings.DESCRIPTION_EXPERIENCE} />
             <Input
                 text={job}
                 maxLength={100}
@@ -108,10 +108,10 @@ export const Experience = ({ state, reload }) => {
                     date={date}
                     mode={"date"}
                     locale={"pt-br"}
-                    textColor={"white"}
+                    textColor={Colors.TEXT_PRIMARY}
                     maximumDate={new Date()}
                     androidVariant={"iosClone"}
-                    fadeToColor={Colors.background}
+                    fadeToColor={Colors.BACKGROUND}
                     onDateChange={value => changeDate(value)} />
             }
             <ButtonDefault

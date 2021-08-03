@@ -23,7 +23,7 @@ export const Recovery = ({ navigation }) => {
         setLoading(true)
         StorageRecovery.confirmEmail(email)
             .then(data => goToVerificationCode(data))
-            .catch(status => modal.configErrorModal({ msg: Strings.failEmail, status }))
+            .catch(status => modal.set({ msg: Strings.ERROR_EMAIL, status }))
             .finally(() => setLoading(false));
     }
 

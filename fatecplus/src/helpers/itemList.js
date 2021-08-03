@@ -4,7 +4,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import Colors from '../constants/colors';
 import { TextDefault, Icon } from '../helpers';
 
-export const ItemList = ({ iconName = "", iconLib = "", title, textRight = false, color = "white", arrow = true, onPress }) => {
+export const ItemList = ({ iconName = "", iconLib = "", title, textRight = false, color = Colors.TEXT_PRIMARY, arrow = true, onPress }) => {
 
     return (
         <TouchableOpacity
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
     },
     txtTextRight: {
         fontSize: 18,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtDeleteAccountant: {
         fontSize: 18,
         paddingLeft: 10,
-        color: Colors.error,
+        color: Colors.ERROR,
     },
 })

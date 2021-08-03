@@ -4,7 +4,7 @@ import Colors from '../../constants/colors';
 export default StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.BACKGROUND,
     },
     containerHeader: {
         marginLeft: 25,
@@ -15,16 +15,16 @@ export default StyleSheet.create({
     },
     txtName: {
         fontSize: 22,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
     },
     txtAddress: {
         fontSize: 20,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtCompany: {
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     containerButtons: {
         marginVertical: 5,
@@ -39,44 +39,44 @@ export default StyleSheet.create({
         paddingHorizontal: 15,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     txtTopic: {
         fontSize: 20,
         paddingTop: 15,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtTopicLine: {
         fontSize: 20,
         marginTop: 5,
         paddingTop: 5,
         borderTopWidth: .5,
-        color: "rgba(255,255,255,.5)",
-        borderTopColor: Colors.background,
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
+        borderTopColor: Colors.BACKGROUND,
     },
     txtText: {
         fontSize: 18,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         textAlign: "justify",
     },
     txtTitle: {
         fontSize: 18,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         paddingTop: 5,
     },
     txtSubtitle: {
         fontSize: 16,
         textAlign: "justify",
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtSubtitleLink: {
         fontSize: 16,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
     txtSubtitleRow: {
         fontSize: 16,
         marginRight: 8,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     containerRow: {
         alignItems: "center",
@@ -90,14 +90,14 @@ export default StyleSheet.create({
         position: "absolute",
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: Colors.background_medium,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     containerContactHeader: {
         paddingBottom: 10,
         flexDirection: "row",
         borderBottomWidth: 1,
         justifyContent: "space-between",
-        borderBottomColor: Colors.background,
+        borderBottomColor: Colors.BACKGROUND,
     },
     containerContactContent: {
         flex: 1,

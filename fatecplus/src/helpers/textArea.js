@@ -16,7 +16,7 @@ export const TextArea = ({ text, placeholder, onchange, size = widthScreen * .9,
             placeholder={placeholder}
             onChangeText={onchange}
             defaultValue={defaultValue}
-            placeholderTextColor="rgba(255,255,255,.5)"
+            placeholderTextColor={Colors.TEXT_PRIMARY_LIGHT_PLUS}
             style={{ ...styles.textArea, width: size, height: maxHeight }} />
     );
 }
@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
     textArea: {
         padding: 8,
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         borderRadius: 10,
         marginVertical: 10,
         textAlignVertical: "top",
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 })

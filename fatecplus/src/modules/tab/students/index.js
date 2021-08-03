@@ -39,9 +39,9 @@ export const Students = ({ navigation, route }) => {
     }
 
     const configModal = status =>
-        modal.configErrorModal({
+        modal.set({
             status,
-            msg: Strings.failStudents,
+            msg: Strings.ERROR_STUDENTS,
             positivePress: () => navigation.replace("Login")
         })
 
@@ -53,8 +53,8 @@ export const Students = ({ navigation, route }) => {
     const goToStudent = id => {
         if (route.params) {
             StorageStudent.solicit(route.params.job, id)
-                .then(data => modal.configErrorModal({ msg: route.params.msg, positivePress: closeIndication }))
-                .catch(status => () => modal.configErrorModal({ status, positivePress: closeIndication }))
+                .then(data => modal.set({ msg: route.params.msg, positivePress: closeIndication }))
+                .catch(status => () => modal.set({ status, positivePress: closeIndication }))
         } else
             navigation.navigate("Student", { id })
     }
@@ -93,19 +93,16 @@ export const Students = ({ navigation, route }) => {
             refreshing={refreshing}
             onRefresh={() => onRefresh()} />
 
-    const filterCompanies = text => {
+    const filterStudents = text => {
         const data = students.data.filter(value =>
             value.name.toUpperCase().includes(text.toUpperCase()))
         setFilter({ data, text })
     }
 
-    const getHeader = () =>
+    const getNoData = () =>
         <TextDefault
             styleText={styles.txtSubtitle}
             children={"Sem alunos"} />
-
-    const verifyHeader = () =>
-        Boolean(students.data.length === 0 || filter.data.length === 0 && filter.text)
 
     return (
         <KeyboardAvoidingView
@@ -115,7 +112,7 @@ export const Students = ({ navigation, route }) => {
                 title={"Alunos"}
                 placeholder={"Pesquisar..."}
                 onClose={() => setFilter({ data: [] })}
-                onchange={text => filterCompanies(text)} />
+                onchange={text => filterStudents(text)} />
             <FlatList
                 contentContainerStyle={styles.list}
                 showsVerticalScrollIndicator={false}
@@ -123,7 +120,7 @@ export const Students = ({ navigation, route }) => {
                 keyExtractor={(_, index) => String(index)}
                 data={filter.text ? filter.data : students.data}
                 renderItem={({ item, index }) => renderItem(item, index)}
-                ListHeaderComponent={verifyHeader() && getHeader}
+                ListEmptyComponent={getNoData() }
             />
         </KeyboardAvoidingView>
     );

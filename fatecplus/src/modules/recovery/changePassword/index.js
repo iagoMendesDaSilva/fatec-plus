@@ -26,7 +26,7 @@ export const ChangePassword = ({ navigation, route }) => {
             setLoading(true)
             params ? saveUser() : editUser()
         } else {
-            modal.configErrorModal({ msg: Strings.differentPasswords })
+            modal.set({ msg: Strings.ERROR_PASSWORDS })
         }
     }
 
@@ -35,7 +35,7 @@ export const ChangePassword = ({ navigation, route }) => {
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] }))
-                .catch(status => modal.configErrorModal(status))
+                .catch(status => modal.set(status))
     }
 
     const setUser = async password => {
@@ -47,21 +47,21 @@ export const ChangePassword = ({ navigation, route }) => {
     const login = () => {
         StorageAuth.login(params.username, password)
             .then(data => configUser(data))
-            .catch(status => configErrorModal(status))
+            .catch(status => set(status))
             .finally(() => setLoading(false))
     }
 
     const editUser = () => {
         StorageRecovery.changePassword(password)
             .then(data => setUser(password))
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoading(false));
     }
 
     const saveUser = () => {
         StorageRegister.register(params, password)
             .then(response => login())
-            .catch(status => modal.configErrorModal({ status: status === 400 ? 404 : status, msg: Strings.emailOrUsernameFail }))
+            .catch(status => modal.set({ status: status === 400 ? 404 : status, msg: Strings.emailOrUsernameFail }))
             .finally(() => setLoading(false));
     }
 

@@ -13,7 +13,6 @@ export const ModalOneOption = ({ visible, message, positiveText = "OK", positive
             transparent
             visible={visible}
             animationType='slide' >
-
             <View style={styles.containerModal}>
                 <View style={styles.modal}>
                     <TextDefault
@@ -29,7 +28,6 @@ export const ModalOneOption = ({ visible, message, positiveText = "OK", positive
                         onPress={() => positivePress && positivePress()} />
                 </View>
             </View>
-
         </Modal>
     );
 }
@@ -46,11 +44,11 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         alignItems: "center",
         width: widthScreen * .9,
-        backgroundColor: Colors.background_medium,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     txtMessage: {
         fontSize: 16,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         textAlign: "center",
     },
     containerText: {
@@ -67,6 +65,6 @@ const styles = StyleSheet.create({
     divisionButton: {
         height: .5,
         width: "75%",
-        backgroundColor: "rgba(255,255,255,.5)",
+        backgroundColor: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
 });

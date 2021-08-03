@@ -7,7 +7,7 @@ import { Storage, Animate } from '../../services';
 import { StorageUser } from './storage';
 import Colors from '../../constants/colors';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, Arrow, Load, ModalBottom } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, Arrow, Load, ModalContact } from '../../helpers'
 
 export const Student = ({ navigation, route }) => {
 
@@ -32,7 +32,7 @@ export const Student = ({ navigation, route }) => {
                 configPermission(user)
                 setLoading(false)
             })
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
     }
 
     const getAge = () =>
@@ -155,27 +155,15 @@ export const Student = ({ navigation, route }) => {
     return (
         <View style={styles.containerAll}>
             <Arrow onPress={pressArrow} />
-            <ModalBottom
+            <ModalContact
+                email={user.email}
                 open={showModal}
-                title={"Contato"}
-                onClose={() => setShowModal(false)}>
-                <TextDefault
-                    children={"Telefone"}
-                    styleText={styles.txtSubtitleLink} />
-                <TextDefault
-                    children={user.phone}
-                    styleText={styles.txtCourse} />
-                <TextDefault
-                    children={"Email"}
-                    styleText={styles.txtSubtitleLink} />
-                <TextDefault
-                    children={user.email}
-                    styleText={styles.txtCourse} />
-            </ModalBottom>
+                phone={user.phone}
+                onClose={() => setShowModal(false)} />
             <Screen center={false}>
                 {
                     loading ?
-                        <Load backgroundColor={Colors.background} />
+                        <Load backgroundColor={Colors.BACKGROUND} />
                         :
                         <>
                             <View style={styles.containerHeader}>

@@ -9,49 +9,42 @@ export const ModalProvider = ({ children }) => {
 
     const [info, setInfo] = useState({ visible: false });
     const [navigation, setNavigation] = useState(null);
-    const [infoTwoOptions, setInfoOptions] = useState({ visible: false });
 
-    const positivePress = (dualButtons = false) => {
-        if (dualButtons) {
-            infoTwoOptions.positivePress && infoTwoOptions.positivePress()
-            setInfoOptions({ visible: false })
-        } else {
-            info.positivePress && info.positivePress()
-            setInfo({ visible: false })
-        }
+    const positivePress = () => {
+        info.positivePress && info.positivePress()
+        setInfo({ visible: false })
     }
 
     const negativePress = () => {
-        infoTwoOptions.negativePress && infoTwoOptions.negativePress()
-        setInfoOptions({ visible: false })
+        info.negativePress && info.negativePress()
+        setInfo({ visible: false })
     }
 
-    const configErrorModal = ({status=404, options = false, msg = false, back=false, ...props}) => {
-        const message = status === 404 && msg ? msg : Error.validate(status)
-        status===401
-        ? setInfo({ visible: true, message, positivePress:()=>Error.logout(navigation) })
-        : options
-            ? setInfoOptions({ visible: true, message, ...props })
-            : setInfo({ visible: true, message, ...props })
+    const set = ({ status, options = false, msg = false, ...props }) => {
+        const message = msg ? msg : Error.validate(status)
+        if (status === 401)
+            setInfo({ visible: true, options: false, message: Error.validate(401), positivePress: () => Error.logout(navigation) })
+        else
+            setInfo({ visible: true, options, message, ...props })
     }
 
     return (
-        <ModalContext.Provider value={{ info, setInfo, infoTwoOptions, setInfoOptions, configErrorModal, setNavigation}}>
+        <ModalContext.Provider value={{ set, setNavigation }}>
             {children}
             <ModalOneOption
-                visible={info.visible}
                 message={info.message}
-                positivePress={() => positivePress(false)} />
+                positivePress={positivePress}
+                visible={info.visible && !info.options} />
             <ModalTwoOption
-                title={infoTwoOptions.title}
+                title={info.title}
+                iconLib={info.iconLib}
+                message={info.message}
+                iconColor={info.iconColor}
+                iconName={info.iconName}
+                positivePress={positivePress}
                 negativePress={negativePress}
-                visible={infoTwoOptions.visible}
-                iconLib={infoTwoOptions.iconLib}
-                message={infoTwoOptions.message}
-                iconColor={infoTwoOptions.iconColor}
-                positivePress={() => positivePress(true)}
-                iconName={infoTwoOptions.iconName}
-                negativeText={infoTwoOptions.negativeText} />
+                negativeText={info.negativeText}
+                visible={info.visible && info.options} />
         </ModalContext.Provider>
     )
 

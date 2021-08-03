@@ -59,7 +59,7 @@ export const OptionMenu = ({ options = [] }) => {
             <TouchableOpacity
                 onPress={pressMenu}>
                 <Icon
-                    color={Colors.primary}
+                    color={Colors.PRIMARY}
                     lib={"SimpleLineIcons"}
                     name={"options-vertical"} />
             </TouchableOpacity>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         paddingLeft: 12,
         borderRadius: 10,
         borderTopRightRadius: 0,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     containerOptionsOverflow: {
         width: 100,

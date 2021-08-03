@@ -5,7 +5,7 @@ export class RequestIndication extends Request {
 
     constructor(jobId, student,) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}job/subscribe/${jobId}`;
+        const url = `${Constants.BASE_URL}job/subscribe/${jobId}`;
         const params = { student};
         super(url, 'POST', headers, params);
     }

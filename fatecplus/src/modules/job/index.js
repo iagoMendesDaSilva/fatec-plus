@@ -8,7 +8,7 @@ import Colors from '../../constants/colors';
 import Strings from '../../constants/strings';
 import { Storage, Animate } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalBottom } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalContact } from '../../helpers'
 
 export const Job = ({ navigation, route }) => {
 
@@ -38,7 +38,7 @@ export const Job = ({ navigation, route }) => {
                 setCompany(data.company)
                 setLoading(false)
             })
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
     }
 
 
@@ -100,7 +100,7 @@ export const Job = ({ navigation, route }) => {
     const choiceStudent = () =>
         permission.subscribe
             ? subscribed ? unSubscribe() : confirmSubscription()
-            : navigation.navigate("Students", { job: job.id, msg: permission.indicate ? Strings.indicated : Strings.requested })
+            : navigation.navigate("Students", { job: job.id, msg: permission.indicate ? Strings.INDICATED : Strings.REQUESTED })
 
     const getTitleButton = () =>
         permission.indicate
@@ -112,14 +112,14 @@ export const Job = ({ navigation, route }) => {
 
 
     const confirmSubscription = () => {
-        modal.configErrorModal({
+        modal.set({
             options: true,
             iconName: "warning",
             title: "Aviso",
-            iconColor: Colors.warning,
+            iconColor: Colors.WARNING,
             iconLib: "FontAwesome",
             positivePress: subscribe,
-            msg: Strings.confirmSub,
+            msg: Strings.CONFIRM_SUBSCRIPTION,
         })
     }
 
@@ -131,7 +131,7 @@ export const Job = ({ navigation, route }) => {
                 setSubscribed(true)
                 job.receive_by_email && sendResume()
             })
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoadingSub(false))
     }
 
@@ -145,7 +145,7 @@ export const Job = ({ navigation, route }) => {
         setLoadingSub(true)
         StorageJob.unSubscribe(job.id)
             .then(data => setSubscribed(false))
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoadingSub(false))
     }
 
@@ -162,18 +162,18 @@ export const Job = ({ navigation, route }) => {
     const deleteJob = () => {
         StorageJob.deleteJob(job.id)
             .then(data =>
-                modal.configErrorModal({ msg: Strings.deletedJob, positivePress: () => navigation.goBack() }))
-            .catch(status => modal.configErrorModal({ status }))
+                modal.set({ msg: Strings.DELETED_VACANCY, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.set({ status }))
     }
 
     const confirmDeleteJob = () => {
-        modal.configErrorModal({
+        modal.set({
             options: true,
             title: "Excluir vaga",
             iconName: "trash",
-            msg: Strings.deleteJob,
+            msg: Strings.CONFIRM_DELETE_VACANCY,
             iconLib: "fontawesome",
-            iconColor: Colors.error,
+            iconColor: Colors.ERROR,
             positivePress: deleteJob,
         })
     }
@@ -184,27 +184,15 @@ export const Job = ({ navigation, route }) => {
     return (
         <View style={styles.containerAll}>
             <Arrow onPress={pressArrow} />
-            <ModalBottom
+            <ModalContact
+                email={company.email}
                 open={showModal}
-                title={"Contato"}
-                onClose={() => setShowModal(false)}>
-                <TextDefault
-                    children={"Telefone"}
-                    styleText={styles.txtSubtitleLink} />
-                <TextDefault
-                    children={company.phone}
-                    styleText={styles.txtCourse} />
-                <TextDefault
-                    children={"Email"}
-                    styleText={styles.txtSubtitleLink} />
-                <TextDefault
-                    children={company.email}
-                    styleText={styles.txtCourse} />
-            </ModalBottom>
+                phone={company.phone}
+                onClose={() => setShowModal(false)} />
             <Screen center={false}>
                 {
                     loading ?
-                        <Load backgroundColor={Colors.background} />
+                        <Load backgroundColor={Colors.BACKGROUND} />
                         :
                         <>
                             <View style={styles.containerHeader}>

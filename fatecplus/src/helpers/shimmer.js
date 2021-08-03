@@ -10,7 +10,7 @@ export const Shimmer = ({ children, visible, style }) => {
             autoRun
             style={style}
             visible={visible}
-            colorShimmer={Colors.shimmer}>
+            colorShimmer={Colors.SHIMMER}>
             {children}
         </ShimmerPlaceHolder>
     )

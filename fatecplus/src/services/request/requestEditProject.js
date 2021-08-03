@@ -5,7 +5,7 @@ export class RequestEditProject extends Request {
 
     constructor(name, url, description, id) {
         const headers = { 'Content-Type': 'application/json' };
-        const path = `${Constants.base_url}project/${id}`;
+        const path = `${Constants.BASE_URL}project/${id}`;
         const params = {name,description, url};
         super(path, 'PUT', headers, params);
     }

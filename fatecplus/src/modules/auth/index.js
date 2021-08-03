@@ -26,12 +26,11 @@ export const Auth = ({ navigation, route }) => {
         }
     }
 
-    const configErrorModal = (status, clear = false) => {
+    const set = (status, clear = false) => {
         clear
-            ? modal.configErrorModal({ msg: Strings.failLogin, status, positivePress: logout })
-            : modal.configErrorModal({ msg: Strings.failLogin, status })
+            ? modal.set({ msg: Strings.ERROR_LOGIN, status, positivePress: logout })
+            : modal.set({ msg: Strings.ERROR_LOGIN, status })
     }
-
 
     const logout = async () => {
         await StorageAuth.logout()
@@ -40,7 +39,7 @@ export const Auth = ({ navigation, route }) => {
     }
 
     const configUser = async data => {
-        Storage.setUser({ username, password, token: data.token, id: data.id , category:data.category})
+        Storage.setUser({ username, password, token: data.token, id: data.id, category: data.category })
         const versionApp = Storage.getVersion()
         const playerId = await Notification.getPlayerId()
 
@@ -48,15 +47,14 @@ export const Auth = ({ navigation, route }) => {
             .then(() =>
                 StorageAuth.registerVersion(versionApp, data.id)
                     .then(data => navigation.replace("Home")))
-            .catch(status => configErrorModal(500, true))
+            .catch(status => set(status, true))
     }
-
 
     const login = () => {
         setLoading(true)
         StorageAuth.login(username, password)
             .then(data => configUser(data))
-            .catch(status => configErrorModal(status))
+            .catch(status => set(status))
             .finally(() => setLoading(false));
     }
 

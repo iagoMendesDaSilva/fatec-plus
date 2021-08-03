@@ -6,7 +6,7 @@ const widthScreen = Dimensions.get("screen").width;
 export default StyleSheet.create({
     conatinerAll: {
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.BACKGROUND,
     },
     conatinerItem: {
         height:90,
@@ -16,7 +16,7 @@ export default StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 10,
         width: widthScreen * .95,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     itemShimmer: {
         height:90,
@@ -40,15 +40,15 @@ export default StyleSheet.create({
     },
     txtTitle: {
         fontSize: 22,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
     },
     txtSubtitle: {
         fontSize: 18,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtSubtitlePrimary:{
         fontSize: 18,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
 });

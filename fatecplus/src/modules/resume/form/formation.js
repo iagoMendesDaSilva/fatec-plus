@@ -60,25 +60,25 @@ export const Formation = ({ state, reload }) => {
     const save = () => {
         if (dateIsValid()) {
             StorageResume.saveFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload))
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
-            modal.configErrorModal({ msg: Strings.dateEndFail })
+            modal.set({ msg: Strings.ERROR_DATE })
     }
 
     const edit = () => {
         if (dateIsValid()) {
             StorageResume.editFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload), state.data[state.index].id)
-                .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-                .catch(status => modal.configErrorModal({ status }))
+                .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+                .catch(status => modal.set({ status }))
         } else
-            modal.configErrorModal({ msg: Strings.dateEndFail })
+            modal.set({ msg: Strings.ERROR_DATE })
     }
 
     const remove = () => {
         StorageResume.deleteFormation(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.formationDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_FORMATION, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const pressButton = () =>
@@ -86,7 +86,7 @@ export const Formation = ({ state, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionFormation} />
+            <Note text={Strings.DESCRIPTION_FORMATION} />
             <Input
                 text={title}
                 maxLength={100}
@@ -120,10 +120,10 @@ export const Formation = ({ state, reload }) => {
                     date={date}
                     mode={"date"}
                     locale={"pt-br"}
-                    textColor={"white"}
+                    textColor={Colors.TEXT_PRIMARY}
                     maximumDate={new Date()}
                     androidVariant={"iosClone"}
-                    fadeToColor={Colors.background}
+                    fadeToColor={Colors.BACKGROUND}
                     onDateChange={value => changeDate(value)} />
             }
             <Input

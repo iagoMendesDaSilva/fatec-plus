@@ -4,14 +4,14 @@ import Colors from '../../../constants/colors';
 export default StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.BACKGROUND,
     },
     map: {
         flex: 1,
     },
     txtAddress: {
         fontSize: 16,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         textAlign: 'center',
     },
     containerTxtAddress: {
@@ -28,7 +28,7 @@ export default StyleSheet.create({
         justifyContent: "center",
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     button: {
         marginTop: 25,

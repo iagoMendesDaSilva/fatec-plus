@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 12,
         width: widthScreen * .9,
-        backgroundColor: Colors.background_light
+        backgroundColor: Colors.BACKGROUND_LIGHT
     },
     txtDate: {
         fontSize: 18,
         marginLeft: 8,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     containerContent: {
         flex: 1,

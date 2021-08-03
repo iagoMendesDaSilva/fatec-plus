@@ -57,7 +57,7 @@ export const HeaderList = ({ title, onchange, placeholder, onClose }) => {
                         allowFontScaling={false}
                         placeholder={placeholder}
                         onChangeText={onchange}
-                        placeholderTextColor="rgba(255,255,255,.5)" />
+                        placeholderTextColor={Colors.TEXT_PRIMARY_LIGHT_PLUS} />
                 </View>
 
             </Animated.View>
@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
         width: widthScreen,
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     textInput: {
         flex: 1,
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     icon: {
         marginRight: 20,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     txtTitle: {
         fontSize: 30,
         marginLeft: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
     },
     hitSlop: {

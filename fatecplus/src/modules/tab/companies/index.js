@@ -38,7 +38,7 @@ export const Companies = ({ navigation }) => {
     }
 
     const configModal = status =>
-        modal.configErrorModal({
+        modal.set({
             status,
             msg: Strings.failCompanies,
             positivePress: () => navigation.replace("Login")

@@ -11,8 +11,8 @@ import { Vacancies, Menu, Students } from '../modules';
 
 export const TabNav = ({ navigation }) => {
 
-    navigation.addListener('blur', () => SystemNavigationBar.setNavigationColor(Colors.background, true));
-    navigation.addListener('focus', () => SystemNavigationBar.setNavigationColor(Colors.background_light, true));
+    navigation.addListener('blur', () => SystemNavigationBar.setNavigationColor(Colors.BACKGROUND, true));
+    navigation.addListener('focus', () => SystemNavigationBar.setNavigationColor(Colors.BACKGROUND_LIGHT, true));
 
 
     const Tab = createBottomTabNavigator();
@@ -40,7 +40,7 @@ export const TabNav = ({ navigation }) => {
                     size={20}
                     lib={screen.icon.lib}
                     name={screen.icon.name}
-                    color={focused ? "white" : "rgba(255,255,255,.5)"} />
+                    color={focused ? Colors.TEXT_PRIMARY : Colors.TEXT_PRIMARY_LIGHT_PLUS} />
                 {
                     focused &&
                     <TextDefault

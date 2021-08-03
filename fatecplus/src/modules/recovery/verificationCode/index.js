@@ -21,7 +21,7 @@ export const VerificationCode = ({ navigation }) => {
 
     const getCompleteCode = () => Number(valueCodes.codes.join(""))
 
-    const missingEmail = () => modal.configErrorModal({ msg: Strings.misssingEmail, positivePress: comeBack })
+    const missingEmail = () => modal.set({ msg: Strings.MISSING_EMAIL, positivePress: comeBack })
 
     const goToChangePassword = data => {
         Storage.setUser({ token: data.token, id: data.id })
@@ -34,7 +34,7 @@ export const VerificationCode = ({ navigation }) => {
         user ?
             StorageRecovery.confirmCode(getCompleteCode(), user.id)
                 .then(data => goToChangePassword(data))
-                .catch(status => modal.configErrorModal({ msg: Strings.verificationCode, status }))
+                .catch(status => modal.set({ msg: Strings.ERROR_VERIFICATION_CODE, status }))
             :
             missingEmail()
         setLoading(false)

@@ -18,21 +18,21 @@ export const Language = ({ state, reload }) => {
 
     const save = () => {
         StorageResume.saveLanguage(level, language)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
 
     const edit = () => {
         StorageResume.editLanguage(level, language, state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const remove = () => {
         StorageResume.deleteLanguage(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.languageDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_LANGUAGE, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const pressButton = () =>
@@ -41,7 +41,7 @@ export const Language = ({ state, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionLanguage} />
+            <Note text={Strings.DESCRIPTION_LANGUAGE} />
             <Input
                 text={language}
                 iconName={"pencil"}

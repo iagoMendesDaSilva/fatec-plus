@@ -20,15 +20,15 @@ export const ProgressPassword = ({ size = widthScreen * .9, strong = 0 }) => {
     const verifyStrong = () => {
         switch (strong) {
             case 1:
-                return { color: Colors.error, icon: 'emoji-sad', text: Strings.veryWeekPassword }
+                return { color: Colors.ERROR, icon: 'emoji-sad', text: Strings.PASSWORD_VERY_WEEK }
             case 2:
-                return { color: Colors.warning, icon: 'emoji-neutral', text: Strings.weekPassword }
+                return { color: Colors.WARNING, icon: 'emoji-neutral', text: Strings.PASSWORD_WEEK }
             case 3:
-                return { color: Colors.regular, icon: 'emoji-happy', text: Strings.regularPassword }
+                return { color: Colors.MINIMUM, icon: 'emoji-happy', text: Strings.PASSWORD_REGULAR }
             case 4:
-                return { color: Colors.success, icon: 'emoji-flirt', text: Strings.strongPassword }
+                return { color: Colors.SUCCESS, icon: 'emoji-flirt', text: Strings.PASSWORD_STRONG }
             default:
-                return { color: Colors.background_light, icon: 'emoji-sad', text: Strings.noPassword }
+                return { color: Colors.BACKGROUND_LIGHT, icon: 'emoji-sad', text: Strings.NO_PASS }
         }
     }
 
@@ -45,7 +45,7 @@ export const ProgressPassword = ({ size = widthScreen * .9, strong = 0 }) => {
                     styleText={{ ...styles.textStrongPassword, color: verifyStrong().color }} />
             </View>
             <View style={{ ...styles.bar, width: size }} >
-                <Animated.View style={{ ...styles.animatedBar, width: widthBar, backgroundColor: !strong ? Colors.error : verifyStrong().color }} />
+                <Animated.View style={{ ...styles.animatedBar, width: widthBar, backgroundColor: !strong ? Colors.ERROR : verifyStrong().color }} />
             </View>
         </View>
     );
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         height: 12,
         borderRadius: 30,
         overflow: "hidden",
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     animatedBar: {
         height: 12,

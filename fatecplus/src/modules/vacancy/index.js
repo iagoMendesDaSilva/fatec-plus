@@ -36,7 +36,7 @@ export const Vacancy = ({ navigation, route }) => {
         if (params) {
             StorageVacancy.getVacancy(params.id)
                 .then(data => configVacancy(data.job))
-                .catch(status => modal.configErrorModal({ status, positivePress: () => navigation.goBack() }))
+                .catch(status => modal.set({ status, positivePress: () => navigation.goBack() }))
         }
     }
 
@@ -73,16 +73,16 @@ export const Vacancy = ({ navigation, route }) => {
     const editVacancy = () => {
         StorageVacancy.editVacancy(name, formatDate(deadline), internship, job, receive, subject, description, params.id)
             .then(data =>
-                modal.configErrorModal({ msg: Strings.updated, positivePress: () => navigation.goBack() }))
-            .catch(status => modal.configErrorModal({ status }))
+                modal.set({ msg: Strings.UPDATED, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
 
     const saveVacancy = () => {
         StorageVacancy.saveVacancy(name, formatDate(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
             .then(data =>
-                modal.configErrorModal({ msg: Strings.createdVacancy, positivePress: () => navigation.goBack() }))
-            .catch(status => modal.configErrorModal({ status }))
+                modal.set({ msg: Strings.CREATED_VACANCY, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
 
@@ -156,10 +156,10 @@ export const Vacancy = ({ navigation, route }) => {
                                 date={date}
                                 mode={"date"}
                                 locale={"pt-br"}
-                                textColor={"white"}
+                                textColor={Colors.TEXT_PRIMARY}
                                 minimumDate={new Date()}
                                 androidVariant={"iosClone"}
-                                fadeToColor={Colors.background}
+                                fadeToColor={Colors.BACKGROUND}
                                 onDateChange={value => changeDate(value)} />
                         }
                         <View style={styles.containerSwitch}>

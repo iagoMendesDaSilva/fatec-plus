@@ -5,6 +5,7 @@ import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 
 import { Storage } from '../../services';
+import Colors from '../../constants/colors';
 import { StorageResume } from './storage';
 import Strings from '../../constants/strings';
 import { ModalContext } from '../../routes/modalContext';
@@ -33,7 +34,7 @@ export const Resume = ({ navigation, route }) => {
                 formatResume(data)
                 setLoading(false)
             })
-            .catch(status => modal.configErrorModal({ status, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.set({ status, positivePress: () => navigation.goBack() }))
     }
 
     const formatResume = data => {
@@ -64,14 +65,14 @@ export const Resume = ({ navigation, route }) => {
         const user = await Storage.getUser()
         StorageResume.editInternshipUser(value, user.id)
             .then(data => setInternship(value))
-            .catch(status => modal.configErrorModal({status}))
+            .catch(status => modal.set({status}))
     }
 
     const setJobSwitch = async value => {
         const user = await Storage.getUser()
         StorageResume.editJobUser(value, user.id)
             .then(data => setJob(value))
-            .catch(status =>  modal.configErrorModal({status}))
+            .catch(status =>  modal.set({status}))
     }
 
     return (
@@ -81,7 +82,7 @@ export const Resume = ({ navigation, route }) => {
                 {
                     loading
                         ?
-                        <ActivityIndicator color={"white"} size={"large"} />
+                        <ActivityIndicator color={Colors.TEXT_PRIMARY} size={"large"} />
                         :
                         <>
                             {
@@ -118,7 +119,7 @@ export const Resume = ({ navigation, route }) => {
                                 Boolean(!networks.visible && !projects.visible && !languages.visible && !formations.visible && !experiences.visible) &&
                                 <View style={styles.containerContent}>
                                     <View>
-                                        <Note text={Strings.descriptionResume} />
+                                       <Note text={Strings.DESCRIPTION_RESUME}/>
                                         <ContractedList
                                             title={"Redes"}
                                             keyArray={'name'}

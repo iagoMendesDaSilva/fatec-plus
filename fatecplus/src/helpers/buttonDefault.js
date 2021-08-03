@@ -27,7 +27,7 @@ export const ButtonDefault = ({ text, onPress, style, loading, active }) => {
             <View style={styles.content}>
                 {loading
                     ?
-                    <ActivityIndicator size="small" color={"white"} />
+                    <ActivityIndicator size="small" color={Colors.TEXT_PRIMARY} />
                     :
                     <TextDefault
                         children={text}
@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     containerText: {
         width: 120,
     },
     textButton: {
         fontSize: 16,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         textAlign: 'center',
         fontWeight: 'bold',
         fontFamily:"Nunito-Bold"
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     buttonActive: {
         height: 50,
         width: 250,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
     content: {
         position: "absolute",

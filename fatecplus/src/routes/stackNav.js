@@ -7,17 +7,17 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { Icon } from '../helpers';
 import { TabNav } from './tabNav';
 import Colors from '../constants/colors';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume,Vacancy, Student, Job } from '../modules';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Vacancy, Student, Job } from '../modules';
 
 export const StackNav = () => {
 
     const Stack = createStackNavigator();
 
-    const back = (navigation, back = true, color = Colors.background) => {
+    const back = (navigation, back = true, color = Colors.BACKGROUND) => {
         return (
             <>
                 <SafeAreaView style={{ ...styles.safeArea, backgroundColor: color }} />
-                <StatusBar barStyle={'light-content'} backgroundColor={color} />
+                <StatusBar animated barStyle={'light-content'} backgroundColor={color} />
                 {back &&
                     <TouchableOpacity style={styles.touchableGoBack}
                         onPress={() => navigation.goBack()}>
@@ -27,15 +27,17 @@ export const StackNav = () => {
         )
     }
 
-    const verifyScreenHome = data => {
-        const color = data.route.state && data.route.state.index === 2 ? Colors.background : Colors.background_light
+    const backTabBar = data => {
+        const color = data.route.state && data.route.state.index === 2
+            ? Colors.BACKGROUND
+            : Colors.BACKGROUND_LIGHT
         return back(false, false, color)
     }
 
     const screenOptions = {
         headerTitle: false,
         headerTransparent: true,
-        headerTintColor: 'white',
+        headerTintColor: Colors.TEXT_PRIMARY,
     }
 
     return (
@@ -52,7 +54,7 @@ export const StackNav = () => {
             <Stack.Screen name="AddressRegister" component={AddressRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Home" component={TabNav} options={{ header: ({ scene }) => verifyScreenHome(scene) }} />
+            <Stack.Screen name="Home" component={TabNav} options={{ header: ({ scene }) => backTabBar(scene) }} />
             <Stack.Screen name="Student" component={Student} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Job" component={Job} options={{ header: ({ navigation }) => back(navigation, false) }} />
         </Stack.Navigator>

@@ -5,7 +5,7 @@ export class RequestVersion extends Request {
 
     constructor(version_app, id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}user/${id}`;
+        const url = `${Constants.BASE_URL}user/${id}`;
         const params = { version_app };
         super(url, 'PUT', headers, params);
     }

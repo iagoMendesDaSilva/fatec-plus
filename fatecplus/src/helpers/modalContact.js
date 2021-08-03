@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, Animated, Dimensions } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Animated, Dimensions, Linking } from "react-native";
 
 import { Animate } from "../services";
 import Colors from '../constants/colors';
-import { TextDefault, Icon } from "../helpers";
+import { TextDefault, Icon } from ".";
 
-const { height } = Dimensions.get("window");
+const HEIGTH = Dimensions.get("window").height
 
-export const ModalBottom = ({ children, open = false, title, onClose }) => {
+export const ModalContact = ({ phone = "", email = "", open = false, onClose }) => {
 
     const modalPositionY = React.useRef(new Animated.Value(0)).current;
 
@@ -24,7 +24,7 @@ export const ModalBottom = ({ children, open = false, title, onClose }) => {
 
     const translateY = modalPositionY.interpolate({
         inputRange: [0, 1],
-        outputRange: [height, height - 200],
+        outputRange: [HEIGTH, HEIGTH - 200],
         extrapolate: "clamp",
     })
 
@@ -32,8 +32,8 @@ export const ModalBottom = ({ children, open = false, title, onClose }) => {
         <Animated.View style={{ ...styles.conatinerModal, transform: [{ translateY }] }}>
             <View style={styles.conatinerHeader}>
                 <TextDefault
-                    children={title}
-                    styleText={styles.txtTilte} />
+                    children={"Contato"}
+                    styleText={styles.txtTitle} />
                 <TouchableOpacity
                     onPress={close}
                     hitSlop={styles.hitSlop}>
@@ -43,7 +43,20 @@ export const ModalBottom = ({ children, open = false, title, onClose }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.conatinerContent}>
-                {children}
+                <TextDefault
+                    children={"Telefone"}
+                    styleText={styles.txtSection} />
+                <TextDefault
+                    children={phone}
+                    styleText={styles.txtItem}
+                    onPress={() => Linking.openURL(`tel://${phone}`)} />
+                <TextDefault
+                    children={"Email"}
+                    styleText={styles.txtSection} />
+                <TextDefault
+                    children={email}
+                    styleText={styles.txtItem}
+                    onPress={() => Linking.openURL(`mailto:support:${email}`)} />
             </View>
         </Animated.View>
     )
@@ -52,24 +65,24 @@ export const ModalBottom = ({ children, open = false, title, onClose }) => {
 const styles = StyleSheet.create({
     conatinerModal: {
         zIndex: 2,
-        height: 200,
         padding: 15,
+        height: 200,
         width: "100%",
         position: "absolute",
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: Colors.background_medium,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     conatinerHeader: {
         paddingBottom: 10,
         flexDirection: "row",
         borderBottomWidth: 1,
         justifyContent: "space-between",
-        borderBottomColor: Colors.background_light,
+        borderBottomColor: Colors.BACKGROUND_LIGHT,
     },
     conatinerContent: {
         flex: 1,
-        paddingTop: 10,
+        paddingTop: 3,
     },
     hitSlop: {
         left: 20,
@@ -77,8 +90,18 @@ const styles = StyleSheet.create({
         right: 20,
         bottom: 20,
     },
-    txtTilte: {
+    txtTitle: {
         fontSize: 20,
-        color: "white",
+        fontWeight: "bold",
+        color: Colors.TEXT_PRIMARY,
+    },
+    txtItem: {
+        fontSize: 20,
+        color: Colors.TEXT_PRIMARY,
+    },
+    txtSection: {
+        fontSize: 18,
+        paddingTop: 5,
+        color: Colors.PRIMARY,
     },
 })

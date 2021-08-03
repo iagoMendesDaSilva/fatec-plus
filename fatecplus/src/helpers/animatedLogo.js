@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     txtLogo: {
         fontSize: 60,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
         fontFamily:"Nunito-SemiBold",
     },
     containerIcon: {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         width: 35,
         borderRadius: 3,
         position: "absolute",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
     iconPlusVertical: {
         left: 15,
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
         height: 35,
         borderRadius: 3,
         position: "absolute",
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.PRIMARY,
     },
 });

@@ -5,7 +5,7 @@ export class RequestDeleteUser extends Request {
 
     constructor(id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}user/${id}`;
+        const url = `${Constants.BASE_URL}user/${id}`;
         const params = { }
         super(url, 'DELETE', headers, params);
     }

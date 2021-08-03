@@ -25,9 +25,9 @@ export const AddressInput = ({ onSelect }) => {
             stylesItemText={styles.stylesItemText}
             placeHolder={"Pesquisar endereço"}
             stylesContainer={styles.stylesContainer}
-            googleApiKey={Values.google_places_key}
+            googleApiKey={Values.GOOGLE_PLACES_KEY}
             onSelect={place => selectAddress(place)}
-            textInputProps={{ placeholderTextColor: "rgba(255,255,255,.5)" }} />
+            textInputProps={{ placeholderTextColor: Colors.TEXT_PRIMARY_LIGHT }} />
     );
 }
 
@@ -39,18 +39,18 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     stylesItem: {
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     stylesItemText: {
-        color: "rgba(255,255,255,.75)",
+        color: Colors.TEXT_PRIMARY,
     },
     stylesList: {
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     stylesInput: {
         height: 45,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         overflow: "hidden",
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 });

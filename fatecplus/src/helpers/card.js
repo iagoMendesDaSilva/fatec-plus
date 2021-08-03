@@ -5,7 +5,7 @@ import { Animate } from '../services';
 import { TextDefault } from '../helpers';
 import Colors from '../constants/colors';
 
-const widthScreen = Dimensions.get("screen").width;
+const WIDTH = Dimensions.get("screen").width;
 
 export const Card = ({ title, description, source, onPress, }) => {
 
@@ -17,11 +17,16 @@ export const Card = ({ title, description, source, onPress, }) => {
         setOpen(!open)
     }
 
+    const pressCard = () => {
+        open && showDescription()
+        onPress()
+    }
+
     return (
         <Animated.View
             style={{ ...styles.containerAll, height: heightCard }}>
             <TouchableOpacity
-                onPress={() => onPress && onPress()}
+                onPress={pressCard}
                 style={styles.containerContent}>
                 <Image
                     source={source}
@@ -52,8 +57,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginVertical: 10,
         overflow: "hidden",
-        width: widthScreen * .9,
-        backgroundColor: Colors.background_light,
+        width: WIDTH * .9,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     containerContent: {
         padding: 10,
@@ -62,12 +67,12 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 25,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
     },
     txtKnowMore: {
         fontSize: 18,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
     containerDescription: {
         width: "90%",
@@ -76,14 +81,14 @@ const styles = StyleSheet.create({
     textDescription: {
         fontSize: 16,
         textAlign: "justify",
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     line: {
         height: .5,
         width: "90%",
         marginLeft: 10,
         marginVertical: 5,
-        backgroundColor: "rgba(255,255,255,.5)",
+        backgroundColor: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     image: {
         height: 100,

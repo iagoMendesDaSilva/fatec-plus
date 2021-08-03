@@ -23,11 +23,11 @@ export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, o
 const styles = StyleSheet.create({
     textInput: {
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         borderRadius: 10,
         textAlign: "center",
         paddingHorizontal: 12,
         paddingVertical: 10,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 })

@@ -5,7 +5,7 @@ export class RequestEditNetwork extends Request {
 
     constructor(name, url, id) {
         const headers = { 'Content-Type': 'application/json' };
-        const path = `${Constants.base_url}social-network/${id}`;
+        const path = `${Constants.BASE_URL}social-network/${id}`;
         const params = { name, url };
         super(path, 'PUT', headers, params);
     }

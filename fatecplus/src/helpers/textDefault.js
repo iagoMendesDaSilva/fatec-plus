@@ -1,6 +1,8 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+import Colors from '../constants/colors';
+
 export const TextDefault = ({ children, style, styleText, lines = 1,
     selectable = false, onPress = false, active = true, hitSlop = false ,  disabled=false}) => {
 
@@ -14,7 +16,7 @@ export const TextDefault = ({ children, style, styleText, lines = 1,
                 selectionColor={"gray"}
                 allowFontScaling={false}
                 numberOfLines={lines}
-                style={[styleText ? styleText : styles.textDefault, { opacity: active ? 1 : .5 }]}
+                style={[styleText ? styleText : styles.textDefault, { opacity: active ? 1 : .5, }]}
                 selectable={selectable && !onPress ? selectable : false}>
                 {children}
             </Text>
@@ -25,7 +27,7 @@ export const TextDefault = ({ children, style, styleText, lines = 1,
 const styles = StyleSheet.create({
     textDefault: {
         fontSize: 16,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     hitSlop: {
         top: 10,

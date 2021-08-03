@@ -5,7 +5,7 @@ export class RequestTeachers extends Request {
 
     constructor() {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}users/teachers`;
+        const url = `${Constants.BASE_URL}users/teachers`;
         const params = {};
         super(url, 'GET', headers, params);
     }

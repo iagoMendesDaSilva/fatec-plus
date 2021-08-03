@@ -5,7 +5,7 @@ export class RequestVerificationCode extends Request {
 
     constructor(verificationCode, id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}auth/confirm-verification-code/${id}`;
+        const url = `${Constants.BASE_URL}auth/confirm-verification-code/${id}`;
         const params = { verificationCode };
         super(url, 'POST', headers, params);
     }

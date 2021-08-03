@@ -6,7 +6,7 @@ const widthScreen = Dimensions.get("screen").width;
 export default StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: Colors.background,
+        backgroundColor: Colors.BACKGROUND,
     },
     containerContent: {
         flexGrow: 1,
@@ -15,7 +15,7 @@ export default StyleSheet.create({
     },
     txtLogo: {
         fontSize: 60,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
         fontFamily: "Nunito-SemiBold",
     },
     logo: {
@@ -32,7 +32,7 @@ export default StyleSheet.create({
     },
     txtInsertCode: {
         fontSize: 18,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtResendEmail: {
         fontSize: 18,
@@ -41,9 +41,9 @@ export default StyleSheet.create({
     textInput: {
         fontSize: 20,
         padding: 10,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         borderRadius: 10,
         textAlign: "center",
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 });

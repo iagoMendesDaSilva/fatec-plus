@@ -41,7 +41,7 @@ export const Teachers = ({ navigation }) => {
     }
 
     const configModal = status =>
-        modal.configErrorModal({
+        modal.set({
             status,
             msg: Strings.failTeachers,
             positivePress: () => navigation.replace("Login")

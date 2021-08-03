@@ -29,7 +29,7 @@ export const Vacancies = ({ navigation, route }) => {
                 setUser(data)
                 getVacancies(data.category, data.id, data.internship, data.job)
             })
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
     }
 
     const getVacancies = (category, id, internship, job) => {
@@ -69,11 +69,11 @@ export const Vacancies = ({ navigation, route }) => {
     const getDeadLineColor = date => {
         const today = getFormatedDate()
         if (date === today)
-            return Colors.error
+            return Colors.ERROR
         if (date > today)
-            return Colors.warning
+            return Colors.WARNING
         if (!date)
-            return Colors.success
+            return Colors.SUCCESS
         return "gray"
     }
 
@@ -103,9 +103,9 @@ export const Vacancies = ({ navigation, route }) => {
     }
 
     const configModal = status =>
-        modal.configErrorModal({
+        modal.set({
             status,
-            msg: Strings.failVacancies,
+            msg: Strings.ERROR_VACANCIES,
             positivePress: () => navigation.replace("Login")
         })
 
@@ -146,8 +146,8 @@ export const Vacancies = ({ navigation, route }) => {
     const requestOrIndicate = (vacancyId, studentId) => {
         StorageVacancie.solicit(vacancyId, studentId)
             .then(() =>
-                modal.configErrorModal({
-                    msg: user.category === "Company" ? Strings.requested : Strings.indicated,
+                modal.set({
+                    msg: user.category === "Company" ? Strings.REQUESTED : Strings.INDICATED,
                     positivePress: () => {
                         route.params = null
                         navigation.goBack()
@@ -155,7 +155,7 @@ export const Vacancies = ({ navigation, route }) => {
                 })
             )
             .catch(status =>
-                modal.configErrorModal({
+                modal.set({
                     status,
                     positivePress: () => navigation.goBack()
                 }))

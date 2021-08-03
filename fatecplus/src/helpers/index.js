@@ -17,7 +17,7 @@ export * from './textDefault';
 export * from './buttonSmall';
 export * from './imagePicker';
 export * from './addressInput';
-export * from './modalBottom';
+export * from './modalContact';
 export * from './switchDefault';
 export * from './buttonDefault';
 export * from './floatingButton';

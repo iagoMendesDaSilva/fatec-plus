@@ -17,21 +17,21 @@ export const Network = ({ state, reload }) => {
 
     const save = () => {
         StorageResume.saveNetwork(name, url)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
 
     const edit = () => {
         StorageResume.editNetwork(name, url, state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const remove = () => {
         StorageResume.deleteNetwork(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.networkDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_NETWORK, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const pressButton = () =>
@@ -40,7 +40,7 @@ export const Network = ({ state, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionNetwork} />
+            <Note text={Strings.DESCRIPTION_NETWORK} />
             <Input
                 text={name}
                 maxLength={20}

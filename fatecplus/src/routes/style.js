@@ -14,11 +14,11 @@ export default StyleSheet.create({
     tabBar: {
         height: 60,
         borderTopWidth:0,
-        backgroundColor:Colors.background_light,
+        backgroundColor:Colors.BACKGROUND_LIGHT,
     },
     txtTabBar: {
         fontSize: 12,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         paddingBottom: 5,
     },
 });

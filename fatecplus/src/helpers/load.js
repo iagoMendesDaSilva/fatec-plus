@@ -1,7 +1,9 @@
 import React from "react";
 import { StyleSheet, ActivityIndicator, View } from "react-native";
 
-export const Load = ({ backgroundColor, color = "white", size = "large", }) => {
+import Colors from "../constants/colors";
+
+export const Load = ({ backgroundColor, color = Colors.TEXT_PRIMARY, size = "large", }) => {
 
     return (
         <View style={{ ...styles.containerLoader, backgroundColor: backgroundColor ? backgroundColor : "transparent" }}>

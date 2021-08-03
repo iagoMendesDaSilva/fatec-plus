@@ -14,16 +14,16 @@ export default StyleSheet.create({
     },
     txtUsername: {
         fontSize: 22,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
     },
     txtAddress: {
         fontSize: 20,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
     },
     txtName: {
         fontSize: 20,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     containerInfo: {
         flex: 1,
@@ -31,12 +31,12 @@ export default StyleSheet.create({
         paddingHorizontal: 15,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
-        backgroundColor: Colors.background_light,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     txtSection: {
         fontSize: 22,
         marginTop:12,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     containerItem: {
         height: 50,
@@ -48,16 +48,16 @@ export default StyleSheet.create({
     },
     txtItem: {
         fontSize: 18,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         paddingLeft: 10,
     },
     txtVersion:{
         fontSize: 18,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtDeleteAccountant:{
         fontSize: 18,
         paddingLeft: 10,
-        color: Colors.error,
+        color: Colors.ERROR,
     },
 });

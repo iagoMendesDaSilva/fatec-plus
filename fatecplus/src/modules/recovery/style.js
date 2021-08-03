@@ -4,7 +4,7 @@ import Colors from '../../constants/colors';
 export default StyleSheet.create({
     txtLogo: {
         fontSize: 60,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
         fontFamily: "Nunito-SemiBold",
     },
     logo: {

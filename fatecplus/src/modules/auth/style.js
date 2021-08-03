@@ -4,13 +4,13 @@ import Colors from '../../constants/colors';
 export default StyleSheet.create({
     txtWelcome: {
         fontSize: 45,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         paddingLeft:15,
         paddingTop:15,
         fontWeight: "bold",
     },
     txtForgetPassword: {
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         fontSize: 18,
     },
     containerInput: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
     },
     txtCreateAccount: {
         fontSize: 18,
-        color: Colors.primary,
+        color: Colors.PRIMARY,
     },
     containerContent: {
         flex:1,

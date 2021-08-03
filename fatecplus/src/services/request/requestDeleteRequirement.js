@@ -5,7 +5,7 @@ export class RequestDeleteRequirement extends Request {
 
     constructor( id) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}requirement/${id}`;
+        const url = `${Constants.BASE_URL}requirement/${id}`;
         const params = {};
         super(url, 'DELETE', headers, params);
     }

@@ -67,14 +67,14 @@ export const MainRegister = (props) => {
 
     const verifyFields = data => {
         StorageRegister.verifyEmail(email)
-            .then(resp => modal.configErrorModal({ msg: Strings.emailRegistred }))
+            .then(resp => modal.set({ msg: Strings.CONFLICT_EMAIL }))
             .catch(err => {
                 err === 404 ?
                     StorageRegister.verifyUsername(username)
-                        .then(resp => modal.configErrorModal({ msg: Strings.usernameRegistred }))
+                        .then(resp => modal.set({ msg: Strings.CONFLICT_USERNAME }))
                         .catch(err => props.navigation.navigate("AddressRegister", data))
                     :
-                    modal.configErrorModal({ status })
+                    modal.set({ status })
             })
     }
 
@@ -84,8 +84,8 @@ export const MainRegister = (props) => {
             .catch(status => console.log(status))
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
-                modal.configErrorModal({ msg: Strings.updated, positivePress: () => props.navigation.goBack() }))
-            .catch(status => modal.configErrorModal({ status, msg: Strings.failUpdate }))
+                modal.set({ msg: Strings.UPDATED, positivePress: () => props.navigation.goBack() }))
+            .catch(status => modal.set({ status, msg: Strings.ERROR_UPDATE }))
     }
 
     const getDefaultValues = () => {
@@ -111,7 +111,7 @@ export const MainRegister = (props) => {
         StorageRegister.getCourses()
             .then(data => formatCourses(data))
             .catch(status =>
-                modal.configErrorModal({ msg: Strings.coursesFail, status: 404, positivePress: () => props.navigation.goBack() }))
+                modal.set({ msg: Strings.ERROR_COURSES, status: 404, positivePress: () => props.navigation.goBack() }))
     }
 
     const buttonActive = () => {
@@ -199,7 +199,7 @@ export const MainRegister = (props) => {
                             changeValue={value => setCourse(value)} />
                         <DatePickerDefault
                             title={birthDate}
-                            onPress={() => setPicker(!picker)}
+                            onPress={()=>setPicker(!picker)}
                             deleteValue={() => setBirthDate("")}
                             initialValue={"Data de Nascimento"} />
                     </>
@@ -210,9 +210,9 @@ export const MainRegister = (props) => {
                         date={date}
                         mode={"date"}
                         locale={"pt-br"}
-                        textColor={"white"}
+                        textColor={Colors.TEXT_PRIMARY}
                         androidVariant={"iosClone"}
-                        fadeToColor={Colors.background}
+                        fadeToColor={Colors.BACKGROUND}
                         onDateChange={value => changeDate(value)}
                         maximumDate={new Date(today.year - 16, today.month, today.day)}
                         minimumDate={new Date(today.year - 120, today.month, today.day)} />
@@ -224,7 +224,7 @@ export const MainRegister = (props) => {
                     onchange={value => setDescription(value)} />
                 <ButtonDefault
                     onPress={nextStage}
-                    text={"Próximo"}
+                    text={params ? "Salvar" : "Próximo"}
                     active={buttonActive()} />
             </Screen>
         </TouchableOpacity>

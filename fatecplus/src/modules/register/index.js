@@ -8,12 +8,11 @@ import { TextDefault, Card, Screen } from '../../helpers';
 
 export const Register = ({ navigation }) => {
 
-    const nextStage = category => {
+    const nextStage = category =>
         navigation.navigate("MainRegister", { category })
-    }
 
     return (
-        <Screen>
+        <Screen center={false}>
             <TextDefault
                 lines={2}
                 styleText={styles.txtTitle}
@@ -22,17 +21,17 @@ export const Register = ({ navigation }) => {
                 <Card
                     title={"Aluno(a)"}
                     onPress={() => nextStage("Student")}
-                    description={Strings.descriptionStudent}
+                    description={Strings.DESCRIPTION_STUDENT}
                     source={require("../../assets/img/category_student.png")} />
                 <Card
                     title={"Empresa"}
                     onPress={() => nextStage("Company")}
-                    description={Strings.descriptionCompany}
+                    description={Strings.DESCRIPTION_COMPANY}
                     source={require("../../assets/img/category_company.png")} />
                 <Card
                     title={"Professor(a)"}
                     onPress={() => nextStage("Teacher")}
-                    description={Strings.descriptionTeacher}
+                    description={Strings.DESCRIPTION_TEACHER}
                     source={require("../../assets/img/category_teacher.png")} />
             </View>
         </Screen>

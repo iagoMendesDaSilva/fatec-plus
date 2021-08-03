@@ -13,7 +13,6 @@ export const ModalTwoOption = ({ visible, title, message, positiveText = "Confir
             transparent
             visible={visible}
             animationType='slide' >
-
             <View style={styles.containerModal}>
                 <View style={styles.modal}>
                     <View style={styles.containerText}>
@@ -67,18 +66,18 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         overflow: "hidden",
         width: widthScreen * .9,
-        backgroundColor: Colors.background_medium,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     containerTitle:{
         paddingRight:40,
     },
     textTitle: {
         fontSize: 14,
-        color: "rgba(255,255,255,.5)",
+        color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     textMessage: {
         fontSize: 16,
-        color: "white",
+        color: Colors.TEXT_PRIMARY,
         lineHeight: 22,
         paddingHorizontal: 15,
     },
@@ -109,6 +108,6 @@ const styles = StyleSheet.create({
     divisionButtons: {
         width: .5,
         height: "60%",
-        backgroundColor: "rgba(255,255,255,.5)",
+        backgroundColor: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
 });

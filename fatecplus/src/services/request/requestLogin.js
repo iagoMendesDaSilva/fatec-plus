@@ -5,7 +5,7 @@ export class RequestLogin extends Request{
 
     constructor(username, password) {
         const headers = { 'Content-Type': 'application/json' };
-        const url = `${Constants.base_url}auth/login`;
+        const url = `${Constants.BASE_URL}auth/login`;
         const params = {
             username,
             password,

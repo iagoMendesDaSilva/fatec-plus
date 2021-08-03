@@ -28,14 +28,14 @@ export const Menu = ({ navigation }) => {
             StorageMenu.getUser(currentUser.id)
                 .then(data => setUser(data))
                 .catch(status =>
-                    modal.configErrorModal({ msg: Strings.userFail, status }))
+                    modal.set({ msg: Strings.ERROR_USER, status }))
         }
     }
 
     const deleteUser = () => {
         StorageMenu.deleteUser(user.id)
             .then(data => logout(false))
-            .catch(status => modal.configErrorModal({ status }))
+            .catch(status => modal.set({ status }))
     }
 
     const logout = async (requestToken = true) => {
@@ -46,24 +46,24 @@ export const Menu = ({ navigation }) => {
     }
 
     const confirmDeleteAccount = () =>
-        modal.configErrorModal({
+        modal.set({
             options: true,
             iconName: "trash",
             title: "Excluir conta",
             iconLib: "fontawesome",
-            iconColor: Colors.error,
+            iconColor: Colors.ERROR,
             positivePress: deleteUser,
-            msg: Strings.confirmDeleteUser,
+            msg: Strings.CONFIRM_DELETE_USER,
         })
 
     const confirmLogout = () =>
-        modal.configErrorModal({
+        modal.set({
             options: true,
             iconLib: "Ionicons",
             iconName: "power",
             title: "Encerrar sessão",
             positivePress: logout,
-            msg: Strings.confirmLogout,
+            msg: Strings.CONFIRM_LOGOUT,
         })
 
     const getDataUser = () => {
@@ -159,7 +159,7 @@ export const Menu = ({ navigation }) => {
                     title={"Encerrar sessão"} />
                 <ItemList
                     arrow={false}
-                    color={Colors.error}
+                    color={Colors.ERROR}
                     iconLib={"Ionicons"}
                     iconName={"trash"}
                     title={"Excluir conta"}

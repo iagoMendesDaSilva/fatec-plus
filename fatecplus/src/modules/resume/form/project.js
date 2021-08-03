@@ -18,21 +18,21 @@ export const Project = ({ state, reload }) => {
 
     const save = () => {
         StorageResume.saveProject(name, url, description)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
 
     const edit = () => {
         StorageResume.editProject(name, url, description, state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.updated, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const remove = () => {
         StorageResume.deleteProject(state.data[state.index].id)
-            .then(data => modal.configErrorModal({ msg: Strings.projectDeleted, positivePress: reload }))
-            .catch(status => modal.configErrorModal({ status }))
+            .then(data => modal.set({ msg: Strings.DELETED_PROJECT, positivePress: reload }))
+            .catch(status => modal.set({ status }))
     }
 
     const pressButton = () =>
@@ -41,7 +41,7 @@ export const Project = ({ state, reload }) => {
 
     return (
         <Screen>
-            <Note text={Strings.descriptionProject} />
+            <Note text={Strings.DESCRIPTION_PROJECT} />
             <Input
                 text={name}
                 maxLength={20}
