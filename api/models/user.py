@@ -16,7 +16,7 @@ class User(database.Model):
     birth_date =  database.Column(database.Date)
     state = database.Column(database.String(50))
     recovery = database.Column(database.Integer)
-    phone = database.Column(database.String(15))
+    phone = database.Column(database.String(17))
     internship = database.Column(database.Boolean)
     studying = database.Column(database.String(50))
     address = database.Column(database.String(300))

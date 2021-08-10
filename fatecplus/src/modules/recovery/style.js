@@ -15,6 +15,6 @@ export default StyleSheet.create({
     },
     txtAlreadyCode: {
         fontSize: 18,
-        color: Colors.link,
+        color: Colors.PRIMARY,
     },
 });

@@ -1,10 +1,10 @@
-import { Executor, RequestUser, RequestDeleteNetwork, RequestSaveNetwork, RequestEditNetwork, RequestDeleteLanguage, RequestSaveLanguage, RequestEditLanguage, RequestDeleteProject, RequestSaveProject, RequestEditProject, RequestDeleteFormation, RequestSaveFormation, RequestEditFormation, RequestDeleteExperience, RequestSaveExperience, RequestEditExperience, RequestEditJobUser, RequestEditInternshipUser } from '../../services/request';
+import { Executor, User, NetworkDelete, NetworkAdd, NetworkEdit, LanguageDelete, LanguageAdd, LanguageEdit, ProjectDelete, ProjectAdd, ProjectEdit, FormationDelete, FormationAdd, FormationEdit, ExperienceDelete, ExperienceAdd, ExperienceEdit, EffectiveEdit, InternshipEdit } from '../../services/request';
 
 export class StorageResume {
 
     static getUser(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestUser(id))
+            Executor.run(new User(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageResume {
 
     static saveNetwork(name, url) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSaveNetwork(name, url))
+            Executor.run(new NetworkAdd(name, url))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageResume {
 
     static deleteNetwork(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteNetwork(id))
+            Executor.run(new NetworkDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageResume {
 
     static editNetwork(name, url, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditNetwork(name, url, id))
+            Executor.run(new NetworkEdit(name, url, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -36,7 +36,7 @@ export class StorageResume {
 
     static saveLanguage(level, language) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSaveLanguage(level, language))
+            Executor.run(new LanguageAdd(level, language))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -44,7 +44,7 @@ export class StorageResume {
 
     static deleteLanguage(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteLanguage(id))
+            Executor.run(new LanguageDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -52,7 +52,7 @@ export class StorageResume {
 
     static editLanguage(level, language, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditLanguage(level, language, id))
+            Executor.run(new LanguageEdit(level, language, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -60,7 +60,7 @@ export class StorageResume {
 
     static saveProject(name, url, description) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSaveProject(name, url, description))
+            Executor.run(new ProjectAdd(name, url, description))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -68,7 +68,7 @@ export class StorageResume {
 
     static deleteProject(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteProject(id))
+            Executor.run(new ProjectDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -76,7 +76,7 @@ export class StorageResume {
 
     static editProject(name, url, description, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditProject(name, url, description, id))
+            Executor.run(new ProjectEdit(name, url, description, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -84,7 +84,7 @@ export class StorageResume {
 
     static saveFormation(title, subtitle, end_year, start_year, workload) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSaveFormation(title, subtitle, end_year, start_year, workload))
+            Executor.run(new FormationAdd(title, subtitle, end_year, start_year, workload))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -92,7 +92,7 @@ export class StorageResume {
 
     static deleteFormation(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteFormation(id))
+            Executor.run(new FormationDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -100,7 +100,7 @@ export class StorageResume {
 
     static editFormation(title, subtitle, end_year, start_year, workload, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditFormation(title, subtitle, end_year, start_year, workload, id))
+            Executor.run(new FormationEdit(title, subtitle, end_year, start_year, workload, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -108,7 +108,7 @@ export class StorageResume {
 
     static saveExperience(job, company, end_year, start_year) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSaveExperience(job, company, end_year, start_year))
+            Executor.run(new ExperienceAdd(job, company, end_year, start_year))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -116,7 +116,7 @@ export class StorageResume {
 
     static deleteExperience(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteExperience(id))
+            Executor.run(new ExperienceDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -124,7 +124,7 @@ export class StorageResume {
 
     static editExperience(job, company, end_year, start_year, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditExperience(job, company, end_year, start_year, id))
+            Executor.run(new ExperienceEdit(job, company, end_year, start_year, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -132,7 +132,7 @@ export class StorageResume {
 
     static editJobUser(job, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditJobUser(job, id))
+            Executor.run(new EffectiveEdit(job, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -140,7 +140,7 @@ export class StorageResume {
 
     static editInternshipUser(internship, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditInternshipUser(internship, id))
+            Executor.run(new InternshipEdit(internship, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

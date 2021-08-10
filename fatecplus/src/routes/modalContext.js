@@ -21,7 +21,7 @@ export const ModalProvider = ({ children }) => {
     }
 
     const set = ({ status, options = false, msg = false, ...props }) => {
-        const message = msg ? msg : Error.validate(status)
+        const message = msg && status===404 ? msg : Error.validate(status)
         if (status === 401)
             setInfo({ visible: true, options: false, message: Error.validate(401), positivePress: () => Error.logout(navigation) })
         else

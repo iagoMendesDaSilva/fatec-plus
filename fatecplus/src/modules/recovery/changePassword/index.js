@@ -35,7 +35,7 @@ export const ChangePassword = ({ navigation, route }) => {
         const playerId = await Notification.getPlayerId()
         StorageAuth.registerOneSignal(playerId, data.id)
             .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] }))
-                .catch(status => modal.set(status))
+            .catch(status => modal.set(status))
     }
 
     const setUser = async password => {
@@ -61,11 +61,12 @@ export const ChangePassword = ({ navigation, route }) => {
     const saveUser = () => {
         StorageRegister.register(params, password)
             .then(response => login())
-            .catch(status => modal.set({ status: status === 400 ? 404 : status, msg: Strings.emailOrUsernameFail }))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoading(false));
     }
 
-    const changeVisibility = () => setShowingPassword(!showingPassword)
+    const changeVisibility = () =>
+        setShowingPassword(!showingPassword)
 
     const verifyPassword = text => {
         const weakRegExp = new RegExp("^(?=.{4,})");

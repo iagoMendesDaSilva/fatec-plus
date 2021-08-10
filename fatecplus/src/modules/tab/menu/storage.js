@@ -1,10 +1,10 @@
-import { Executor, RequestUser, RequestImageProfile, RequestLogout, RequestDeleteUser} from '../../../services/request';
+import { Executor, User, ImageProfile, Logout, UserDelete} from '../../../services/request';
 
 export class StorageMenu {
 
     static getUser(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestUser(id))
+            Executor.run(new User(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageMenu {
 
     static changeImage(image){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestImageProfile(image))
+            Executor.run(new ImageProfile(image))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageMenu {
 
     static logout(){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestLogout())
+            Executor.run(new Logout())
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageMenu {
 
     static deleteUser(id){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteUser(id))
+            Executor.run(new UserDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

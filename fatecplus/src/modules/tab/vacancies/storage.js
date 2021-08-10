@@ -1,10 +1,10 @@
-import { Executor, RequestSubscription, RequestUser, RequestVacancies, RequestVacanciesByCompany} from '../../../services/request';
+import { Executor, Subscription, User, Jobs, JobsByCompany} from '../../../services/request';
 
 export class StorageVacancie {
 
     static getVacancies() {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVacancies())
+            Executor.run(new Jobs())
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageVacancie {
 
     static getVacanciesByCompany(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVacanciesByCompany(id))
+            Executor.run(new JobsByCompany(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageVacancie {
 
     static solicit(jobId, indication) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSubscription(jobId, indication, false))
+            Executor.run(new Subscription(jobId, indication, false))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageVacancie {
 
     static getUser(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestUser(id))
+            Executor.run(new User(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

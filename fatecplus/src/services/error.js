@@ -4,7 +4,7 @@ import { Notification, Storage } from "../services";
 export class Error {
 
     constructor() {
-        throw new Error("Can't instantiate to Erro class.")
+        throw new Error("Can't instantiate to Error class.")
     }
 
     static validate(status) {

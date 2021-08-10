@@ -1,10 +1,11 @@
 import styles from './style';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
+import { Calendar } from '../../../services';
 import { StorageRegister } from '../storage';
 import Colors from '../../../constants/colors';
 import Strings from '../../../constants/strings';
@@ -25,28 +26,22 @@ export const MainRegister = (props) => {
 
     const category = params.data ? params.data.category : params.category;
 
-    const [email, setEmail] = React.useState("");
-    const [name, setName] = React.useState("");
-    const [phone, setPhone] = React.useState("");
-    const [picker, setPicker] = React.useState(false);
-    const [course, setCourse] = React.useState(null);
-    const [username, setUsername] = React.useState("");
-    const [birthDate, setBirthDate] = React.useState(null);
-    const [description, setDescription] = React.useState("");
-    const [courses, setCourses] = React.useState({ data: [] });
-    const [image, setImage] = React.useState({ photo: "", base64: "" });
-    const [date, setDate] = React.useState(new Date(today.year - 18, today.month, today.day));
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [picker, setPicker] = useState(false);
+    const [course, setCourse] = useState(null);
+    const [username, setUsername] = useState("");
+    const [birthDate, setBirthDate] = useState(null);
+    const [description, setDescription] = useState("");
+    const [courses, setCourses] = useState({ data: [] });
+    const [image, setImage] = useState({ photo: "", base64: "" });
+    const [date, setDate] = useState(new Date(today.year - 18, today.month, today.day));
 
-    React.useEffect(() => {
+    useEffect(() => {
         getCourses();
         getDefaultValues();
     }, [])
-
-    const formatDate = date =>
-        date ? date.split("/").reverse().join("-") : null;
-
-    const unFormatDate = date =>
-        date ? date.split("-").reverse().join("/") : null
 
     const nextStage = () => {
         const data = {
@@ -57,7 +52,7 @@ export const MainRegister = (props) => {
             category,
             username,
             description,
-            birthDate: formatDate(birthDate),
+            birthDate: Calendar.unFormat(birthDate),
             image: image.base64 ? image.base64 : null,
         }
         params.data
@@ -67,12 +62,12 @@ export const MainRegister = (props) => {
 
     const verifyFields = data => {
         StorageRegister.verifyEmail(email)
-            .then(resp => modal.set({ msg: Strings.CONFLICT_EMAIL }))
-            .catch(err => {
-                err === 404 ?
+            .then(status => modal.set({ msg: Strings.CONFLICT_EMAIL, status }))
+            .catch(status => {
+                status === 404 ?
                     StorageRegister.verifyUsername(username)
-                        .then(resp => modal.set({ msg: Strings.CONFLICT_USERNAME }))
-                        .catch(err => props.navigation.navigate("AddressRegister", data))
+                        .then(status => modal.set({ msg: Strings.CONFLICT_USERNAME, status }))
+                        .catch(status => props.navigation.navigate("AddressRegister", data))
                     :
                     modal.set({ status })
             })
@@ -95,7 +90,7 @@ export const MainRegister = (props) => {
             setPhone(params.data.phone)
             setUsername(params.data.username)
             setDescription(params.data.description)
-            setBirthDate(unFormatDate(params.data.birthDate))
+            setBirthDate(Calendar.format(params.data.birthDate))
             setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
         }
     }
@@ -122,26 +117,17 @@ export const MainRegister = (props) => {
     }
 
     const getImage = () => {
-        launchImageLibrary(({ mediaType: "photo", includeBase64: true }), data =>
-            setImage({ photo: data.uri, base64: data.base64 }));
+        launchImageLibrary(({ mediaType: "photo", includeBase64: true }), data => {
+            data.fileSize / 1000 >= 4000
+                ? modal.set({ msg: Strings.ERROR_IMAGE, status: 404 })
+                : setImage({ photo: data.uri, base64: data.base64 })
+        })
     }
 
     const changeDate = value => {
         const date = new Date(value)
-        const year = String(date.getFullYear())
-        let month = String(date.getMonth() + 1)
-        let day = String(date.getDate())
-
-        if (day.length === 1) day = "0" + day
-        if (month.length === 1) month = "0" + month
-
         setDate(date)
-        setBirthDate(day + "/" + month + "/" + year)
-    }
-
-    const checkPhone = value => {
-        if ((/^\d+$/).test(value) || value === "")
-            setPhone(value)
+        setBirthDate(Calendar.format(date))
     }
 
     return (
@@ -180,12 +166,13 @@ export const MainRegister = (props) => {
                     category != "Teacher" &&
                     <Input
                         text={phone}
-                        maxLength={11}
+                        maxLength={17}
                         type={"phone-pad"}
                         iconName={"phone"}
                         defaultValue={phone}
                         placeholder={"Telefone"}
-                        onchange={text => checkPhone(text)} />
+                        mask={"+55 [00] [00000]-[0000]"}
+                        onchange={text => setPhone(text)} />
                 }
                 {
                     category === "Student" &&
@@ -199,7 +186,7 @@ export const MainRegister = (props) => {
                             changeValue={value => setCourse(value)} />
                         <DatePickerDefault
                             title={birthDate}
-                            onPress={()=>setPicker(!picker)}
+                            onPress={() => setPicker(!picker)}
                             deleteValue={() => setBirthDate("")}
                             initialValue={"Data de Nascimento"} />
                     </>

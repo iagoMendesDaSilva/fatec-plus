@@ -1,5 +1,5 @@
 
-import { Executor, RequestRegister, RequestCourses, RequestEditUser , RequestEditAddress, RequestImageProfile, RequestVerifyEmail, RequestVerifyUsername} from '../../services/request';
+import { Executor, Register, Courses, UserEdit , AddressEdit, ImageProfile, VerifyEmail, VerifyUsername} from '../../services/request';
 
 export class StorageRegister {
 
@@ -7,7 +7,7 @@ export class StorageRegister {
         const { city, job, state, email, name, image, phone, course, address, category, username, internship, description, birthDate } = data;
 
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestRegister(course, image, birthDate, password, city, job, state, email, name, phone, address, category, username, internship, description))
+            Executor.run(new Register(course, image, birthDate, password, city, job, state, email, name, phone, address, category, username, internship, description))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -15,7 +15,7 @@ export class StorageRegister {
 
     static getCourses() {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestCourses())
+            Executor.run(new Courses())
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -24,7 +24,7 @@ export class StorageRegister {
     static editUser(data, id) {
         const { email, name, phone, course, username, description, birthDate } = data;
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditUser(email, name, phone, course, username, description, birthDate, id))
+            Executor.run(new UserEdit(email, name, phone, course, username, description, birthDate, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -33,7 +33,7 @@ export class StorageRegister {
     static editAddress(data, id) {
         const { city, state, address } = data;
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditAddress(city, state, address, id))
+            Executor.run(new AddressEdit(city, state, address, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -41,7 +41,7 @@ export class StorageRegister {
 
     static changeImage(image){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestImageProfile(image))
+            Executor.run(new ImageProfile(image))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -49,16 +49,16 @@ export class StorageRegister {
 
     static verifyEmail(email){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVerifyEmail(email))
-                .then(resp => resolve(resp.data))
+            Executor.run(new VerifyEmail(email))
+                .then(resp => resolve(404))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
     }
 
     static verifyUsername(username){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVerifyUsername(username))
-                .then(resp => resolve(resp.data))
+            Executor.run(new VerifyUsername(username))
+                .then(resp => resolve(404))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
     }

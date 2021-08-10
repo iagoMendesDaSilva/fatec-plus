@@ -4,4 +4,4 @@ from app.applications import app,database
 
 if __name__ == "__main__":
     database.create_all()
-    app.run(host="192.168.0.12", port=5000, debug=True)
+    app.run(host="192.168.0.4", port=5000, debug=True)

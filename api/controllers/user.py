@@ -180,7 +180,7 @@ class UserController:
                 data = base64_img['image'].encode('utf-8')
                 fh.write(base64.decodebytes(data))
             fh.close()
-            image = "http://192.168.0.12:5000/mobile-api/v1/user/image-profile/"+str(user.id)
+            image = "http://192.168.0.4:5000/mobile-api/v1/user/image-profile/"+str(user.id)
         userDao.update_image(user.id, image)
 
     def get_image_profile(self, id):

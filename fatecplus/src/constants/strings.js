@@ -29,6 +29,7 @@ export default {
     ERROR_PASSWORDS: "As duas senhas devem ser iguais.",
     ERROR_STUDENTS: "Não foi possível consultar os alunos.",
     ERROR_VACANCIES: "Não foi possível consultar as vagas.",
+    ERROR_IMAGE: "Tamanho máximo de 4 mb.",
     ERROR_VERIFICATION_CODE: 'Código inválido ou expirado.',
     ERROR_GEOLOCATION: "Não foi possível consultar a localização.",
     ERROR_DATE: "Data de conclusão deve ser menor que a data de início",

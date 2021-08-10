@@ -1,10 +1,10 @@
-import { Executor, RequestLogin, RequestPlayerId , RequestVersion, RequestLogout} from '../../services/request';
+import { Executor, Login, PlayerId , Version, Logout} from '../../services/request';
 
 export class StorageAuth {
 
     static login(username, password) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestLogin(username, password))
+            Executor.run(new Login(username, password))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageAuth {
 
     static registerOneSignal(playerId, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestPlayerId(playerId, id))
+            Executor.run(new PlayerId(playerId, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageAuth {
 
     static registerVersion(versionApp, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVersion(versionApp, id))
+            Executor.run(new Version(versionApp, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageAuth {
 
     static logout(){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestLogout())
+            Executor.run(new Logout())
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

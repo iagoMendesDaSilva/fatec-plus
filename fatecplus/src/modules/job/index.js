@@ -1,12 +1,12 @@
 import styles from './style';
 
-import React from 'react';
-import { View, Linking, Animated, Dimensions, } from 'react-native';
+import { View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 import { StorageJob } from './storage';
 import Colors from '../../constants/colors';
 import Strings from '../../constants/strings';
-import { Storage, Animate } from '../../services';
+import { Storage } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
 import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalContact } from '../../helpers'
 
@@ -14,16 +14,16 @@ export const Job = ({ navigation, route }) => {
 
     const modal = React.useContext(ModalContext);
 
-    const [job, setJob] = React.useState({});
-    const [company, setCompany] = React.useState({});
-    const [loading, setLoading] = React.useState(true);
-    const [loadingSub, setLoadingSub] = React.useState(false);
-    const [subscribed, setSubscribed] = React.useState(false);
-    const [showModal, setShowModal] = React.useState(false);
-    const [permission, setPermission] = React.useState({ indicate: false, subscribe: false, request: false })
+    const [job, setJob] = useState({});
+    const [company, setCompany] = useState({});
+    const [loading, setLoading] = useState(true);
+    const [loadingSub, setLoadingSub] = useState(false);
+    const [subscribed, setSubscribed] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [permission, setPermission] = useState({ indicate: false, subscribe: false, request: false })
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         getJob()
         navigation.addListener('focus', () => getJob())
     }, [])

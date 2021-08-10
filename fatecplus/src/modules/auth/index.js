@@ -26,7 +26,7 @@ export const Auth = ({ navigation, route }) => {
         }
     }
 
-    const set = (status, clear = false) => {
+    const setModal = (status, clear = false) => {
         clear
             ? modal.set({ msg: Strings.ERROR_LOGIN, status, positivePress: logout })
             : modal.set({ msg: Strings.ERROR_LOGIN, status })
@@ -47,14 +47,14 @@ export const Auth = ({ navigation, route }) => {
             .then(() =>
                 StorageAuth.registerVersion(versionApp, data.id)
                     .then(data => navigation.replace("Home")))
-            .catch(status => set(status, true))
+            .catch(status => setModal(status, true))
     }
 
     const login = () => {
         setLoading(true)
         StorageAuth.login(username, password)
             .then(data => configUser(data))
-            .catch(status => set(status))
+            .catch(status => setModal(status))
             .finally(() => setLoading(false));
     }
 

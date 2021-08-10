@@ -1,10 +1,10 @@
-import { Executor, RequestJob, RequestSubscription, RequestSubscribed, RequestUnSubscription, RequestResume, RequestDeleteJob} from '../../services/request';
+import { Executor, Job, Subscription, Subscribed, UnSubscription, Resume, JobDelete} from '../../services/request';
 
 export class StorageJob {
 
     static getJob(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestJob(id))
+            Executor.run(new Job(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageJob {
 
     static subscribe(jobId, indication) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSubscription(jobId, indication))
+            Executor.run(new Subscription(jobId, indication))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageJob {
 
     static unSubscribe(jobId) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestUnSubscription(jobId))
+            Executor.run(new UnSubscription(jobId))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageJob {
 
     static verifySubscribed(jobId){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestSubscribed(jobId))
+            Executor.run(new Subscribed(jobId))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -36,7 +36,7 @@ export class StorageJob {
 
     static sendResume(jobId){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestResume(jobId))
+            Executor.run(new Resume(jobId))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -44,7 +44,7 @@ export class StorageJob {
 
     static deleteJob(jobId){
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteJob(jobId))
+            Executor.run(new JobDelete(jobId))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

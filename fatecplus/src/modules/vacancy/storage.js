@@ -1,10 +1,10 @@
-import { Executor, RequestVacancy, RequestJob, RequestEditVacancy, RequestBenefit, RequestEditBenefit, RequestDeleteBenefit, RequestRequirement, RequestEditRequirement, RequestDeleteRequirement } from '../../services/request';
+import { Executor, JobAdd, Job, JobEdit, BenefitAdd, BenefitEdit, BenefitDelete, RequirementAdd, RequirementEdit, RequirementDelete } from '../../services/request';
 
 export class StorageVacancy {
 
     static saveVacancy(name, date, internship, job, receive_by_email, subject_email, description, benefits, requirements) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestVacancy(name, date, internship, job, receive_by_email, subject_email, description, benefits, requirements))
+            Executor.run(new JobAdd(name, date, internship, job, receive_by_email, subject_email, description, benefits, requirements))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -12,7 +12,7 @@ export class StorageVacancy {
 
     static getVacancy(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestJob(id))
+            Executor.run(new Job(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -20,7 +20,7 @@ export class StorageVacancy {
 
     static editVacancy(name, date, internship, job, receive_by_email, subject_email, description, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditVacancy(name, date, internship, job, receive_by_email, subject_email, description, id))
+            Executor.run(new JobEdit(name, date, internship, job, receive_by_email, subject_email, description, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -28,7 +28,7 @@ export class StorageVacancy {
 
     static saveBenefit(name, description, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestBenefit(name, description, id))
+            Executor.run(new BenefitAdd(name, description, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -36,7 +36,7 @@ export class StorageVacancy {
 
     static editBenefit(name, description, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditBenefit(name, description, id))
+            Executor.run(new BenefitEdit(name, description, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -44,7 +44,7 @@ export class StorageVacancy {
 
     static deleteBenefit(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteBenefit(id))
+            Executor.run(new BenefitDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -52,7 +52,7 @@ export class StorageVacancy {
 
     static saveRequirement(name, description, level, mandatory, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestRequirement(name, description, level, mandatory, id))
+            Executor.run(new RequirementAdd(name, description, level, mandatory, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -60,7 +60,7 @@ export class StorageVacancy {
 
     static editRequirement(name, description, level, mandatory, id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestEditRequirement(name, description, level, mandatory, id))
+            Executor.run(new RequirementEdit(name, description, level, mandatory, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -68,7 +68,7 @@ export class StorageVacancy {
 
     static deleteRequirement(id) {
         return new Promise((resolve, reject) => {
-            Executor.run(new RequestDeleteRequirement(id))
+            Executor.run(new RequirementDelete(id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

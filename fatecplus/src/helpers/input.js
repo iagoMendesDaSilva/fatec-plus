@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import TextInputMask from 'react-native-text-input-mask';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 
 import { Icon } from './icon';
 import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const Input = ({ text, type, capitalize, onchange, placeholder, defaultValue, size = widthScreen * .9, password, iconName, iconColor, iconLib, changeVisibility, showPassword, maxLength=50 }) => {
+export const Input = ({ text, type, capitalize, onchange, placeholder, defaultValue, size = widthScreen * .9, password, iconName, iconColor, iconLib, changeVisibility, showPassword, maxLength = 50, mask }) => {
 
     return (
         <View style={{ ...styles.containerAll, width: size }}>
@@ -16,19 +17,21 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
                     style={styles.icon}
                     color={iconColor}
                     name={iconName} />}
-            <TextInput
+            <TextInputMask
                 value={text}
+                mask={mask}
                 autoCorrect={false}
                 keyboardType={type}
                 allowFontScaling={false}
                 onChangeText={onchange}
                 placeholder={placeholder}
                 defaultValue={defaultValue}
-                maxLength={maxLength?maxLength:null}
+                maxLength={maxLength ? maxLength : null}
                 autoCapitalize={capitalize ? capitalize : 'none'}
                 secureTextEntry={password ? !showPassword : false}
                 placeholderTextColor={Colors.TEXT_PRIMARY_LIGHT_PLUS}
                 style={{ ...styles.textInput, paddingRight: password ? 15 : 0, }}
+                onChangeText={(formatted, extracted) => onchange(formatted)}
             />
             {password && changeVisibility &&
                 <TouchableOpacity onPress={() => changeVisibility && changeVisibility()}>
@@ -44,7 +47,7 @@ export const Input = ({ text, type, capitalize, onchange, placeholder, defaultVa
 
 const styles = StyleSheet.create({
     containerAll: {
-        marginVertical:10,
+        marginVertical: 10,
         flexDirection: "row",
         alignItems: "center",
         borderBottomWidth: 1,
