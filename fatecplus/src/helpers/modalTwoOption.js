@@ -28,13 +28,11 @@ export const ModalTwoOption = ({ visible, title, message, positiveText = "Confir
                             }
                             <TextDefault
                                 children={title}
-                                selectable={false}
                                 styleText={styles.textTitle}
                                 style={styles.containerTitle} />
                         </View>
                         <TextDefault
                             lines={2}
-                            selectable={false}
                             children={message}
                             styleText={styles.textMessage} />
                     </View>

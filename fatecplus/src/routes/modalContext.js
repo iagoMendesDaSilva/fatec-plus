@@ -20,12 +20,14 @@ export const ModalProvider = ({ children }) => {
         setInfo({ visible: false })
     }
 
-    const set = ({ status, options = false, msg = false, ...props }) => {
-        const message = msg && status===404 ? msg : Error.validate(status)
+    const set = ({ status, options = false, msg = false, back = false, ...props }) => {
+        const message = msg && status === 404 || options ? msg : Error.validate(status)
         if (status === 401)
             setInfo({ visible: true, options: false, message: Error.validate(401), positivePress: () => Error.logout(navigation) })
         else
-            setInfo({ visible: true, options, message, ...props })
+            back
+                ? setInfo({ visible: true, options, message, positivePress: () => navigation.goBack(), ...props })
+                : setInfo({ visible: true, options, message, ...props })
     }
 
     return (

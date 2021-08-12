@@ -1,34 +1,31 @@
 import styles from './style';
 
-import React from 'react';
 import { View } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
 
 import { StorageMenu } from './storage';
 import Colors from '../../../constants/colors';
 import Strings from '../../../constants/strings';
 import { Storage, Notification } from '../../../services';
 import { ModalContext } from '../../../routes/modalContext';
-import { ImagePicker, Screen, TextDefault, ItemList } from '../../../helpers';
+import { ImagePicker, Screen, TextDefault, ItemList, Load } from '../../../helpers';
 
 export const Menu = ({ navigation }) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [user, setUser] = React.useState({})
+    const [user, setUser] = useState({})
+    const [loading, setLoading] = useState(true)
 
-    React.useEffect(() => {
-        getUser()
-        navigation.addListener('focus', () => getUser())
-    }, [])
-
+    useEffect(() => navigation.addListener('focus', () => getUser()), [])
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
         if (currentUser) {
             StorageMenu.getUser(currentUser.id)
                 .then(data => setUser(data))
-                .catch(status =>
-                    modal.set({ msg: Strings.ERROR_USER, status }))
+                .catch(status => modal.set({ msg: Strings.ERROR_USER, status }))
+                .finally(() => loading && setLoading(false))
         }
     }
 
@@ -38,11 +35,11 @@ export const Menu = ({ navigation }) => {
             .catch(status => modal.set({ status }))
     }
 
-    const logout = async (requestToken = true) => {
-        requestToken && await StorageMenu.logout()
+    const logout = async removeToken => {
+        removeToken && await StorageMenu.logout()
         Storage.clear();
         Notification.unregister()
-        navigation.reset({ index: 0, routes: [{ name: 'Login'}] })
+        navigation.reset({ index: 0, routes: [{ name: 'Login' }] })
     }
 
     const confirmDeleteAccount = () =>
@@ -61,8 +58,8 @@ export const Menu = ({ navigation }) => {
             options: true,
             iconLib: "Ionicons",
             iconName: "power",
-            title: "Encerrar sessão",
             positivePress: logout,
+            title: "Encerrar sessão",
             msg: Strings.CONFIRM_LOGOUT,
         })
 
@@ -86,85 +83,91 @@ export const Menu = ({ navigation }) => {
 
     return (
         <Screen center={false}>
-            <View style={styles.containerHeader}>
-                <ImagePicker image={user.image} disabled />
-                <View style={styles.containerTextHeader}>
-                    <TextDefault
-                        children={user.username}
-                        styleText={styles.txtUsername} />
-                    <TextDefault
-                        styleText={styles.txtAddress}
-                        children={user.city && user.state ? `${user.city}-${user.state}` : ""} />
-                    <TextDefault
-                        children={user.name}
-                        styleText={styles.txtName} />
-                </View>
-            </View>
-
-            <View style={styles.containerInfo}>
-                <TextDefault
-                    styleText={styles.txtSection}
-                    children={"Informações da Conta"} />
-                <ItemList
-                    iconName={"pencil"}
-                    title={"Editar informações"}
-                    onPress={() =>
-                        navigation.navigate("MainRegister", { data: getDataUser() })}
-                    iconLib={"MaterialCommunityIcons"} />
-                <ItemList
-                    iconName={"location-sharp"}
-                    title={"Editar endereço"}
-                    onPress={() =>
-                        navigation.navigate("AddressRegister", { data: getDataUser() })}
-                    iconLib={"Ionicons"} />
-                {
-                    user.category === "Student" &&
-                    <ItemList
-                        iconLib={"Entypo"}
-                        title={"Editar Currículo"}
-                        onPress={() => navigation.navigate("Resume")}
-                        iconName={"text-document-inverted"} />
-                }
-                <ItemList
-                    iconName={"key"}
-                    iconLib={"Ionicons"}
-                    title={"Alterar senha"}
-                    onPress={() => navigation.navigate("ChangePassword")} />
-                <ItemList
-                    title={"Novidades"}
-                    iconLib={"Ionicons"}
-                    iconName={"newspaper"}
-                    onPress={() => console.log(1)} />
-                <ItemList
-                    title={"Suporte"}
-                    iconLib={"SimpleLineIcons"}
-                    iconName={"earphones-alt"}
-                    onPress={() => console.log(1)} />
-
-                <TextDefault
-                    styleText={styles.txtSection}
-                    children={"Gerenciamento da Conta"} />
-
-                <ItemList
-                    arrow={false}
-                    iconLib={"AntDesign"}
-                    iconName={"mobile1"}
-                    textRight={Storage.getVersion()}
-                    title={"Versão do aplicativo"} />
-                <ItemList
-                    arrow={false}
-                    onPress={confirmLogout}
-                    iconLib={"Ionicons"}
-                    iconName={"power"}
-                    title={"Encerrar sessão"} />
-                <ItemList
-                    arrow={false}
-                    color={Colors.ERROR}
-                    iconLib={"Ionicons"}
-                    iconName={"trash"}
-                    title={"Excluir conta"}
-                    onPress={confirmDeleteAccount} />
-            </View>
+            {
+                loading
+                    ?
+                    <Load />
+                    :
+                    <>
+                        <View style={styles.containerHeader}>
+                            <ImagePicker image={user.image} disabled />
+                            <View style={styles.containerTextHeader}>
+                                <TextDefault
+                                    children={user.username}
+                                    styleText={styles.txtUsername} />
+                                <TextDefault
+                                    styleText={styles.txtAddress}
+                                    children={user.city && user.state ? `${user.city}-${user.state}` : ""} />
+                                <TextDefault
+                                    children={user.name}
+                                    styleText={styles.txtName} />
+                            </View>
+                        </View>
+                        <View style={styles.containerInfo}>
+                            <TextDefault
+                                styleText={styles.txtSection}
+                                children={"Informações da Conta"} />
+                            <ItemList
+                                iconName={"pencil"}
+                                title={"Editar informações"}
+                                iconLib={"MaterialCommunityIcons"}
+                                onPress={() => navigation.navigate("MainRegister", { data: getDataUser() })} />
+                            <ItemList
+                                iconLib={"Ionicons"}
+                                title={"Editar endereço"}
+                                iconName={"location-sharp"}
+                                onPress={() => navigation.navigate("AddressRegister", { data: getDataUser() })} />
+                            {
+                                user.category === "Student" &&
+                                <ItemList
+                                    iconLib={"Entypo"}
+                                    title={"Editar currículo"}
+                                    iconName={"text-document-inverted"}
+                                    onPress={() => navigation.navigate("Resume")} />
+                            }
+                            <ItemList
+                                iconName={"key"}
+                                iconLib={"Ionicons"}
+                                title={"Alterar senha"}
+                                onPress={() => navigation.navigate("ChangePassword")} />
+                            <ItemList
+                                iconLib={"Ionicons"}
+                                iconName={"newspaper"}
+                                title={"Registro de alterações "}
+                                onPress={() => navigation.navigate("ChangeLog", { version: Storage.getVersion() })} />
+                            {
+                                user.category === "Admin" &&
+                                <ItemList
+                                    title={"Editar coordenadores de estágio"}
+                                    iconLib={"Ionicons"}
+                                    iconName={"people"}
+                                    onPress={() => navigation.navigate("Coordinators")} />
+                            }
+                            <TextDefault
+                                styleText={styles.txtSection}
+                                children={"Gerenciamento da Conta"} />
+                            <ItemList
+                                arrow={false}
+                                iconLib={"AntDesign"}
+                                iconName={"mobile1"}
+                                title={"Versão do aplicativo"}
+                                textRight={Storage.getVersion()} />
+                            <ItemList
+                                arrow={false}
+                                iconLib={"Ionicons"}
+                                iconName={"power"}
+                                title={"Encerrar sessão"}
+                                onPress={confirmLogout} />
+                            <ItemList
+                                arrow={false}
+                                iconName={"trash"}
+                                iconLib={"Ionicons"}
+                                title={"Excluir conta"}
+                                color={Colors.ERROR}
+                                onPress={confirmDeleteAccount} />
+                        </View>
+                    </>
+            }
         </Screen>
     );
 };

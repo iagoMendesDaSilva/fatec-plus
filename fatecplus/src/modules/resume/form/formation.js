@@ -106,10 +106,14 @@ export const Formation = ({ state, reload }) => {
             <DatePickerDefault
                 title={startYear}
                 initialValue={"Data de iníco"}
+                close={()=>setPicker(false)}
+                picker={picker.on && picker.start}
                 deleteValue={() => setStartYear("")}
                 onPress={() => setPicker({ on: !picker.on, start: true })} />
             <DatePickerDefault
                 title={endYear}
+                close={()=>setPicker(false)}
+                picker={picker.on && !picker.start}
                 initialValue={"Data de término"}
                 deleteValue={() => setEndYear("")}
                 open={Boolean(picker.on && !picker.start)}

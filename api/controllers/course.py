@@ -31,7 +31,11 @@ class CourseController:
     def get_all(self):
         try:
             courses = dao.get_all_by_model(Course)
+            if len(courses)==0:
+                raise ObjectInvalid
             return courses_schema.dump(courses)
+        except ObjectInvalid as err:
+            abort(make_response(jsonify({"response":"No Courses."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
        

@@ -17,7 +17,6 @@ export const ModalOneOption = ({ visible, message, positiveText = "OK", positive
                 <View style={styles.modal}>
                     <TextDefault
                         lines={2}
-                        selectable={false}
                         children={message}
                         styleText={styles.txtMessage}
                         style={styles.containerText} />

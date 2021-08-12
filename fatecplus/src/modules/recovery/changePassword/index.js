@@ -26,29 +26,8 @@ export const ChangePassword = ({ navigation, route }) => {
             setLoading(true)
             params ? saveUser() : editUser()
         } else {
-            modal.set({ msg: Strings.ERROR_PASSWORDS })
+            modal.set({ msg: Strings.ERROR_PASSWORDS, status: 404 })
         }
-    }
-
-    const configUser = async data => {
-        Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category: data.category })
-        const playerId = await Notification.getPlayerId()
-        StorageAuth.registerOneSignal(playerId, data.id)
-            .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] }))
-            .catch(status => modal.set(status))
-    }
-
-    const setUser = async password => {
-        const user = await Storage.getUser()
-        Storage.setUser({ username: user.username, password, token: user.token, id: user.id })
-        navigation.goBack()
-    }
-
-    const login = () => {
-        StorageAuth.login(params.username, password)
-            .then(data => configUser(data))
-            .catch(status => set(status))
-            .finally(() => setLoading(false))
     }
 
     const editUser = () => {
@@ -63,6 +42,36 @@ export const ChangePassword = ({ navigation, route }) => {
             .then(response => login())
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false));
+    }
+
+    const setUser = async password => {
+        const user = await Storage.getUser()
+        Storage.setUser({ ...user, password })
+        modal.set({ msg: Strings.UPDATED, status: 404, back: true })
+    }
+
+    const login = () => {
+        StorageAuth.login(params.username, password)
+            .then(data => configUser(data))
+            .catch(status => set(status))
+            .finally(() => setLoading(false))
+    }
+    const configUser = async data => {
+        Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category: data.category })
+        const versionApp = Storage.getVersion()
+        const playerId = await Notification.getPlayerId()
+
+        StorageAuth.registerOneSignal(playerId, data.id)
+            .then(() =>
+                StorageAuth.registerVersion(versionApp, data.id)
+                    .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })))
+            .catch(status => modal.set({ msg: Strings.ERROR_LOGIN, status, positivePress: logout }))
+    }
+    
+    const logout = async () => {
+        await StorageAuth.logout()
+        Storage.clear()
+        Notification.unregister()
     }
 
     const changeVisibility = () =>
@@ -95,8 +104,8 @@ export const ChangePassword = ({ navigation, route }) => {
                     password={true}
                     iconName={"lock"}
                     placeholder={"Senha"}
-                    showPassword={showingPassword}
                     changeVisibility={changeVisibility}
+                    showPassword={showingPassword}
                     onchange={text => verifyPassword(text)} />
                 <Input
                     maxLength={8}

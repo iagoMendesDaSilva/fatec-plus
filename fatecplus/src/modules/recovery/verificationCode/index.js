@@ -1,6 +1,6 @@
 import styles from './style';
 import { View } from 'react-native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, createRef } from 'react';
 
 import { Storage } from '../../../services'
 import Strings from '../../../constants/strings'
@@ -11,17 +11,15 @@ import { TextDefault, ButtonDefault, InputCode, Screen } from '../../../helpers'
 export const VerificationCode = ({ navigation }) => {
 
     const modal = useContext(ModalContext);
-    const referencesCodes = Array(5).fill(null).map(ref => React.createRef(ref))
+    const referencesCodes = Array(5).fill(null).map(ref => createRef(ref))
 
     const [loading, setLoading] = useState(false);
     const [activeResend, setActiveResend] = useState(true);
     const [valueCodes, setValueCodes] = useState({ codes: Array(5).fill("") });
 
-    const comeBack = () => navigation.goBack()
-
     const getCompleteCode = () => Number(valueCodes.codes.join(""))
 
-    const missingEmail = () => modal.set({ msg: Strings.MISSING_EMAIL, positivePress: comeBack })
+    const missingEmail = () => modal.set({ msg: Strings.MISSING_EMAIL, back: true, status:404 })
 
     const goToChangePassword = data => {
         Storage.setUser({ token: data.token, id: data.id })
@@ -87,7 +85,6 @@ export const VerificationCode = ({ navigation }) => {
                 {
                     referencesCodes.map((_, index) =>
                         <InputCode
-                            type={"numeric"}
                             key={String(index)}
                             ref={referencesCodes[index]}
                             text={valueCodes.codes[index]}
@@ -101,10 +98,9 @@ export const VerificationCode = ({ navigation }) => {
                 text={"Próximo"}
                 loading={loading}
                 style={styles.button}
-                active={Boolean(!valueCodes.codes.includes(""))}
-                onPress={verifyVerificationCode} />
+                onPress={verifyVerificationCode} 
+                active={Boolean(!valueCodes.codes.includes(""))}/>
             <TextDefault
-                selectable={false}
                 active={activeResend}
                 children={"Reenviar email"}
                 styleText={styles.txtResendEmail}

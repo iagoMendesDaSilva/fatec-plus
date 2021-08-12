@@ -22,7 +22,6 @@ export const ButtonSmall = ({ text, onPress, loading, outline = false, style }) 
                 :
                 <TextDefault
                     children={text}
-                    selectable={false}
                     style={styles.containerText}
                     styleText={{ ...styles.textButton, color: outline ? Colors.PRIMARY : Colors.TEXT_PRIMARY }} />
             }

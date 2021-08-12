@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, Dimensions, View, Keyboard } from 'react-native';
 
 import Colors from '../constants/colors';
@@ -6,34 +6,41 @@ import { TextDefault, Icon } from '../helpers';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue }) => {
+export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue, picker, close }) => {
 
-    const pressPicker = () => {
-        if (onPress) {
-            onPress()
-            Keyboard.dismiss()
-        }
+
+    const openPicker = () => {
+        onPress()
+        Keyboard.dismiss()
+    }
+
+    const closePicker = () => {
+        if (picker) {
+            close()
+        } else
+            deleteValue()
     }
 
     return (
         <View style={styles.containerAll}>
             <TouchableOpacity
                 style={styles.containerContent}
-                onPress={pressPicker}>
-                <Icon name={"calendar"} />
+                onPress={openPicker}>
+                <Icon
+                    style={styles.icon}
+                    name={"calendar"} />
                 <TextDefault
                     styleText={styles.txtDate}
                     children={title ? title : initialValue} />
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => deleteValue && deleteValue()}
-                disabled={!title}
+                onPress={closePicker}
                 hitSlop={styles.hitslop}>
                 <Icon
                     size={15}
-                    name={"trash"}
-                    lib={'fontawesome5'}
-                    style={{ opacity: title ? 1 : .5 }} />
+                    style={styles.icon}
+                    name={picker ? "close" : "trash"}
+                    lib={picker ? "antdesign" : 'ionicons'} />
             </TouchableOpacity>
         </View>
     );
@@ -41,18 +48,17 @@ export const DatePickerDefault = ({ initialValue, title, onPress, deleteValue })
 
 const styles = StyleSheet.create({
     containerAll: {
-        height:40,
+        height: 40,
+        paddingLeft: 10,
         borderRadius: 30,
         marginVertical: 10,
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 12,
         width: widthScreen * .9,
         backgroundColor: Colors.BACKGROUND_LIGHT
     },
     txtDate: {
         fontSize: 18,
-        marginLeft: 8,
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     containerContent: {
@@ -65,5 +71,8 @@ const styles = StyleSheet.create({
         top: 12,
         right: 12,
         bottom: 12,
-    }
+    },
+    icon: {
+        marginRight: 15,
+    },
 });

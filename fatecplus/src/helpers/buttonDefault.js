@@ -31,7 +31,6 @@ export const ButtonDefault = ({ text, onPress, style, loading, active }) => {
                     :
                     <TextDefault
                         children={text}
-                        selectable={false}
                         style={styles.containerText}
                         styleText={styles.textButton} />
                 }

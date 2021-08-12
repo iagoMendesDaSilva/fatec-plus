@@ -3,14 +3,14 @@ import Constants from '../../constants/values';
 
 export class UserEdit extends Request {
 
-    constructor(email, name, phone, course, username, description, birth_date, id) {
+    constructor(email, name, phone, studying, username, description, birth_date, id) {
         const headers = { 'Content-Type': 'application/json' };
         const url = `${Constants.BASE_URL}user/${id}`;
         const params = {
             email,
             name,
             phone,
-            course,
+            studying,
             username,
             description,
             birth_date,

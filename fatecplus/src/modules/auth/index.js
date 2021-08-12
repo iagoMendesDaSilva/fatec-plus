@@ -95,7 +95,6 @@ export const Auth = ({ navigation, route }) => {
                     loading={loading}
                     active={Boolean(username && password)} />
                 <TextDefault
-                    selectable={false}
                     styleText={styles.txtCreateAccount}
                     children={"Não tem conta? Crie uma!"}
                     onPress={() => navigation.navigate("Register")} />

@@ -11,12 +11,12 @@ export default StyleSheet.create({
     },
     txtAddress: {
         fontSize: 16,
-        color: Colors.TEXT_PRIMARY,
         textAlign: 'center',
+        color: Colors.TEXT_PRIMARY,
     },
     containerTxtAddress: {
         marginTop: 5,
-        marginHorizontal:10,
+        marginHorizontal: 10,
     },
     containerAddress: {
         zIndex: 2,
@@ -32,12 +32,18 @@ export default StyleSheet.create({
     },
     button: {
         marginTop: 25,
-        backgroundColor: "rgba(255,255,255,.1)"
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS
     },
     hitSlop: {
         left: 60,
         top: 40,
         right: 60,
         bottom: 40,
+    },
+    currentLocation: {
+        top: 17,
+        zIndex: 2,
+        right: "5%",
+        position: "absolute",
     },
 });

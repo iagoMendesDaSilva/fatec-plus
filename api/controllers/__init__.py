@@ -1,5 +1,6 @@
 from controllers.job import jobController
 from controllers.user import userController
+from controllers.news import newsController
 from controllers.course import courseController
 from controllers.project import projectController
 from controllers.benefit import benefitController

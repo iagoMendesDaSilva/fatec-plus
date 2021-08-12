@@ -21,36 +21,38 @@ export const AddressInput = ({ onSelect }) => {
             stylesList={styles.stylesList}
             stylesItem={styles.stylesItem}
             stylesInput={styles.stylesInput}
-            requiredTimeBeforeSearch={100}
+            requiredTimeBeforeSearch={0}
             stylesItemText={styles.stylesItemText}
             placeHolder={"Pesquisar endereço"}
+            requiredCharactersBeforeSearch={1}
             stylesContainer={styles.stylesContainer}
-            googleApiKey={Values.GOOGLE_PLACES_KEY}
             onSelect={place => selectAddress(place)}
+            googleApiKey={Values.GOOGLE_PLACES_KEY}
             textInputProps={{ placeholderTextColor: Colors.TEXT_PRIMARY_LIGHT }} />
     );
 }
 
 const styles = StyleSheet.create({
     stylesContainer: {
+        top: 7,
         left: '10%',
-        width: "85%",
+        width: "75%",
         borderRadius: 30,
         overflow: "hidden",
     },
     stylesItem: {
-        backgroundColor: Colors.BACKGROUND_LIGHT,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     stylesItemText: {
         color: Colors.TEXT_PRIMARY,
     },
     stylesList: {
-        backgroundColor: Colors.BACKGROUND_LIGHT,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
     stylesInput: {
         height: 45,
-        color: Colors.TEXT_PRIMARY,
         overflow: "hidden",
-        backgroundColor: Colors.BACKGROUND_LIGHT,
+        color: Colors.TEXT_PRIMARY,
+        backgroundColor: Colors.BACKGROUND_LIGHT_PLUS,
     },
 });

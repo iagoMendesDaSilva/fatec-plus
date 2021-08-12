@@ -47,7 +47,6 @@ export const Recovery = ({ navigation }) => {
                     onPress={confirmEmail}
                     active={Boolean(email)} />
                 <TextDefault
-                    selectable={false}
                     styleText={styles.txtAlreadyCode}
                     children={"Já tenho um código!"}
                     onPress={() => navigation.navigate("VerificationCode")} />

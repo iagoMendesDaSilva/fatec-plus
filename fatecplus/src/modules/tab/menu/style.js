@@ -14,8 +14,8 @@ export default StyleSheet.create({
     },
     txtUsername: {
         fontSize: 22,
-        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
+        color: Colors.TEXT_PRIMARY,
     },
     txtAddress: {
         fontSize: 20,
@@ -48,8 +48,8 @@ export default StyleSheet.create({
     },
     txtItem: {
         fontSize: 18,
-        color: Colors.TEXT_PRIMARY,
         paddingLeft: 10,
+        color: Colors.TEXT_PRIMARY,
     },
     txtVersion:{
         fontSize: 18,

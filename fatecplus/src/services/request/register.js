@@ -7,6 +7,7 @@ export class Register extends Request {
         const headers = { 'Content-Type': 'application/json' };
         const url = `${Constants.BASE_URL}auth/register`;
         const params = {
+            job,
             city,
             state,
             image,
@@ -17,11 +18,10 @@ export class Register extends Request {
             category,
             studying,
             password,
+            internship,
             username,
             birth_date,
             description,
-            job: job ? job : category === 'Student' ? true : null,
-            internship: internship ? internship : category === 'Student' ? true : null,
         };
         super(url, 'POST', headers, params);
     }

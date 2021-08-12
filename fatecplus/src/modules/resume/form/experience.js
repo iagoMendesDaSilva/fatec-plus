@@ -93,11 +93,15 @@ export const Experience = ({ state, reload }) => {
                 iconLib={"MaterialCommunityIcons"} />
             <DatePickerDefault
                 title={startYear}
+                picker={picker.on && picker.start} 
+                close={()=>setPicker(false)}
                 initialValue={"Data de iníco"}
                 deleteValue={() => setStartYear("")}
                 onPress={() => setPicker({ on: !picker.on, start: true })} />
             <DatePickerDefault
                 title={endYear}
+                picker={picker.on && !picker.start}
+                close={()=>setPicker(false)}
                 initialValue={"Data de término"}
                 deleteValue={() => setEndYear("")}
                 open={Boolean(picker.on && !picker.start)}

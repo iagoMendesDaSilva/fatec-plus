@@ -146,6 +146,8 @@ export const Vacancy = ({ navigation, route }) => {
 
                         <DatePickerDefault
                             title={deadline}
+                            picker={picker}
+                            close={()=>setPicker(false)}
                             initialValue={"Sem prazo"}
                             onPress={() => setPicker(!picker)}
                             deleteValue={() => setDeadline("")} />
@@ -156,9 +158,9 @@ export const Vacancy = ({ navigation, route }) => {
                                 date={date}
                                 mode={"date"}
                                 locale={"pt-br"}
-                                textColor={Colors.TEXT_PRIMARY}
                                 minimumDate={new Date()}
                                 androidVariant={"iosClone"}
+                                textColor={Colors.TEXT_PRIMARY}
                                 fadeToColor={Colors.BACKGROUND}
                                 onDateChange={value => changeDate(value)} />
                         }

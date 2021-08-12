@@ -1,8 +1,9 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
+
 import Colors from '../constants/colors';
 
-export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, onFocus }, ref) => {
+export const InputCode = React.forwardRef(({ text, onchange, onKeyPress, onFocus }, ref) => {
 
     return (
         <TextInput
@@ -10,10 +11,10 @@ export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, o
             value={text}
             maxLength={1}
             autoCorrect={false}
-            keyboardType={type}
             style={styles.textInput}
             allowFontScaling={false}
             onFocus={() => onFocus()}
+            keyboardType={"numeric"}
             onChangeText={value => onchange(value)}
             onKeyPress={e => onKeyPress(e.nativeEvent.key)}
         />
@@ -23,11 +24,11 @@ export const InputCode = React.forwardRef(({ text, type, onchange, onKeyPress, o
 const styles = StyleSheet.create({
     textInput: {
         fontSize: 20,
-        color: Colors.TEXT_PRIMARY,
         borderRadius: 10,
         textAlign: "center",
-        paddingHorizontal: 12,
         paddingVertical: 10,
+        paddingHorizontal: 12,
+        color: Colors.TEXT_PRIMARY,
         backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 })

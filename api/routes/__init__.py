@@ -1,5 +1,6 @@
 from routes.job import *
 from routes.auth import *
+from routes.news import *
 from routes.users import *
 from routes.course import *
 from routes.benefit import *

@@ -1,7 +1,4 @@
-import styles from './style';
-
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -12,14 +9,7 @@ import Strings from '../../../constants/strings';
 import { ModalContext } from '../../../routes/modalContext';
 import { Input, ButtonDefault, ImagePicker, DatePickerDefault, TextArea, Screen, Select } from '../../../helpers';
 
-
 export const MainRegister = (props) => {
-
-    const today = {
-        day: new Date().getDate(),
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-    }
 
     const params = props.route.params;
     const modal = React.useContext(ModalContext);
@@ -36,12 +26,37 @@ export const MainRegister = (props) => {
     const [description, setDescription] = useState("");
     const [courses, setCourses] = useState({ data: [] });
     const [image, setImage] = useState({ photo: "", base64: "" });
-    const [date, setDate] = useState(new Date(today.year - 18, today.month, today.day));
+    const [date, setDate] = useState(Calendar.getDateRegister());
 
     useEffect(() => {
         getCourses();
-        getDefaultValues();
+        verifyEditUser();
     }, [])
+
+    const getCourses = () => {
+        StorageRegister.getCourses()
+            .then(data => formatCourses(data))
+            .catch(status => modal.set({ msg: Strings.ERROR_COURSES, status, back: true }))
+    }
+
+    const verifyEditUser = () => {
+        if (params && params.data) {
+            setEmail(params.data.email)
+            setName(params.data.name)
+            setPhone(params.data.phone)
+            setCourse(params.data.course)
+            setUsername(params.data.username)
+            setDescription(params.data.description)
+            setBirthDate(Calendar.format(params.data.birthDate))
+            setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
+        }
+    }
+
+    const formatCourses = data => {
+        let courses = [];
+        data.forEach(course => courses.push(course.name));
+        setCourses({ data: courses })
+    }
 
     const nextStage = () => {
         const data = {
@@ -57,20 +72,19 @@ export const MainRegister = (props) => {
         }
         params.data
             ? editUser(data)
-            : verifyFields(data);
+            : verifyFields({ ...data, internship: true, job: true });
     }
 
     const verifyFields = data => {
         StorageRegister.verifyEmail(email)
             .then(status => modal.set({ msg: Strings.CONFLICT_EMAIL, status }))
-            .catch(status => {
-                status === 404 ?
-                    StorageRegister.verifyUsername(username)
-                        .then(status => modal.set({ msg: Strings.CONFLICT_USERNAME, status }))
-                        .catch(status => props.navigation.navigate("AddressRegister", data))
-                    :
-                    modal.set({ status })
-            })
+            .catch(status => status === 404 ?
+                StorageRegister.verifyUsername(username)
+                    .then(status => modal.set({ msg: Strings.CONFLICT_USERNAME, status }))
+                    .catch(status => status === 404 ?
+                        props.navigation.navigate("AddressRegister", data)
+                        : modal.set({ status }))
+                : modal.set({ status }))
     }
 
     const editUser = async data => {
@@ -79,40 +93,15 @@ export const MainRegister = (props) => {
             .catch(status => console.log(status))
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
-                modal.set({ msg: Strings.UPDATED, positivePress: () => props.navigation.goBack() }))
+                modal.set({ msg: Strings.UPDATED, back: true, status:404 }))
             .catch(status => modal.set({ status, msg: Strings.ERROR_UPDATE }))
     }
 
-    const getDefaultValues = () => {
-        if (params && params.data) {
-            setEmail(params.data.email)
-            setName(params.data.name)
-            setPhone(params.data.phone)
-            setUsername(params.data.username)
-            setDescription(params.data.description)
-            setBirthDate(Calendar.format(params.data.birthDate))
-            setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
-        }
-    }
-
-    const formatCourses = data => {
-        let courses = [];
-        data.forEach(course => courses.push(course.name));
-        setCourses({ data: courses })
-        params.data && setCourse(params.data.course)
-    }
-
-    const getCourses = () => {
-        StorageRegister.getCourses()
-            .then(data => formatCourses(data))
-            .catch(status =>
-                modal.set({ msg: Strings.ERROR_COURSES, status: 404, positivePress: () => props.navigation.goBack() }))
-    }
 
     const buttonActive = () => {
-        const phoneValid = category == "Teacher" ? true : Boolean(phone)
+        const courseValid = category != "Student" ? true : Boolean(course)
         const birthDateValid = category != "Student" ? true : Boolean(birthDate)
-        const courseValid = category == "Student" ? Boolean(course) : true
+        const phoneValid = category === "Teacher" ? true : Boolean(phone.length===17)
         return Boolean(email && name && birthDateValid && username && phoneValid && courseValid)
     }
 
@@ -131,89 +120,86 @@ export const MainRegister = (props) => {
     }
 
     return (
-        <TouchableOpacity
-            activeOpacity={1}
-            onPress={() => setPicker(false)}
-            style={styles.containerAll}>
-            <Screen>
-                <ImagePicker
-                    image={image.photo}
-                    getImage={getImage} />
+        <Screen>
+            <ImagePicker
+                image={image.photo}
+                getImage={getImage} />
+            <Input
+                text={name}
+                capitalize={"words"}
+                defaultValue={name}
+                iconName={"pencil"}
+                placeholder={"Nome"}
+                onchange={text => setName(text)}
+                iconLib={"MaterialCommunityIcons"} />
+            <Input
+                maxLength={20}
+                text={username}
+                iconName={"user"}
+                placeholder={"Usuário"}
+                defaultValue={username}
+                onchange={text => setUsername(text)} />
+            <Input
+                text={email}
+                defaultValue={email}
+                iconName={"email"}
+                placeholder={"Email"}
+                type={"email-address"}
+                iconLib={"MaterialIcons"}
+                onchange={text => setEmail(text)} />
+            {
+                category != "Teacher" &&
                 <Input
-                    text={name}
-                    iconName={"pencil"}
-                    defaultValue={name}
-                    placeholder={"Nome"}
-                    capitalize={"words"}
-                    onchange={text => setName(text)}
-                    iconLib={"MaterialCommunityIcons"} />
-                <Input
-                    maxLength={20}
-                    text={username}
-                    iconName={"user"}
-                    placeholder={"Usuário"}
-                    defaultValue={username}
-                    onchange={text => setUsername(text)} />
-                <Input
-                    text={email}
-                    defaultValue={email}
-                    iconName={"email"}
-                    placeholder={"Email"}
-                    type={"email-address"}
-                    iconLib={"MaterialIcons"}
-                    onchange={text => setEmail(text)} />
-                {
-                    category != "Teacher" &&
-                    <Input
-                        text={phone}
-                        maxLength={17}
-                        type={"phone-pad"}
-                        iconName={"phone"}
-                        defaultValue={phone}
-                        placeholder={"Telefone"}
-                        mask={"+55 [00] [00000]-[0000]"}
-                        onchange={text => setPhone(text)} />
-                }
-                {
-                    category === "Student" &&
-                    <>
-                        <Select
-                            value={course}
-                            iconName={"book"}
-                            options={courses.data}
-                            iconLib={"fontawesome5"}
-                            initialValue={"Escolha seu curso"}
-                            changeValue={value => setCourse(value)} />
-                        <DatePickerDefault
-                            title={birthDate}
-                            onPress={() => setPicker(!picker)}
-                            deleteValue={() => setBirthDate("")}
-                            initialValue={"Data de Nascimento"} />
-                    </>
-                }
-                {
-                    picker &&
-                    <DatePicker
-                        date={date}
-                        mode={"date"}
-                        locale={"pt-br"}
-                        textColor={Colors.TEXT_PRIMARY}
-                        androidVariant={"iosClone"}
-                        fadeToColor={Colors.BACKGROUND}
-                        onDateChange={value => changeDate(value)}
-                        maximumDate={new Date(today.year - 16, today.month, today.day)}
-                        minimumDate={new Date(today.year - 120, today.month, today.day)} />
-                }
-                <TextArea
-                    text={description}
-                    defaultValue={description}
-                    placeholder={"Descrição"}
-                    onchange={value => setDescription(value)} />
-                <ButtonDefault
-                    onPress={nextStage}
-                    text={params ? "Salvar" : "Próximo"}
-                    active={buttonActive()} />
-            </Screen>
-        </TouchableOpacity>
+                    text={phone}
+                    maxLength={17}
+                    type={"phone-pad"}
+                    iconName={"phone"}
+                    defaultValue={phone}
+                    placeholder={"Telefone"}
+                    mask={"+55 [00] [00000]-[0000]"}
+                    onchange={text => setPhone(text)} />
+            }
+            {
+                category === "Student" &&
+                <>
+                    <Select
+                        value={course}
+                        iconName={"book"}
+                        options={courses.data}
+                        iconLib={"fontawesome5"}
+                        initialValue={"Escolha seu curso"}
+                        changeValue={value => setCourse(value)} />
+                    <DatePickerDefault
+                        picker={picker}
+                        title={birthDate}
+                        close={() => setPicker(false)}
+                        onPress={() => setPicker(!picker)}
+                        deleteValue={() => setBirthDate("")}
+                        initialValue={"Data de Nascimento"} />
+                </>
+            }
+            {
+                picker &&
+                <DatePicker
+                    date={date}
+                    mode={"date"}
+                    locale={"pt-br"}
+                    androidVariant={"iosClone"}
+                    textColor={Colors.TEXT_PRIMARY}
+                    fadeToColor={Colors.BACKGROUND}
+                    minimumDate={Calendar.getMinimumAge()}
+                    maximumDate={Calendar.getMaximumAge()}
+                    onDateChange={value => changeDate(value)} />
+            }
+            <TextArea
+                text={description}
+                defaultValue={description}
+                placeholder={"Descrição"}
+                onchange={value => setDescription(value)} />
+            <ButtonDefault
+                onPress={nextStage}
+                active={buttonActive()}
+                text={params.data ? "Salvar" : "Próximo"} />
+        </Screen>
     );
 };

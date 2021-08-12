@@ -7,12 +7,23 @@ export class Calendar {
     }
 
     static format(date) {
-        return moment(date).utc().format("DD/MM/YYYY")
+        return date ? moment(date).utc().format("DD/MM/YYYY") : null
     }
 
     static unFormat(date) {
-        return moment(date).utc().format("YYYY-MM-DD")
+        return date ? moment(date).utc().format("YYYY-MM-DD") : null
     }
 
+    static getMinimumAge() {
+        return new Date(new Date().getFullYear() - 120, new Date().getMonth(), new Date().getDate())
+    }
+
+    static getMaximumAge() {
+        return new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
+    }
+
+    static getDateRegister() {
+        return new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate())
+    }
 
 }
