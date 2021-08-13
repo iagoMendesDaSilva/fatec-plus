@@ -1,12 +1,13 @@
 import styles from './style';
 
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Image, RefreshControl, SectionList, } from 'react-native';
+import { View, Image, RefreshControl, SectionList, TouchableOpacity, } from 'react-native';
 
 import Colors from '../../constants/colors';
+import Strings from '../../constants/strings';
 import { StorageCoordinator } from './storage';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, Shimmer } from '../../helpers'
+import { Screen, TextDefault, Shimmer, Icon } from '../../helpers'
 
 export const Coordinators = ({ navigation, route }) => {
 
@@ -15,42 +16,94 @@ export const Coordinators = ({ navigation, route }) => {
     const [loaded, setLoaded] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const [teachers, setTeachers] = useState({ data: [] });
+    const [selected, setSelected] = useState({ on: false, coodinator: -1, teacher: -1 });
+
 
     useEffect(() => getTeachers(), [])
 
     const getTeachers = () => {
         setLoaded(false,
-            StorageCoordinator.getTeachers()
-                .then(teachers =>
+            StorageCoordinator.getCourses()
+                .then(courses =>
                     StorageCoordinator.getCoordinators()
-                        .then(coordinators =>
-                            setTeachers({ data: [{ title: "Coordenadores de estágio", data: coordinators }, { title: "Professores", data: teachers }] }))
+                        .then(coodinators =>
+                            StorageCoordinator.getTeachers()
+                                .then(teachers => configList(coodinators, courses, teachers))
+                                .catch(status => modal.set(status)))
                         .catch(status => modal.set(status)))
                 .catch(status => modal.set(status))
                 .finally(() => {
+                    setSelected({on: false, coodinator: -1, teacher: -1})
                     setRefreshing(false)
                     setLoaded(true)
                 }));
     }
 
-    const renderItem = ({ id, image, name, category }, index) => {
+    const configList = (coodinators, courses, teachers) => {
+        let dataTeachers = []
+        let dataCoordinators = []
+
+        teachers.forEach(teacher => dataTeachers.push({ teacher, subTitle: `${teacher.city}-${teacher.state}` }));
+        courses.forEach(item => dataCoordinators.push({ teacher: coodinators.filter(teacher => teacher.id === item.id_internship_coordinator)[0], subTitle: item.name, courseId: item.id }));
+
+        setTeachers({
+            data: [
+                { title: "Coordenadores de estágio", data: dataCoordinators },
+                { title: "Professores", data: dataTeachers }
+            ]
+        })
+    }
+
+    const changeCoordinators = teacherId => {
+        const courseId = teachers.data[0].data[selected.coodinator].courseId
+        console.log(teacherId);
+        StorageCoordinator.changeCoordinator(teacherId, courseId)
+        .then(resp => onRefresh())
+        .catch(status => modal.set({ status }))
+    }
+
+   const confirmChangeCoordinator=id=>
+    modal.set({
+        options: true,
+        iconLib: "fontawesome5",
+        iconName: "people-arrows",
+        iconColor: Colors.WARNING,
+        title: "Alterar coordenador de estágio",
+        positivePress: ()=>changeCoordinators(id),
+        msg: Strings.CONFIRM_CHANGE_COORDINATOR,
+    })
+
+    const renderItem = ({ teacher, subTitle }, index) => {
         return (
             <Shimmer style={styles.itemShimmer} visible={loaded}>
-                <View key={String(index)}
-                    style={styles.conatinerItem}>
+                <TouchableOpacity
+                    key={String(index)}
+                    disabled={!selected.on && teacher.category === "Teacher"}
+                    onPress={() => teacher.category != "Teacher" ? setSelected({ coodinator: index, on: Boolean(index != selected.coodinator || !selected.on) }) : confirmChangeCoordinator(teacher.id)}
+                    style={{ ...styles.conatinerItem, borderWidth: teacher.category != "Teacher" && selected.coodinator === index && selected.on ? .75 : 0 }}>
                     <Image
                         style={styles.img}
-                        source={{ uri: `${image}?time=${new Date()}` }}
+                        source={{ uri: `${teacher.image}?time=${new Date()}` }}
                         defaultSource={require("../../assets/img/user_male.png")} />
                     <View style={styles.containerText}>
+                        <View style={styles.conatinerRow}>
+                            <TextDefault
+                                styleText={styles.txtTitle}
+                                children={teacher.name}
+                                style={styles.containerName} />
+                            {
+                                Boolean(teacher.category != "Teacher") &&
+                                <Icon
+                                    name={"exchange-alt"}
+                                    lib={"FontAwesome5"}
+                                    color={Colors.PRIMARY} />
+                            }
+                        </View>
                         <TextDefault
-                            children={name}
-                            styleText={styles.txtTitle} />
-                        <TextDefault
-                            styleText={{ ...styles.txtSubtitle, color: category === "Teacher" ? Colors.TEXT_PRIMARY_LIGHT_PLUS : Colors.PRIMARY }}
-                            children={category === "Teacher" ? "Professor(a)" : "Coordenador(a) de estágio"} />
+                            children={subTitle}
+                            styleText={styles.txtSubtitle} />
                     </View>
-                </View>
+                </TouchableOpacity>
             </Shimmer>
         );
     }

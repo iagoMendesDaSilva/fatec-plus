@@ -41,6 +41,7 @@ export default {
     CONFIRM_DELETE_USER: "Deseja excluir sua conta?",
     CONFIRM_DELETE_VACANCY: "Deseja excluir esta vaga?",
     CONFIRM_SUBSCRIPTION: "Iremos enviar todas suas informações.",
+    CONFIRM_CHANGE_COORDINATOR: "Deseja alterar o coordenador de estágio?",
 
     DELETED_VACANCY: "Vaga excluida com sucesso!",
     DELETED_NETWORK: "Rede deletada com sucesso!",

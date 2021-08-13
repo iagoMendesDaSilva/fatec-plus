@@ -39,15 +39,15 @@ def token_admin(function):
             token = request.headers.get('Authorization')
 
         if not token:
-            return abort(401)
+            return abort(403)
 
         try:
             decoded = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=["HS256"])
             current_user = dao.get_by_id(decoded["id"],User)
             if current_user.category.lower() != "admin":
-                return abort(503)
+                return abort(401)
         except DecodeError:
-            return abort(403)
+            return abort(401)
         except Exception as err:
             return abort(503, err.args)
             

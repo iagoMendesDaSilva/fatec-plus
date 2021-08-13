@@ -1,6 +1,6 @@
 import styles from './style';
 import { View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { AnimatedLogo } from '../../helpers';
 import { StorageAuth } from '../auth/storage';
@@ -9,7 +9,7 @@ import { ModalContext } from '../../routes/modalContext';
 
 export const Splash = (props) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
     let timer = null;
     let notification = null;

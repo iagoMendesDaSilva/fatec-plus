@@ -138,9 +138,9 @@ export const Menu = ({ navigation }) => {
                             {
                                 user.category === "Admin" &&
                                 <ItemList
-                                    title={"Editar coordenadores de estágio"}
                                     iconLib={"Ionicons"}
                                     iconName={"people"}
+                                    title={"Gerenciar Professores"}
                                     onPress={() => navigation.navigate("Coordinators")} />
                             }
                             <TextDefault

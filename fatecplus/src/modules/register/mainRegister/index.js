@@ -147,8 +147,6 @@ export const MainRegister = (props) => {
                 type={"email-address"}
                 iconLib={"MaterialIcons"}
                 onchange={text => setEmail(text)} />
-            {
-                category != "Teacher" &&
                 <Input
                     text={phone}
                     maxLength={17}
@@ -158,7 +156,6 @@ export const MainRegister = (props) => {
                     placeholder={"Telefone"}
                     mask={"+55 [00] [00000]-[0000]"}
                     onchange={text => setPhone(text)} />
-            }
             {
                 category === "Student" &&
                 <>

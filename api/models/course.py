@@ -9,6 +9,7 @@ class Course(database.Model):
 class CourseSchema(serializer.SQLAlchemyAutoSchema):
     class Meta:
             model = Course
+            include_fk = True
 
 course_schema = CourseSchema()
 courses_schema = CourseSchema(many=True)
