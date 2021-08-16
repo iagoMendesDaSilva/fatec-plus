@@ -5,6 +5,7 @@ export default {
     WARNING: 'rgba(237, 161, 52,1)',
 
     PRIMARY: 'rgba(133,135,254,1)',
+    
     BACKGROUND: 'rgba(0,0,0,1)',
     BACKGROUND_LIGHT: 'rgba(23,23,23,1)',
     BACKGROUND_LIGHT_PLUS: 'rgba(30,30,30,1)',

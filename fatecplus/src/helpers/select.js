@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyleSheet, Animated, Dimensions, View } from 'react-native';
+import { StyleSheet, Animated, Dimensions, View, Keyboard } from 'react-native';
 
 import { Animate } from '../services';
 import Colors from '../constants/colors';
@@ -14,6 +14,7 @@ export const Select = ({ value = "", changeValue = false, options = [], zIndex =
     const heightSelect = React.useRef(new Animated.Value(40)).current;
 
     const pressSelect = () => {
+        Keyboard.dismiss()
         Animate.timming(heightSelect, open ? 40 : 40 * (options.length + 1), 500).start();
         setOpen(!open)
     }

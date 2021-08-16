@@ -67,7 +67,7 @@ export const MainRegister = (props) => {
             category,
             username,
             description,
-            birthDate: Calendar.unFormat(birthDate),
+            birthDate: Calendar.unFormat(date),
             image: image.base64 ? image.base64 : null,
         }
         params.data

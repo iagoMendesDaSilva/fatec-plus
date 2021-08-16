@@ -28,7 +28,7 @@ export const ProgressPassword = ({ size = widthScreen * .9, strong = 0 }) => {
             case 4:
                 return { color: Colors.SUCCESS, icon: 'emoji-flirt', text: Strings.PASSWORD_STRONG }
             default:
-                return { color: Colors.BACKGROUND_LIGHT, icon: 'emoji-sad', text: Strings.NO_PASS }
+                return { color: Colors.TEXT_PRIMARY_LIGHT_PLUS, icon: 'emoji-sad', text: Strings.NO_PASS }
         }
     }
 

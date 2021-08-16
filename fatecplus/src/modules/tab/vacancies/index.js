@@ -1,9 +1,9 @@
 import styles from './style';
 
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, KeyboardAvoidingView, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
 
-import { Storage } from '../../../services';
+import { Calendar, Storage } from '../../../services';
 import { StorageVacancie } from './storage';
 import Colors from '../../../constants/colors';
 import Strings from '../../../constants/strings';
@@ -12,15 +12,15 @@ import { HeaderList, TextDefault, Shimmer, Icon, FloatingButton } from '../../..
 
 export const Vacancies = ({ navigation, route }) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [user, setUser] = React.useState({});
-    const [loaded, setLoaded] = React.useState(false);
+    const [user, setUser] = useState({});
+    const [loaded, setLoaded] = useState(false);
     const [filter, setFilter] = React.useState({ data: [], text: "" });
-    const [refreshing, setRefreshing] = React.useState(false);
-    const [vacancies, setVacancies] = React.useState({ data: Array(5).fill({}) });
+    const [refreshing, setRefreshing] = useState(false);
+    const [vacancies, setVacancies] = useState({ data: Array(5).fill({}) });
 
-    React.useEffect(() => navigation.addListener('focus', () => getUser()), [])
+    useEffect(() => navigation.addListener('focus', () => getUser()), [])
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
@@ -29,7 +29,8 @@ export const Vacancies = ({ navigation, route }) => {
                 setUser(data)
                 getVacancies(data.category, data.id, data.internship, data.job)
             })
-            .catch(status => modal.set({ status }))
+            .catch(status => modal.set(status))
+            .finally(() => setRefreshing(false))
     }
 
     const getVacancies = (category, id, internship, job) => {
@@ -39,50 +40,11 @@ export const Vacancies = ({ navigation, route }) => {
             getAllVacancies(category === "Student", internship, job)
     }
 
-    const configVacancies = (jobs, isStudent, internship, job) => {
-        const data = jobs.filter(item => {
-            let itemValid = item;
-            if (isStudent)
-                itemValid = item.internship === internship || item.job === job ? item : null
-            if (item.date)
-                itemValid = checkDeadLine(item.date) ? item : null
-            return itemValid
-        })
-        setVacancies({ data })
-    }
-
-    const getFormatedDate = () => {
-        const today = new Date()
-        const year = String(today.getFullYear())
-        let month = String(today.getMonth() + 1)
-        let day = String(today.getDate())
-
-        if (day.length === 1) day = "0" + day
-        if (month.length === 1) month = "0" + month
-        return `${year}-${month}-${day}`
-    }
-
-    const checkDeadLine = date =>
-        Boolean(date >= getFormatedDate())
-
-
-    const getDeadLineColor = date => {
-        const today = getFormatedDate()
-        if (date === today)
-            return Colors.ERROR
-        if (date > today)
-            return Colors.WARNING
-        if (!date)
-            return Colors.SUCCESS
-        return "gray"
-    }
-
-
     const getVacanciesByCompany = id => {
         setLoaded(false,
             StorageVacancie.getVacanciesByCompany(id)
                 .then(data => setVacancies({ data }))
-                .catch(status => configModal(status))
+                .catch(status => modal.set(status))
                 .finally(() => {
                     route.params = null;
                     setRefreshing(false)
@@ -94,7 +56,7 @@ export const Vacancies = ({ navigation, route }) => {
         setLoaded(false,
             StorageVacancie.getVacancies()
                 .then(data => configVacancies(data, isStudent, internship, job))
-                .catch(status => configModal(status))
+                .catch(status => modal.set(status))
                 .finally(() => {
                     route.params = null;
                     setRefreshing(false)
@@ -102,12 +64,28 @@ export const Vacancies = ({ navigation, route }) => {
                 }))
     }
 
-    const configModal = status =>
-        modal.set({
-            status,
-            msg: Strings.ERROR_VACANCIES,
-            positivePress: () => navigation.replace("Login")
+    const configVacancies = (jobs, isStudent, internship, job) => {
+        const data = jobs.filter(item => {
+            let itemValid = item;
+            if (isStudent)
+                itemValid = item.internship === internship || item.job === job ? item : null
+            if (item.date)
+                itemValid = Calendar.isSameOrAfterToday(item.date) ? item : null
+            return itemValid
         })
+        setVacancies({ data })
+    }
+
+
+    const getDeadLineColor = date => {
+        if (Calendar.isSameToday(date))
+            return Colors.ERROR
+        if (Calendar.isAfterToday(date))
+            return Colors.WARNING
+        if (!date)
+            return Colors.SUCCESS
+        return "gray"
+    }
 
     const onRefresh = () => {
         setRefreshing(true)
@@ -117,7 +95,7 @@ export const Vacancies = ({ navigation, route }) => {
     const getRefreshControl = () =>
         <RefreshControl
             refreshing={refreshing}
-            onRefresh={() => onRefresh()} />
+            onRefresh={onRefresh} />
 
     const filterCompanies = text => {
         const data = vacancies.data.filter(value =>
@@ -125,12 +103,13 @@ export const Vacancies = ({ navigation, route }) => {
         setFilter({ data, text })
     }
 
-    const getHeader = () =>
+    const getEmptyComponent = () =>
         <TextDefault
             styleText={styles.txtSubtitle}
-            children={"Sem vagas"} />
+            style={styles.containerEmpty}
+            children={filter.text ? "Vaga não encontrada" : "Sem Vagas"} />
 
-    const verifyHeader = () =>
+    const verifyEmpty = () =>
         Boolean(vacancies.data.length === 0 || filter.data.length === 0 && filter.text)
 
     const unFormatDate = date =>
@@ -192,8 +171,9 @@ export const Vacancies = ({ navigation, route }) => {
             behavior={Platform.OS === 'ios' && 'padding'}>
             <HeaderList
                 title={"Vagas"}
+                text={filter.text}
                 placeholder={"Pesquisar..."}
-                onClose={() => setFilter({ data: [] })}
+                onClose={() => setFilter({ data: [], text: "" })}
                 onchange={text => filterCompanies(text)} />
             <FlatList
                 contentContainerStyle={styles.list}
@@ -202,7 +182,7 @@ export const Vacancies = ({ navigation, route }) => {
                 keyExtractor={(_, index) => String(index)}
                 data={filter.text ? filter.data : vacancies.data}
                 renderItem={({ item, index }) => renderItem(item, index)}
-                ListHeaderComponent={verifyHeader() && getHeader}
+                ListEmptyComponent={verifyEmpty() && getEmptyComponent}
             />
             {
                 Boolean(user.category === "Company" || user.category === "Internship Coordinator") &&

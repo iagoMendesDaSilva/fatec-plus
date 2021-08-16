@@ -56,6 +56,7 @@ export const ChangePassword = ({ navigation, route }) => {
             .catch(status => set(status))
             .finally(() => setLoading(false))
     }
+    
     const configUser = async data => {
         Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category: data.category })
         const versionApp = Storage.getVersion()

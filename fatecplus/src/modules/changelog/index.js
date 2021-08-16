@@ -8,7 +8,7 @@ import { StorageChangeLog } from './storage';
 import { ModalContext } from '../../routes/modalContext';
 import { Screen, Load, TextDefault, Icon } from '../../helpers';
 
-export const ChangeLog = ({ navigation, route }) => {
+export const ChangeLog = ({ route }) => {
 
     const modal = useContext(ModalContext);
 
@@ -28,6 +28,7 @@ export const ChangeLog = ({ navigation, route }) => {
         const removals = news.filter(item => item.type === "removal");
         const additionals = news.filter(item => item.type === "addition");
         const modifications = news.filter(item => item.type === "modification");
+        
         setNews({
             launch: Boolean(additionals.length === 0 && removals.length === 0 && modifications.length === 0),
             data: [

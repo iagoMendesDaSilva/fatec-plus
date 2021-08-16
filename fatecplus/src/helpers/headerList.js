@@ -8,7 +8,7 @@ import Colors from '../constants/colors';
 
 const widthScreen = Dimensions.get("screen").width;
 
-export const HeaderList = ({ title, onchange, placeholder, onClose }) => {
+export const HeaderList = ({ title, onchange, placeholder, onClose, text = "" }) => {
 
     const refInput = React.createRef(null);
 
@@ -51,6 +51,7 @@ export const HeaderList = ({ title, onchange, placeholder, onClose }) => {
                             name={"angle-left"} />
                     </TouchableOpacity>
                     <TextInput
+                        value={text}
                         ref={refInput}
                         autoCorrect={false}
                         style={styles.textInput}
@@ -58,6 +59,18 @@ export const HeaderList = ({ title, onchange, placeholder, onClose }) => {
                         placeholder={placeholder}
                         onChangeText={onchange}
                         placeholderTextColor={Colors.TEXT_PRIMARY_LIGHT_PLUS} />
+                    {
+                        Boolean(text) &&
+                        <TouchableOpacity
+                            onPress={onClose}
+                            style={styles.iconArrow}
+                            hitSlop={styles.hitSlopArrow}>
+                            <Icon
+                                name={"close"}
+                                lib={"antdesign"}
+                                color={Colors.TEXT_PRIMARY_LIGHT_PLUS} />
+                        </TouchableOpacity>
+                    }
                 </View>
 
             </Animated.View>

@@ -9,7 +9,7 @@ export default StyleSheet.create({
         backgroundColor: Colors.BACKGROUND,
     },
     conatinerItem: {
-        height:90,
+        height: 90,
         marginVertical: 8,
         borderRadius: 15,
         flexDirection: "row",
@@ -18,8 +18,13 @@ export default StyleSheet.create({
         width: widthScreen * .95,
         backgroundColor: Colors.BACKGROUND_LIGHT,
     },
+    containerEmpty: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     itemShimmer: {
-        height:90,
+        height: 90,
         marginVertical: 8,
         borderRadius: 15,
         width: widthScreen * .95,
@@ -30,8 +35,8 @@ export default StyleSheet.create({
         alignItems: "center",
     },
     containerText: {
-        flex:1,
-        marginLeft:12
+        flex: 1,
+        marginLeft: 12
     },
     txtTitle: {
         fontSize: 22,

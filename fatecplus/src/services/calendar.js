@@ -6,6 +6,10 @@ export class Calendar {
         throw new Error("Can't instantiate to Date class.")
     }
 
+    static getNewDate(year) {
+        return new Date(year ? year : new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0, 0)
+    }
+
     static format(date) {
         return date ? moment(date).utc().format("DD/MM/YYYY") : null
     }
@@ -15,15 +19,31 @@ export class Calendar {
     }
 
     static getMinimumAge() {
-        return new Date(new Date().getFullYear() - 120, new Date().getMonth(), new Date().getDate())
+        return Calendar.getNewDate(new Date().getFullYear() - 120)
     }
 
     static getMaximumAge() {
-        return new Date(new Date().getFullYear() - 16, new Date().getMonth(), new Date().getDate())
+        return Calendar.getNewDate(new Date().getFullYear() - 16)
     }
 
     static getDateRegister() {
-        return new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate())
+        return Calendar.getNewDate(new Date().getFullYear() - 18)
+    }
+
+    static isBeforeToday(date) {
+        return moment(date).utc().isBefore(Calendar.getNewDate());
+    }
+
+    static isAfterToday(date) {
+        return moment(date).utc().isAfter(Calendar.getNewDate());
+    }
+
+    static isSameToday(date) {
+        return moment(date).utc().isSame(Calendar.getNewDate());
+    }
+
+    static isSameOrAfterToday(date){
+        return moment(date).utc().isSameOrAfter(Calendar.getNewDate());
     }
 
 }

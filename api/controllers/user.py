@@ -39,8 +39,6 @@ class UserController:
                 internship=data['internship'],
                 birth_date=data['birth_date'],
                 description=data['description'])
-                userDao.check_email(data['email'])
-                userDao.check_username(data['username'])
                 dao.add(user)
                 if(data['image']!=None):
                     self.profile_image(dao.get_by_key('username',data['username'],User),data)   

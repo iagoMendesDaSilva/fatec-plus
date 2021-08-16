@@ -1,6 +1,8 @@
 import React from 'react';
 import { KeyboardAvoidingView, StyleSheet, Platform, ScrollView, } from 'react-native';
 
+import Colors  from '../constants/colors';
+
 export const Screen = ({ children, center = true }) => {
     return (
         <KeyboardAvoidingView
@@ -19,16 +21,16 @@ export const Screen = ({ children, center = true }) => {
 const styles = StyleSheet.create({
     containerAll: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: Colors.BACKGROUND,
     },
     containerContent: {
         flexGrow: 1,
-        backgroundColor: 'black',
+        backgroundColor: Colors.BACKGROUND,
     },
     containerContentCenter: {
         flexGrow: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: 'black',
+        backgroundColor: Colors.BACKGROUND,
     }
 });

@@ -9,7 +9,7 @@ import { StorageCoordinator } from './storage';
 import { ModalContext } from '../../routes/modalContext'
 import { Screen, TextDefault, Shimmer, Icon } from '../../helpers'
 
-export const Coordinators = ({ navigation, route }) => {
+export const Coordinators = () => {
 
     const modal = useContext(ModalContext);
 
@@ -17,7 +17,6 @@ export const Coordinators = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [teachers, setTeachers] = useState({ data: [] });
     const [selected, setSelected] = useState({ on: false, coodinator: -1, teacher: -1 });
-
 
     useEffect(() => getTeachers(), [])
 
@@ -33,7 +32,6 @@ export const Coordinators = ({ navigation, route }) => {
                         .catch(status => modal.set(status)))
                 .catch(status => modal.set(status))
                 .finally(() => {
-                    setSelected({on: false, coodinator: -1, teacher: -1})
                     setRefreshing(false)
                     setLoaded(true)
                 }));
@@ -54,24 +52,35 @@ export const Coordinators = ({ navigation, route }) => {
         })
     }
 
+    const confirmChangeCoordinator = id =>
+        modal.set({
+            options: true,
+            iconLib: "fontawesome5",
+            iconName: "people-arrows",
+            iconColor: Colors.WARNING,
+            title: "Alterar coordenador de estágio",
+            positivePress: () => changeCoordinators(id),
+            msg: Strings.CONFIRM_CHANGE_COORDINATOR,
+            negativePress: () => setSelected({ on: false, coodinator: -1, teacher: -1 }),
+        })
+
     const changeCoordinators = teacherId => {
         const courseId = teachers.data[0].data[selected.coodinator].courseId
-        console.log(teacherId);
         StorageCoordinator.changeCoordinator(teacherId, courseId)
-        .then(resp => onRefresh())
-        .catch(status => modal.set({ status }))
+            .then(resp => onRefresh())
+            .catch(status => modal.set({ status }))
+            .finally(() => setSelected({ on: false, coodinator: -1, teacher: -1 }))
     }
 
-   const confirmChangeCoordinator=id=>
-    modal.set({
-        options: true,
-        iconLib: "fontawesome5",
-        iconName: "people-arrows",
-        iconColor: Colors.WARNING,
-        title: "Alterar coordenador de estágio",
-        positivePress: ()=>changeCoordinators(id),
-        msg: Strings.CONFIRM_CHANGE_COORDINATOR,
-    })
+    const pressTeacher = (category, id, index) => {
+        category != "Teacher"
+            ? setSelected({ coodinator: index, on: Boolean(index != selected.coodinator || !selected.on) })
+            : confirmChangeCoordinator(id)
+    }
+
+    const verifyTeacherSelected = (category, index) =>
+        category != "Teacher" && selected.coodinator === index && selected.on ? .75 : 0
+
 
     const renderItem = ({ teacher, subTitle }, index) => {
         return (
@@ -79,12 +88,20 @@ export const Coordinators = ({ navigation, route }) => {
                 <TouchableOpacity
                     key={String(index)}
                     disabled={!selected.on && teacher.category === "Teacher"}
-                    onPress={() => teacher.category != "Teacher" ? setSelected({ coodinator: index, on: Boolean(index != selected.coodinator || !selected.on) }) : confirmChangeCoordinator(teacher.id)}
-                    style={{ ...styles.conatinerItem, borderWidth: teacher.category != "Teacher" && selected.coodinator === index && selected.on ? .75 : 0 }}>
-                    <Image
-                        style={styles.img}
-                        source={{ uri: `${teacher.image}?time=${new Date()}` }}
-                        defaultSource={require("../../assets/img/user_male.png")} />
+                    onPress={() => pressTeacher(teacher.category, teacher.id, index)}
+                    style={{ ...styles.conatinerItem, borderWidth: verifyTeacherSelected(teacher.category, index) }}>
+                    {
+                        teacher.image ?
+                            <Image
+                                style={styles.img}
+                                source={{ uri: `${teacher.image}?time=${new Date()}` }} />
+                            :
+                            <Icon
+                                size={60}
+                                style={styles.img}
+                                name={"user-circle-o"}
+                                color={Colors.TEXT_PRIMARY_LIGHT_PLUS} />
+                    }
                     <View style={styles.containerText}>
                         <View style={styles.conatinerRow}>
                             <TextDefault
@@ -104,7 +121,7 @@ export const Coordinators = ({ navigation, route }) => {
                             styleText={styles.txtSubtitle} />
                     </View>
                 </TouchableOpacity>
-            </Shimmer>
+            </Shimmer >
         );
     }
 

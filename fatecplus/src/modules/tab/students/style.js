@@ -18,6 +18,11 @@ export default StyleSheet.create({
         width: widthScreen * .95,
         backgroundColor: Colors.BACKGROUND_LIGHT,
     },
+    containerEmpty: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     itemShimmer: {
         height:90,
         marginVertical: 8,
