@@ -25,6 +25,7 @@ export default {
     ERROR_USER: "Usuário não encontrado.",
     ERROR_LOGIN: "Usuário ou senha inválido.",
     ERROR_IMAGE: "Tamanho máximo de 4 mb.",
+    ERROR_LINK: "Não foi possível acessar a página.",
     ERROR_UPDATE: "Não foi possível atualizar os dados.",
     ERROR_PASSWORDS: "As duas senhas devem ser iguais.",
     ERROR_STUDENTS: "Não foi possível consultar os alunos.",
@@ -40,8 +41,8 @@ export default {
     CONFIRM_LOGOUT: "Deseja encerrar sessão?",
     CONFIRM_DELETE_USER: "Deseja excluir sua conta?",
     CONFIRM_DELETE_VACANCY: "Deseja excluir esta vaga?",
-    CONFIRM_SUBSCRIPTION: "Iremos enviar todas suas informações.",
     CONFIRM_CHANGE_COORDINATOR: "Deseja alterar o coordenador de estágio?",
+    CONFIRM_SUBSCRIPTION: "Ao se inscrever-se na vaga iremos enviar todas suas informações.",
 
     DELETED_VACANCY: "Vaga excluida com sucesso!",
     DELETED_NETWORK: "Rede deletada com sucesso!",

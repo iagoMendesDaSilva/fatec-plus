@@ -80,7 +80,7 @@ class Email:
                     text +=" - "+formation.subtitle
                 text+= " | "+time
                 if formation.workload:
-                    text += " | "+formation.workload.strftime("%H")+"h"
+                    text += " | "+formation.workload+"h"
                 self.add_text(resume, text)
 
         if(len(user.languages)>0):

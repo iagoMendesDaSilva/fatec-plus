@@ -42,7 +42,7 @@ export class Calendar {
         return moment(date).utc().isSame(Calendar.getNewDate());
     }
 
-    static isSameOrAfterToday(date){
+    static isSameOrAfterToday(date) {
         return moment(date).utc().isSameOrAfter(Calendar.getNewDate());
     }
 

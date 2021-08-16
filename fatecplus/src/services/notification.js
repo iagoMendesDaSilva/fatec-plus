@@ -1,7 +1,5 @@
 import OneSignal from 'react-native-onesignal';
 
-import Constants from '../constants/values';
-
 export class Notification {
     constructor(navigation) {
         this.navigation = navigation;
@@ -10,7 +8,7 @@ export class Notification {
 
     configOneSignal() {
         OneSignal.setLogLevel(6, 0);
-        OneSignal.setAppId(Constants.ONESIGNAL_APP_ID);
+        OneSignal.setAppId("76288217-d814-43e3-8cd0-5dcf5f052177");
         OneSignal.setNotificationOpenedHandler(payload => this.goTo(payload));
     }
 

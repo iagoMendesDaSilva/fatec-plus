@@ -1,24 +1,26 @@
 import styles from './style';
 
-import React from 'react';
-import { View, Linking, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Linking, SectionList } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
 
-import { Storage, Animate } from '../../services';
 import { StorageUser } from './storage';
 import Colors from '../../constants/colors';
+import Strings from '../../constants/strings';
+import { Storage, Calendar } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
 import { Screen, TextDefault, ImagePicker, ButtonSmall, Arrow, Load, ModalContact } from '../../helpers'
 
 export const Student = ({ navigation, route }) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [user, setUser] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
-    const [showModal, setShowModal] = React.useState(false);
-    const [permission, setPermission] = React.useState({ indicate: false, request: false })
+    const [user, setUser] = useState(false);
+    const [info, setInfo] = useState({ data: [] })
+    const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [permission, setPermission] = useState({ indicate: false, request: false })
 
-    React.useEffect(() => getCurrentUser(), [])
+    useEffect(() => getCurrentUser(), [])
 
     const getCurrentUser = async () => {
         const object = await Storage.getUser()
@@ -29,10 +31,23 @@ export const Student = ({ navigation, route }) => {
         StorageUser.getUser(route.params.id)
             .then(data => {
                 setUser(data)
+                configInfo(data)
                 configPermission(user)
                 setLoading(false)
             })
             .catch(status => modal.set({ status }))
+    }
+
+    const configInfo = user => {
+        setInfo({
+            data: [
+                { title: "Idiomas", data: user.languages },
+                { title: "Redes", data: user.social_networks },
+                { title: "Formações", data: user.formations },
+                { title: "Experiências", data: user.experiences },
+                { title: "Projetos", data: user.projects },
+            ]
+        })
     }
 
     const getAge = () =>
@@ -47,110 +62,78 @@ export const Student = ({ navigation, route }) => {
 
     const openLink = async url => {
         const supported = await Linking.canOpenURL(url);
-        supported && await Linking.openURL(url);
+        supported ? await Linking.openURL(url) : modal.set({ msg: Strings.ERROR_LINK })
     }
-
-    const unFormatDate = date =>
-        date ? date.split("-").reverse().join("/") : null
-
-
-    const unFormatHour = hour =>
-        hour ? hour.split(":")[0] : null
-
-
-    const renderItemNetwork = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                children={item.name}
-                styleText={styles.txtTitle} />
-            <TextDefault
-                children={item.url}
-                onPress={() => openLink(item.url)}
-                styleText={styles.txtSubtitleLink} />
-        </View>
-
-    const renderItemLanguage = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                styleText={styles.txtTitle}
-                children={item.language} />
-            <TextDefault
-                children={item.level}
-                styleText={styles.txtSubtitle} />
-        </View>
-
-    const renderItemProject = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                children={item.name}
-                styleText={styles.txtTitle} />
-            {
-                Boolean(item.url) &&
-                <TextDefault
-                    children={item.url}
-                    onPress={() => openLink(item.url)}
-                    styleText={styles.txtSubtitleLink} />
-            }
-            {
-                Boolean(item.description) &&
-                <TextDefault
-                    lines={0}
-                    children={item.description}
-                    styleText={styles.txtSubtitle} />
-            }
-        </View>
-
-
-    const renderItemFormation = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                children={item.title}
-                styleText={styles.txtTitle} />
-            {
-                Boolean(item.subtitle) &&
-                <TextDefault
-                    children={item.subtitle}
-                    styleText={styles.txtSubtitle} />
-            }
-            <View style={styles.containerRow}>
-                <TextDefault
-                    children={unFormatDate(item.start_year)}
-                    styleText={styles.txtSubtitleRow} />
-                <TextDefault
-                    styleText={styles.txtSubtitleRow}
-                    children={item.endYear ? unFormatDate(item.endYear) : "Em andamento"} />
-                {
-                    Boolean(item.workload) &&
-                    <TextDefault
-                        styleText={styles.txtSubtitleRow}
-                        children={unFormatHour(item.workload) + "h"} />
-                }
-            </View>
-        </View>
-
-    const renderItemExperience = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                children={item.job}
-                styleText={styles.txtTitle} />
-            <TextDefault
-                children={item.company}
-                styleText={styles.txtSubtitle} />
-            <View style={styles.containerRow}>
-                <TextDefault
-                    children={unFormatDate(item.start_year)}
-                    styleText={styles.txtSubtitleRow} />
-                <TextDefault
-                    styleText={styles.txtSubtitleRow}
-                    children={item.endYear ? unFormatDate(item.end_year) : "Presente"} />
-            </View>
-        </View>
 
     const choiceVacancy = () =>
         navigation.navigate("Vacancies", { studentId: user.id })
 
     const pressArrow = () =>
         navigation.navigate("Home", { screen: "Students", params: null })
+
+    const renderItem = (item, index) =>
+        <View key={String(index)}>
+            <TextDefault
+                children={item.name}
+                styleText={styles.txtTitle} />
+            <TextDefault
+                children={item.title}
+                styleText={styles.txtTitle} />
+            <TextDefault
+                children={item.language}
+                styleText={styles.txtTitle} />
+            <TextDefault
+                children={item.job}
+                styleText={styles.txtTitle} />
+            <TextDefault
+                children={item.level}
+                styleText={styles.txtSubtitle} />
+            <TextDefault
+                children={item.url}
+                onPress={() => openLink(item.url)}
+                styleText={styles.txtSubtitleLink} />
+            <TextDefault
+                children={item.subtitle}
+                styleText={styles.txtSubtitle} />
+            <TextDefault
+                children={item.company}
+                styleText={styles.txtSubtitle} />
+            <TextDefault
+                lines={0}
+                children={item.description}
+                styleText={styles.txtSubtitle} />
+            {
+                Boolean(item.start_year) &&
+                <View style={styles.containerRow}>
+                    <TextDefault
+                        children={Calendar.format(item.start_year)}
+                        styleText={styles.txtSubtitleRow} />
+                    <TextDefault
+                        styleText={styles.txtSubtitleRow}
+                        children={item.end_year ? `- ${Calendar.format(item.end_year)}` : "- Presente"} />
+                    {
+                        Boolean(item.workload) &&
+                        <TextDefault
+                            styleText={styles.txtSubtitleRow}
+                            children={`- ${item.workload}h`} />
+                    }
+                </View>
+            }
+        </View>
+
+    const renderSection = (title) =>
+        <>
+            {
+                title != info.data[0].title &&
+                <View style={styles.separator} />
+            }
+            <TextDefault
+                children={title}
+                styleText={styles.txtTopic} />
+        </>
+
+    const renderItemItemSeparator = () =>
+        <View style={styles.separator} />
 
     return (
         <View style={styles.containerAll}>
@@ -163,7 +146,7 @@ export const Student = ({ navigation, route }) => {
             <Screen center={false}>
                 {
                     loading ?
-                        <Load backgroundColor={Colors.BACKGROUND} />
+                        <Load />
                         :
                         <>
                             <View style={styles.containerHeader}>
@@ -172,8 +155,8 @@ export const Student = ({ navigation, route }) => {
                                     children={user.name}
                                     styleText={styles.txtName} />
                                 <TextDefault
-                                    styleText={styles.txtCourse}
-                                    children={user.studying} />
+                                    children={user.studying}
+                                    styleText={styles.txtCourse} />
                                 <TextDefault
                                     styleText={styles.txtAddress}
                                     children={`${user.city}-${user.state}`} />
@@ -181,15 +164,15 @@ export const Student = ({ navigation, route }) => {
                                     {
                                         Boolean(permission.request || permission.indicate) &&
                                         <ButtonSmall
+                                            style={styles.button}
                                             onPress={choiceVacancy}
-                                            text={permission.indicate ? "INDICAR" : "SOLICITAR"}
-                                            style={styles.button} />
+                                            text={permission.indicate ? "INDICAR" : "SOLICITAR"} />
                                     }
                                     <ButtonSmall
                                         outline
                                         text={"Contato"}
-                                        onPress={() => setShowModal(true)}
-                                        style={styles.button} />
+                                        style={styles.button}
+                                        onPress={() => setShowModal(true)} />
                                 </View>
                             </View>
                             <View style={styles.containerContent}>
@@ -197,72 +180,20 @@ export const Student = ({ navigation, route }) => {
                                     children={"Sobre"}
                                     styleText={styles.txtTopic} />
                                 <TextDefault
-                                    children={`${getAge()} anos`}
-                                    styleText={styles.txtText} />
+                                    styleText={styles.txtText}
+                                    children={`${getAge()} anos`} />
                                 <TextDefault
                                     lines={0}
-                                    children={user.description ? user.description : 'Sem descrição sobre o aluno.'}
-                                    styleText={styles.txtText} />
-                                {
-                                    user.languages.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Idiomas"}
-                                            styleText={styles.txtTopic} />
-                                        {
-                                            user.languages.map((item, index) => renderItemLanguage(item, index))
-                                        }
-                                    </>
-
-                                }
-                                {
-                                    user.social_networks.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Redes"}
-                                            styleText={styles.txtTopic} />
-                                        {
-                                            user.social_networks.map((item, index) => renderItemNetwork(item, index))
-                                        }
-                                    </>
-
-                                }
-                                {
-                                    user.formations.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Formações"}
-                                            styleText={styles.txtTopic} />
-                                        {
-                                            user.formations.map((item, index) => renderItemFormation(item, index))
-                                        }
-                                    </>
-
-                                }
-                                {
-                                    user.experiences.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Experiências"}
-                                            styleText={styles.txtTopic} />
-                                        {
-                                            user.experiences.map((item, index) => renderItemExperience(item, index))
-                                        }
-                                    </>
-
-                                }
-                                {
-                                    user.projects.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Projetos"}
-                                            styleText={styles.txtTopic} />
-                                        {
-                                            user.projects.map((item, index) => renderItemProject(item, index))
-                                        }
-                                    </>
-
-                                }
+                                    styleText={styles.txtText}
+                                    children={user.description ? user.description : 'Sem descrição sobre o aluno.'} />
+                                <View style={styles.separator} />
+                                <SectionList
+                                    sections={info.data}
+                                    scrollEnabled={false}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item, index }) => renderItem(item, index)}
+                                    ItemSeparatorComponent={(() => renderItemItemSeparator())}
+                                    renderSectionHeader={({ section: { title, data } }) => data.length > 0 && renderSection(title)} />
                             </View>
                         </>
                 }

@@ -4,23 +4,28 @@ import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../constants/colors';
 
 export const TextDefault = ({ children, style, styleText, lines = 1,
-    selectable = false, onPress = false, active = true, hitSlop = false ,  disabled=false}) => {
+    selectable = false, onPress = false, active = true, hitSlop = false, disabled = false }) => {
 
     return (
-        <TouchableOpacity
-            style={style}
-            onPress={onPress}
-            disabled={!onPress || disabled}
-            hitSlop={hitSlop ? hitSlop : styles.hitSlop}>
-            <Text
-                selectionColor={"gray"}
-                allowFontScaling={false}
-                numberOfLines={lines}
-                style={[styleText ? styleText : styles.textDefault, { opacity: active ? 1 : .5, }]}
-                selectable={selectable && !onPress ? selectable : false}>
-                {children}
-            </Text>
-        </TouchableOpacity>
+        <>
+            {
+                Boolean(children) &&
+                <TouchableOpacity
+                    style={style}
+                    onPress={onPress}
+                    disabled={!onPress || disabled}
+                    hitSlop={hitSlop ? hitSlop : styles.hitSlop}>
+                    <Text
+                        selectionColor={"gray"}
+                        allowFontScaling={false}
+                        numberOfLines={lines}
+                        style={[styleText ? styleText : styles.textDefault, { opacity: active ? 1 : .5, }]}
+                        selectable={selectable && !onPress ? selectable : false}>
+                        {children}
+                    </Text>
+                </TouchableOpacity>
+            }
+        </>
     )
 }
 

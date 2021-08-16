@@ -10,6 +10,11 @@ export default StyleSheet.create({
         marginLeft: 25,
         marginTop: 25,
     },
+    separator:{
+        height:1,
+        marginVertical:10,
+        backgroundColor:Colors.BACKGROUND,
+    },
     conatinerText: {
         marginLeft: 25,
     },
@@ -35,7 +40,7 @@ export default StyleSheet.create({
     },
     containerContent: {
         flex: 1,
-        paddingBottom: 15,
+        paddingVertical: 10,
         paddingHorizontal: 15,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -43,7 +48,6 @@ export default StyleSheet.create({
     },
     txtTopic: {
         fontSize: 20,
-        paddingTop: 15,
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtTopicLine: {
@@ -56,21 +60,31 @@ export default StyleSheet.create({
     },
     txtText: {
         fontSize: 18,
-        color: Colors.TEXT_PRIMARY,
         textAlign: "justify",
+        color: Colors.TEXT_PRIMARY,
+    },
+    txtTextHeader: {
+        fontSize: 18,
+        marginVertical:2,
+        textAlign: "justify",
+        color: Colors.TEXT_PRIMARY,
     },
     txtTitle: {
         fontSize: 18,
-        color: Colors.TEXT_PRIMARY,
         paddingTop: 5,
+        color: Colors.TEXT_PRIMARY,
     },
     txtSubtitle: {
         fontSize: 16,
-        textAlign: "justify",
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtSubtitleLink: {
         fontSize: 16,
+        color: Colors.PRIMARY,
+    },
+    txtType: {
+        fontSize: 18,
+        marginRight: 10,
         color: Colors.PRIMARY,
     },
     txtSubtitleRow: {

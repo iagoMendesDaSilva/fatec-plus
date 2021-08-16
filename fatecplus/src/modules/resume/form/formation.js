@@ -18,21 +18,15 @@ export const Formation = ({ state, reload }) => {
     const formatDate = date =>
         date ? date.split("/").reverse().join("-") : null;
 
-    const unFormatHour = hour =>
-        hour ? hour.split(":")[0] : null
-
-    const FormatHour = hour =>
-        hour ? `${hour}:00:00` : null
-
     const modal = React.useContext(ModalContext);
 
     const [date, setDate] = React.useState(new Date());
     const [picker, setPicker] = React.useState({ on: false, start: true });
     const [title, setTitle] = React.useState(hasIndex() ? state.data[state.index].title : "");
     const [subTitle, setSubTitle] = React.useState(hasIndex() ? state.data[state.index].subtitle : "");
+    const [workload, setWorkload] = React.useState(hasIndex() ? String(state.data[state.index].workload) : "");
     const [endYear, setEndYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].end_year) : "");
     const [startYear, setStartYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].start_year) : "");
-    const [workload, setWorkload] = React.useState(hasIndex() ? unFormatHour(state.data[state.index].workload) : "");
 
     const dateIsValid = () =>
         Boolean(endYear > startYear || !endYear)
@@ -51,15 +45,9 @@ export const Formation = ({ state, reload }) => {
         picker.start ? setStartYear(dateFormated) : setEndYear(dateFormated);
     }
 
-    const changeTime = value => {
-        value === '' && setWorkload(value)
-        if ((/^\d+$/.test(value)) && Number(value))
-            setWorkload(value)
-    }
-
     const save = () => {
         if (dateIsValid()) {
-            StorageResume.saveFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload))
+            StorageResume.saveFormation(title, subTitle, formatDate(endYear), formatDate(startYear), verifyWorkload(workload) ? workload : null)
                 .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
                 .catch(status => modal.set({ status }))
         } else
@@ -68,12 +56,15 @@ export const Formation = ({ state, reload }) => {
 
     const edit = () => {
         if (dateIsValid()) {
-            StorageResume.editFormation(title, subTitle, formatDate(endYear), formatDate(startYear), FormatHour(workload), state.data[state.index].id)
+            StorageResume.editFormation(title, subTitle, formatDate(endYear), formatDate(startYear), verifyWorkload(workload), state.data[state.index].id)
                 .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
                 .catch(status => modal.set({ status }))
         } else
             modal.set({ msg: Strings.ERROR_DATE })
     }
+
+    const verifyWorkload = date =>
+        Boolean(Number(date)) ? date : null
 
     const remove = () => {
         StorageResume.deleteFormation(state.data[state.index].id)
@@ -106,13 +97,13 @@ export const Formation = ({ state, reload }) => {
             <DatePickerDefault
                 title={startYear}
                 initialValue={"Data de iníco"}
-                close={()=>setPicker(false)}
+                close={() => setPicker(false)}
                 picker={picker.on && picker.start}
                 deleteValue={() => setStartYear("")}
                 onPress={() => setPicker({ on: !picker.on, start: true })} />
             <DatePickerDefault
                 title={endYear}
-                close={()=>setPicker(false)}
+                close={() => setPicker(false)}
                 picker={picker.on && !picker.start}
                 initialValue={"Data de término"}
                 deleteValue={() => setEndYear("")}
@@ -131,6 +122,7 @@ export const Formation = ({ state, reload }) => {
                     onDateChange={value => changeDate(value)} />
             }
             <Input
+                mask={"[000]"}
                 maxLength={3}
                 text={workload}
                 type={"numeric"}
@@ -138,7 +130,7 @@ export const Formation = ({ state, reload }) => {
                 iconName={"calendar"}
                 defaultValue={workload}
                 placeholder={"Duração (horas)"}
-                onchange={text => changeTime(text)} />
+                onchange={text => setWorkload(text)} />
             <ButtonDefault
                 text={"Salvar"}
                 onPress={pressButton}

@@ -35,7 +35,7 @@ export default StyleSheet.create({
     },
     containerContent: {
         flex: 1,
-        paddingBottom: 15,
+        paddingVertical: 10,
         paddingHorizontal: 15,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
@@ -43,7 +43,6 @@ export default StyleSheet.create({
     },
     txtTopic: {
         fontSize: 20,
-        paddingTop: 15,
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     txtText: {
@@ -51,15 +50,15 @@ export default StyleSheet.create({
         color: Colors.TEXT_PRIMARY,
         textAlign: "justify",
     },
-    containerItem: {
-        paddingBottom: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.BACKGROUND,
+    separator:{
+        height:1,
+        marginVertical:10,
+        backgroundColor:Colors.BACKGROUND,
     },
     txtTitle: {
         fontSize: 18,
-        color: Colors.TEXT_PRIMARY,
         paddingTop: 5,
+        color: Colors.TEXT_PRIMARY,
     },
     txtSubtitle: {
         fontSize: 16,

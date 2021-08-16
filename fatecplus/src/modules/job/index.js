@@ -1,32 +1,30 @@
 import styles from './style';
 
-import { View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, SectionList } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { StorageJob } from './storage';
 import Colors from '../../constants/colors';
 import Strings from '../../constants/strings';
-import { Storage } from '../../services';
+import { Storage, Calendar } from '../../services';
 import { ModalContext } from '../../routes/modalContext'
-import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalContact } from '../../helpers'
+import { Screen, TextDefault, ImagePicker, ButtonSmall, OptionMenu, Load, Arrow, ModalContact, Icon } from '../../helpers'
 
 export const Job = ({ navigation, route }) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
     const [job, setJob] = useState({});
-    const [company, setCompany] = useState({});
+    const [info, setInfo] = useState({ data: [] })
     const [loading, setLoading] = useState(true);
+    const [company, setCompany] = useState({});
     const [loadingSub, setLoadingSub] = useState(false);
     const [subscribed, setSubscribed] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [permission, setPermission] = useState({ indicate: false, subscribe: false, request: false })
 
 
-    useEffect(() => {
-        getJob()
-        navigation.addListener('focus', () => getJob())
-    }, [])
+    useEffect(() => navigation.addListener('focus', () => getJob()), [])
 
     const getJob = async () => {
         const user = await Storage.getUser()
@@ -35,6 +33,7 @@ export const Job = ({ navigation, route }) => {
             .then(async data => {
                 configPermission(user, data.job, data.company)
                 setJob(data.job)
+                configInfo(data.job)
                 setCompany(data.company)
                 setLoading(false)
             })
@@ -45,8 +44,8 @@ export const Job = ({ navigation, route }) => {
     const configPermission = (user, job, company) => {
         const category = user.category;
         const subscribe = Boolean(category === "Student")
-        let request = Boolean(category === "Company" || category === "Internship Coordinator" && company.id === user.id)
         let indicate = Boolean(category === "Teacher" || category === "Internship Coordinator" && company.id != user.id)
+        let request = Boolean(category === "Company" || category === "Internship Coordinator" && company.id === user.id)
         setPermission({ indicate, subscribe, request })
         subscribe && verifySubscribed(job.id)
     }
@@ -56,46 +55,6 @@ export const Job = ({ navigation, route }) => {
             .then(data => setSubscribed(true))
             .catch(status => console.log(status));
     }
-
-    const unFormatDate = date =>
-        date ? date.split("-").reverse().join("/") : null
-
-
-    const renderItemRequeriment = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                children={item.name}
-                styleText={styles.txtTitle} />
-            <View style={styles.containerRow}>
-                <TextDefault
-                    children={item.level}
-                    styleText={styles.txtSubtitleRow} />
-                <TextDefault
-                    children={item.mandatory ? "Obrigatório" : "Diferencial"}
-                    styleText={item.mandatory ? styles.txtSubtitleLink : styles.txtSubtitle} />
-            </View>
-            {
-                Boolean(item.description) &&
-                <TextDefault
-                    lines={0}
-                    children={item.description}
-                    styleText={styles.txtSubtitle} />
-            }
-        </View>
-
-    const renderItemBenefit = (item, index) =>
-        <View style={styles.containerItem} key={String(index)}>
-            <TextDefault
-                styleText={styles.txtTitle}
-                children={item.name} />
-            {
-                Boolean(item.description) &&
-                <TextDefault
-                    lines={0}
-                    children={item.description}
-                    styleText={styles.txtSubtitle} />
-            }
-        </View>
 
     const choiceStudent = () =>
         permission.subscribe
@@ -115,10 +74,10 @@ export const Job = ({ navigation, route }) => {
         modal.set({
             options: true,
             iconName: "warning",
-            title: "Aviso",
-            iconColor: Colors.WARNING,
-            iconLib: "FontAwesome",
             positivePress: subscribe,
+            iconLib: "FontAwesome",
+            title: "Confirmar inscrição",
+            iconColor: Colors.WARNING,
             msg: Strings.CONFIRM_SUBSCRIPTION,
         })
     }
@@ -169,30 +128,75 @@ export const Job = ({ navigation, route }) => {
     const confirmDeleteJob = () => {
         modal.set({
             options: true,
-            title: "Excluir vaga",
             iconName: "trash",
-            msg: Strings.CONFIRM_DELETE_VACANCY,
+            title: "Excluir vaga",
             iconLib: "fontawesome",
-            iconColor: Colors.ERROR,
             positivePress: deleteJob,
+            iconColor: Colors.ERROR,
+            msg: Strings.CONFIRM_DELETE_VACANCY,
+        })
+    }
+
+    const configInfo = job => {
+        setInfo({
+            data: [
+                { title: "Requisitos", data: job.requirements },
+                { title: "Benefícios", data: job.benefits },
+            ]
         })
     }
 
     const pressArrow = () =>
         navigation.navigate("Home", { screen: "Vacancies", params: null })
 
+    const renderItem = (item, index) =>
+        <View key={String(index)}>
+            <TextDefault
+                children={item.name}
+                styleText={styles.txtTitle} />
+            <View style={styles.containerRow}>
+                <TextDefault
+                    children={item.level}
+                    styleText={styles.txtSubtitleRow} />
+                {
+                    Boolean(item.hasOwnProperty("mandatory")) &&
+                    < TextDefault
+                        children={item.mandatory ? "Obrigatório" : "Diferencial"}
+                        styleText={item.mandatory ? styles.txtSubtitleLink : styles.txtSubtitle} />
+                }
+            </View>
+            <TextDefault
+                lines={0}
+                children={item.description}
+                styleText={styles.txtSubtitle} />
+        </View>
+
+    const renderSection = (title) =>
+        <>
+            {
+                title != info.data[0].title &&
+                <View style={styles.separator} />
+            }
+            <TextDefault
+                children={title}
+                styleText={styles.txtTopic} />
+        </>
+
+    const renderItemItemSeparator = () =>
+        <View style={styles.separator} />
+
     return (
         <View style={styles.containerAll}>
             <Arrow onPress={pressArrow} />
             <ModalContact
-                email={company.email}
                 open={showModal}
+                email={company.email}
                 phone={company.phone}
                 onClose={() => setShowModal(false)} />
             <Screen center={false}>
                 {
                     loading ?
-                        <Load backgroundColor={Colors.BACKGROUND} />
+                        <Load />
                         :
                         <>
                             <View style={styles.containerHeader}>
@@ -210,10 +214,10 @@ export const Job = ({ navigation, route }) => {
                                     {
                                         Boolean(permission.subscribe || permission.indicate || permission.request) &&
                                         <ButtonSmall
+                                            style={styles.button}
                                             loading={loadingSub}
-                                            onPress={choiceStudent}
                                             text={getTitleButton()}
-                                            style={styles.button} />
+                                            onPress={choiceStudent} />
                                     }
                                     <ButtonSmall
                                         outline
@@ -237,46 +241,26 @@ export const Job = ({ navigation, route }) => {
                                     styleText={styles.txtTopic} />
                                 <TextDefault
                                     children={getTypeJob()}
-                                    styleText={styles.txtSubtitleLink} />
+                                    styleText={styles.txtType} />
                                 <TextDefault
-                                    styleText={styles.txtDate}
-                                    children={job.date ? `Inscrições até ${unFormatDate(job.date)}` : "Sem prazo para inscrições"} />
+                                    styleText={styles.txtTextHeader}
+                                    children={job.date ? `Inscrições até ${Calendar.format(job.date)}` : "Sem prazo para inscrições"} />
                                 <TextDefault
-                                    lines={2}
-                                    styleText={styles.txtDate}
-                                    children={company.address} />
-                                {
-                                    Boolean(job.description) &&
-                                    <TextDefault
-                                        lines={0}
-                                        children={job.description}
-                                        styleText={styles.txtSubtitle} />
-                                }
-
-                                {
-                                    job.requirements.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Requisitos"}
-                                            styleText={styles.txtTopicLine} />
-                                        {
-                                            job.requirements.map((item, index) => renderItemRequeriment(item, index))
-                                        }
-                                    </>
-
-                                }
-                                {
-                                    job.benefits.length > 0 &&
-                                    <>
-                                        <TextDefault
-                                            children={"Benefícios"}
-                                            styleText={styles.txtTopicLine} />
-                                        {
-                                            job.benefits.map((item, index) => renderItemBenefit(item, index))
-                                        }
-                                    </>
-
-                                }
+                                    lines={0}
+                                    styleText={styles.txtTextHeader}
+                                    children={`Endereço: ${company.address}`} />
+                                <TextDefault
+                                    lines={0}
+                                    styleText={styles.txtTextHeader}
+                                    children={job.description ? job.description : 'Sem descrição sobre a vaga.'} />
+                                <View style={styles.separator} />
+                                <SectionList
+                                    sections={info.data}
+                                    scrollEnabled={false}
+                                    showsVerticalScrollIndicator={false}
+                                    renderItem={({ item, index }) => renderItem(item, index)}
+                                    ItemSeparatorComponent={(() => renderItemItemSeparator())}
+                                    renderSectionHeader={({ section: { title, data } }) => data.length > 0 && renderSection(title)} />
                             </View>
                         </>
                 }
