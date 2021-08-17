@@ -187,7 +187,7 @@ export const Vacancies = ({ navigation, route }) => {
             {
                 Boolean(user.category === "Company" || user.category === "Internship Coordinator") &&
                 <FloatingButton
-                    onPress={() => navigation.navigate("Vacancy")} />
+                    onPress={() => navigation.navigate("JobForm")} />
             }
         </KeyboardAvoidingView>
     );

@@ -7,7 +7,6 @@ from models.user import User,user_schema,users_schema,user_schema_login, users_s
 from models.language import Language,language_schema,languages_schema, LanguageSchema
 from models.formation import Formation,formation_schema,formations_schema, FormationSchema
 from models.experience import Experience,experience_schema,experiences_schema, ExperienceSchema
-from models.notification import Notification,notification_schema,notifications_schema,NotificationSchema
 from models.subscription import Subscription,subscription_schema,subscriptions_schema,SubscriptionSchema
 from models.requirement import Requirement,requirement_schema,requirements_schema, RequirementSchema
 from models.socialNetwork import SocialNetwork,socialNetwork_schema,socialNetworks_schema, SocialNetworkSchema

@@ -41,8 +41,8 @@ export const ContractedList = ({ title = "", items = [], keyArray = false, onPre
                 style={styles.containerText}>
                 <TextDefault
                     children={title}
-                    style={styles.containerTitle}
-                    styleText={styles.txtItem} />
+                    styleText={styles.txtTitle}
+                    style={styles.containerTitle} />
                 <Animated.View style={{ ...styles.division, height: heightDivision }} />
                 <TextDefault
                     children={"+"}
@@ -53,13 +53,13 @@ export const ContractedList = ({ title = "", items = [], keyArray = false, onPre
             <ScrollView nestedScrollEnabled>
                 {
                     items.map((item, index) =>
-                        <TextDefault
-                            key={String(index)}
-                            disabled={!open}
-                            styleText={styles.txtItem}
-                            style={styles.containerText}
-                            children={getChildren(index)}
-                            onPress={() => editItem(index)} />
+                            <TextDefault
+                                disabled={!open}
+                                key={String(index)}
+                                styleText={styles.txtItem}
+                                style={styles.containerText}
+                                children={getChildren(index)}
+                                onPress={() => editItem(index)} />
                     )
                 }
             </ScrollView>
@@ -89,8 +89,13 @@ const styles = StyleSheet.create({
     },
     txtItem: {
         fontSize: 18,
-        color: Colors.TEXT_PRIMARY,
         marginHorizontal: 20,
+        color: Colors.TEXT_PRIMARY_LIGHT,
+    },
+    txtTitle: {
+        fontSize: 18,
+        marginHorizontal: 20,
+        color: Colors.TEXT_PRIMARY,
     },
     division: {
         width: .5,

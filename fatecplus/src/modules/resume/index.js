@@ -1,31 +1,30 @@
 
 import styles from './style';
 
-import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View } from 'react-native';
 
 import { Storage } from '../../services';
-import Colors from '../../constants/colors';
 import { StorageResume } from './storage';
 import Strings from '../../constants/strings';
 import { ModalContext } from '../../routes/modalContext';
-import { Network, Language, Project, Formation, Experience } from './form';
-import { ContractedList, TextDefault, SwicthDefault, Screen, Note, Arrow } from '../../helpers';
+import { Network, Language, Project, Formation, Experience } from './forms';
+import { ContractedList, TextDefault, SwicthDefault, Screen, Note, Arrow, Load } from '../../helpers';
 
 export const Resume = ({ navigation, route }) => {
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [job, setJob] = React.useState(false);
-    const [loading, setLoading] = React.useState(true)
-    const [internship, setInternship] = React.useState(false);
-    const [projects, setProjects] = React.useState({ data: [], visible: false, index: false })
-    const [networks, setNetworks] = React.useState({ data: [], visible: false, index: false })
-    const [languages, setLanguages] = React.useState({ data: [], visible: false, index: false })
-    const [formations, setFormations] = React.useState({ data: [], visible: false, index: false })
-    const [experiences, setExperiencies] = React.useState({ data: [], visible: false, index: false })
+    const [job, setJob] = useState(false);
+    const [loading, setLoading] = useState(true)
+    const [internship, setInternship] = useState(false);
+    const [projects, setProjects] = useState({ data: [], visible: false, index: false })
+    const [networks, setNetworks] = useState({ data: [], visible: false, index: false })
+    const [languages, setLanguages] = useState({ data: [], visible: false, index: false })
+    const [formations, setFormations] = useState({ data: [], visible: false, index: false })
+    const [experiences, setExperiencies] = useState({ data: [], visible: false, index: false })
 
-    React.useEffect(() => getDefaultValues(), [])
+    useEffect(() => getDefaultValues(), [])
 
     const getDefaultValues = async () => {
         const user = await Storage.getUser()
@@ -65,14 +64,14 @@ export const Resume = ({ navigation, route }) => {
         const user = await Storage.getUser()
         StorageResume.editInternshipUser(value, user.id)
             .then(data => setInternship(value))
-            .catch(status => modal.set({status}))
+            .catch(status => modal.set({ status }))
     }
 
     const setJobSwitch = async value => {
         const user = await Storage.getUser()
         StorageResume.editJobUser(value, user.id)
             .then(data => setJob(value))
-            .catch(status =>  modal.set({status}))
+            .catch(status => modal.set({ status }))
     }
 
     return (
@@ -82,7 +81,7 @@ export const Resume = ({ navigation, route }) => {
                 {
                     loading
                         ?
-                        <ActivityIndicator color={Colors.TEXT_PRIMARY} size={"large"} />
+                        <Load />
                         :
                         <>
                             {
@@ -119,7 +118,7 @@ export const Resume = ({ navigation, route }) => {
                                 Boolean(!networks.visible && !projects.visible && !languages.visible && !formations.visible && !experiences.visible) &&
                                 <View style={styles.containerContent}>
                                     <View>
-                                       <Note text={Strings.DESCRIPTION_RESUME}/>
+                                        <Note text={Strings.DESCRIPTION_RESUME} />
                                         <ContractedList
                                             title={"Redes"}
                                             keyArray={'name'}
@@ -145,6 +144,9 @@ export const Resume = ({ navigation, route }) => {
                                             keyArray={'job'}
                                             items={experiences.data}
                                             onPress={index => showForm(index, experiences.data, setExperiencies)} />
+                                        <TextDefault
+                                            children={"Mostrar vagas de:"}
+                                            styleText={styles.txtTitle} />
                                         <View style={styles.containerSwitch}>
                                             <SwicthDefault
                                                 on={internship}

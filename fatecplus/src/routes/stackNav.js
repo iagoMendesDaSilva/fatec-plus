@@ -7,7 +7,7 @@ import { TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 import { Icon } from '../helpers';
 import { TabNav } from './tabNav';
 import Colors from '../constants/colors';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, Vacancy, Student, Job, ChangeLog, Coordinators } from '../modules';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, JobForm, Student, Job, ChangeLog, Coordinators } from '../modules';
 
 export const StackNav = () => {
 
@@ -48,7 +48,7 @@ export const StackNav = () => {
             <Stack.Screen name="Splash" component={Splash} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Resume" component={Resume} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="Register" component={Register} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Vacancy" component={Vacancy} options={{ header: ({ navigation }) => back(navigation, false) }} />
+            <Stack.Screen name="JobForm" component={JobForm} options={{ header: ({ navigation }) => back(navigation, false) }} />
             <Stack.Screen name="Recovery" component={Recovery} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangeLog" component={ChangeLog} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="MainRegister" component={MainRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />

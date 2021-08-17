@@ -120,9 +120,9 @@ export const Menu = ({ navigation }) => {
                             {
                                 user.category === "Student" &&
                                 <ItemList
-                                    iconLib={"Entypo"}
                                     title={"Editar currículo"}
-                                    iconName={"text-document-inverted"}
+                                    iconName={"file-document"}
+                                    iconLib={"MaterialCommunityIcons"}
                                     onPress={() => navigation.navigate("Resume")} />
                             }
                             <ItemList

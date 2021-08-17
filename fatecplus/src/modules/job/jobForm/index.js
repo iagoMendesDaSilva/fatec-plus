@@ -1,36 +1,37 @@
 
 import styles from './style';
 
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 
-import Strings from '../../constants/strings';
-import Colors from '../../constants/colors';
+import Strings from '../../../constants/strings';
+import Colors from '../../../constants/colors';
 import { StorageVacancy } from './storage';
-import { Benefit, Requirement } from './form';
-import { ModalContext } from '../../routes/modalContext';
-import { Screen, Input, SwicthDefault, TextDefault, TextArea, DatePickerDefault, ButtonDefault, ContractedList, Arrow } from '../../helpers';
+import { Benefit, Requirement } from './forms';
+import { ModalContext } from '../../../routes/modalContext';
+import { Screen, Input, SwicthDefault, TextDefault, TextArea, DatePickerDefault, ButtonDefault, ContractedList, Arrow } from '../../../helpers';
+import { Calendar } from '../../../services';
 
-export const Vacancy = ({ navigation, route }) => {
+export const JobForm = ({ navigation, route }) => {
 
     const params = route.params
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [job, setJob] = React.useState(false)
-    const [name, setName] = React.useState("")
-    const [subject, setSubject] = React.useState("")
-    const [picker, setPicker] = React.useState(false);
-    const [loading, setLoading] = React.useState(false)
-    const [receive, setReceive] = React.useState(false);
-    const [date, setDate] = React.useState(new Date())
-    const [deadline, setDeadline] = React.useState("");
-    const [description, setDescription] = React.useState("")
-    const [internship, setInternship] = React.useState(false)
-    const [benefits, setBenefits] = React.useState({ data: [], visible: false, index: false })
-    const [requirements, setRequirements] = React.useState({ data: [], visible: false, index: false })
+    const [job, setJob] = useState(false)
+    const [name, setName] = useState("")
+    const [subject, setSubject] = useState("")
+    const [picker, setPicker] = useState(false);
+    const [loading, setLoading] = useState(false)
+    const [receive, setReceive] = useState(false);
+    const [date, setDate] = useState(new Date())
+    const [deadline, setDeadline] = useState("");
+    const [description, setDescription] = useState("")
+    const [internship, setInternship] = useState(false)
+    const [benefits, setBenefits] = useState({ data: [], visible: false, index: false })
+    const [requirements, setRequirements] = useState({ data: [], visible: false, index: false })
 
-    React.useEffect(() => getDefaultValues(), [])
+    useEffect(() => getDefaultValues(), [])
 
     const getDefaultValues = () => {
         if (params) {
@@ -43,26 +44,13 @@ export const Vacancy = ({ navigation, route }) => {
     const configVacancy = data => {
         setJob(data.job)
         setName(data.name)
+        setDeadline(data.date)
         setInternship(data.internship)
         setSubject(data.subject_email)
         setDescription(data.description)
         setReceive(data.receive_by_email)
-        setDeadline(unFormatDate(data.date))
         setBenefits({ data: data.benefits, visible: false, index: false })
         setRequirements({ data: data.requirements, visible: false, index: false })
-    }
-
-    const changeDate = value => {
-        const date = new Date(value)
-        const year = String(date.getFullYear())
-        let month = String(date.getMonth() + 1)
-        let day = String(date.getDate())
-
-        if (day.length === 1) day = "0" + day
-        if (month.length === 1) month = "0" + month
-
-        setDate(date)
-        setDeadline(day + "/" + month + "/" + year)
     }
 
     const pressButton = () => {
@@ -71,7 +59,7 @@ export const Vacancy = ({ navigation, route }) => {
     }
 
     const editVacancy = () => {
-        StorageVacancy.editVacancy(name, formatDate(deadline), internship, job, receive, subject, description, params.id)
+        StorageVacancy.editVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, params.id)
             .then(data =>
                 modal.set({ msg: Strings.UPDATED, positivePress: () => navigation.goBack() }))
             .catch(status => modal.set({ status }))
@@ -79,7 +67,7 @@ export const Vacancy = ({ navigation, route }) => {
     }
 
     const saveVacancy = () => {
-        StorageVacancy.saveVacancy(name, formatDate(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
+        StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
             .then(data =>
                 modal.set({ msg: Strings.CREATED_VACANCY, positivePress: () => navigation.goBack() }))
             .catch(status => modal.set({ status }))
@@ -104,12 +92,6 @@ export const Vacancy = ({ navigation, route }) => {
         } else
             navigation.goBack()
     }
-
-    const formatDate = date =>
-        date ? date.split("/").reverse().join("-") : null;
-
-    const unFormatDate = date =>
-        date ? date.split("-").reverse().join("/") : null
 
     return (
         <>
@@ -145,10 +127,10 @@ export const Vacancy = ({ navigation, route }) => {
                             onchange={text => setName(text)} />
 
                         <DatePickerDefault
-                            title={deadline}
                             picker={picker}
-                            close={()=>setPicker(false)}
                             initialValue={"Sem prazo"}
+                            close={() => setPicker(false)}
+                            title={Calendar.format(deadline)}
                             onPress={() => setPicker(!picker)}
                             deleteValue={() => setDeadline("")} />
 
@@ -162,7 +144,7 @@ export const Vacancy = ({ navigation, route }) => {
                                 androidVariant={"iosClone"}
                                 textColor={Colors.TEXT_PRIMARY}
                                 fadeToColor={Colors.BACKGROUND}
-                                onDateChange={value => changeDate(value)} />
+                                onDateChange={value => setDate(new Date(value))} />
                         }
                         <View style={styles.containerSwitch}>
                             <SwicthDefault

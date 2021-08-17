@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 
 import { StorageResume } from '../storage';
 import Strings from '../../../constants/strings';
@@ -10,11 +10,11 @@ export const Project = ({ state, reload }) => {
     const hasIndex = () =>
         Number.isInteger(state.index)
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [url, setUrl] = React.useState(hasIndex() ? state.data[state.index].url : "");
-    const [name, setName] = React.useState(hasIndex() ? state.data[state.index].name : "");
-    const [description, setDescription] = React.useState(hasIndex() ? state.data[state.index].description : "");
+    const [url, setUrl] = useState(hasIndex() ? state.data[state.index].url : "");
+    const [name, setName] = useState(hasIndex() ? state.data[state.index].name : "");
+    const [description, setDescription] = useState(hasIndex() ? state.data[state.index].description : "");
 
     const save = () => {
         StorageResume.saveProject(name, url, description)

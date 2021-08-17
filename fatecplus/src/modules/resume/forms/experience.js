@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState,useContext} from 'react';
 import DatePicker from 'react-native-date-picker';
 
+import { Calendar } from '../../../services';
 import { StorageResume } from '../storage';
 import Colors from '../../../constants/colors';
 import Strings from '../../../constants/strings';
@@ -12,42 +13,24 @@ export const Experience = ({ state, reload }) => {
     const hasIndex = () =>
         Number.isInteger(state.index)
 
-    const unFormatDate = date =>
-        date ? date.split("-").reverse().join("/") : null
+    const modal = useContext(ModalContext);
 
-    const formatDate = date =>
-        date ? date.split("/").reverse().join("-") : null;
-
-
-    const modal = React.useContext(ModalContext);
-
-    const [date, setDate] = React.useState(new Date());
-    const [picker, setPicker] = React.useState({ on: false, start: true });
-    const [job, setJob] = React.useState(hasIndex() ? state.data[state.index].job : "");
-    const [company, setCompany] = React.useState(hasIndex() ? state.data[state.index].company : "");
-    const [endYear, setEndYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].end_year) : "");
-    const [startYear, setStartYear] = React.useState(hasIndex() ? unFormatDate(state.data[state.index].start_year) : "");
-
-    const dateIsValid = () =>
-        Boolean(endYear > startYear || !endYear)
+    const [date, setDate] =useState(new Date());
+    const [picker, setPicker] =useState({ on: false, start: true });
+    const [job, setJob] =useState(hasIndex() ? state.data[state.index].job : "");
+    const [company, setCompany] =useState(hasIndex() ? state.data[state.index].company : "");
+    const [endYear, setEndYear] =useState(hasIndex() ? state.data[state.index].end_year: "");
+    const [startYear, setStartYear] =useState(hasIndex() ? state.data[state.index].start_year : "");
 
     const changeDate = value => {
         const date = new Date(value)
-        const year = String(date.getFullYear())
-        let month = String(date.getMonth() + 1)
-        let day = String(date.getDate())
-
-        if (day.length === 1) day = "0" + day
-        if (month.length === 1) month = "0" + month
-        const dateFormated = day + "/" + month + "/" + year
-
         setDate(date)
-        picker.start ? setStartYear(dateFormated) : setEndYear(dateFormated);
+        picker.start ? setStartYear(date) : setEndYear(date);
     }
 
     const save = () => {
-        if (dateIsValid()) {
-            StorageResume.saveExperience(job, company, formatDate(endYear), formatDate(startYear))
+        if (Calendar.isSameOrAfter(startYear, endYear)) {
+            StorageResume.saveExperience(job, company, Calendar.unFormat(endYear), Calendar.unFormat(startYear))
                 .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
                 .catch(status => modal.set({ status }))
         } else
@@ -55,8 +38,8 @@ export const Experience = ({ state, reload }) => {
     }
 
     const edit = () => {
-        if (dateIsValid()) {
-            StorageResume.editExperience(job, company, formatDate(endYear), formatDate(startYear), state.data[state.index].id)
+        if (Calendar.isSameOrAfter(startYear, endYear)) {
+            StorageResume.editExperience(job, company, Calendar.unFormat(endYear), Calendar.unFormat(startYear), state.data[state.index].id)
                 .then(data => modal.set({ msg: Strings.UPDATED, positivePress: reload }))
                 .catch(status => modal.set({ status }))
         } else
@@ -92,17 +75,17 @@ export const Experience = ({ state, reload }) => {
                 onchange={text => setCompany(text)}
                 iconLib={"MaterialCommunityIcons"} />
             <DatePickerDefault
-                title={startYear}
-                picker={picker.on && picker.start} 
                 close={()=>setPicker(false)}
                 initialValue={"Data de iníco"}
+                title={Calendar.format(startYear)}
+                picker={picker.on && picker.start} 
                 deleteValue={() => setStartYear("")}
                 onPress={() => setPicker({ on: !picker.on, start: true })} />
             <DatePickerDefault
-                title={endYear}
-                picker={picker.on && !picker.start}
                 close={()=>setPicker(false)}
+                title={Calendar.format(endYear)}
                 initialValue={"Data de término"}
+                picker={picker.on && !picker.start}
                 deleteValue={() => setEndYear("")}
                 open={Boolean(picker.on && !picker.start)}
                 onPress={() => setPicker({ on: !picker.on, start: false })} />
@@ -112,9 +95,9 @@ export const Experience = ({ state, reload }) => {
                     date={date}
                     mode={"date"}
                     locale={"pt-br"}
-                    textColor={Colors.TEXT_PRIMARY}
                     maximumDate={new Date()}
                     androidVariant={"iosClone"}
+                    textColor={Colors.TEXT_PRIMARY}
                     fadeToColor={Colors.BACKGROUND}
                     onDateChange={value => changeDate(value)} />
             }

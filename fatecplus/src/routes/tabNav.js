@@ -21,12 +21,8 @@ export const TabNav = ({ navigation }) => {
         switch (name) {
             case "Menu":
                 return { name: "Menu", icon: { name: "bars", lib: "FontAwesome5" } }
-            case "Companies":
-                return { name: "Empresas", icon: { name: "suitcase", lib: "FontAwesome" } }
             case "Vacancies":
-                return { name: "Vagas", icon: { name: "newspaper-o", lib: "FontAwesome" } }
-            case "Teachers":
-                return { name: "Professores", icon: { name: "chalkboard-teacher", lib: "FontAwesome5" } }
+                return { name: "Vagas", icon: { name: "suitcase", lib: "FontAwesome" } }
             case "Students":
                 return { name: "Alunos", icon: { name: "graduation-cap", lib: "FontAwesome5" } }
         }

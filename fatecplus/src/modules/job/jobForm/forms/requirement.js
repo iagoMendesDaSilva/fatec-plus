@@ -1,24 +1,24 @@
-import React from 'react';
+import React, {useContext,useState} from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { StorageVacancy } from '../storage';
-import Strings from '../../../constants/strings';
-import { ModalContext } from '../../../routes/modalContext'
-import { Screen, Note, Input, TextArea, ButtonDefault, TextDefault, SwicthDefault, Select } from '../../../helpers';
+import Strings from '../../../../constants/strings';
+import { ModalContext } from '../../../../routes/modalContext'
+import { Screen, Note, Input, TextArea, ButtonDefault, TextDefault, SwicthDefault, Select } from '../../../../helpers';
 
 export const Requirement = ({ state, setState, idJob = false, reload }) => {
 
     const hasIndex = () =>
         Number.isInteger(state.index)
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
     const levels = ["Básico", "Intermediário", "Avançado"]
 
-    const [level, setLevel] = React.useState(hasIndex() ? state.data[state.index].level : "");
-    const [name, setName] = React.useState(hasIndex() ? state.data[state.index].name : "");
-    const [description, setDescription] = React.useState(hasIndex() ? state.data[state.index].description : "");
-    const [mandatory, setMandatory] = React.useState(hasIndex() ? state.data[state.index].mandatory : false);
+    const [level, setLevel] = useState(hasIndex() ? state.data[state.index].level : "");
+    const [name, setName] = useState(hasIndex() ? state.data[state.index].name : "");
+    const [description, setDescription] = useState(hasIndex() ? state.data[state.index].description : "");
+    const [mandatory, setMandatory] = useState(hasIndex() ? state.data[state.index].mandatory : false);
 
 
     const save = value => {

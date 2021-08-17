@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {useContext,useState} from 'react';
 
 import { StorageVacancy } from '../storage';
-import Strings from '../../../constants/strings';
-import { ModalContext } from '../../../routes/modalContext';
-import { Screen, Note, Input, TextArea, ButtonDefault, TextDefault } from '../../../helpers';
+import Strings from '../../../../constants/strings';
+import { ModalContext } from '../../../../routes/modalContext';
+import { Screen, Note, Input, TextArea, ButtonDefault, TextDefault } from '../../../../helpers';
 
 export const Benefit = ({ state, setState, idJob = false, reload }) => {
 
     const hasIndex = () =>
         Number.isInteger(state.index)
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
 
-    const [name, setName] = React.useState(hasIndex() ? state.data[state.index].name : "");
-    const [description, setDescription] = React.useState(hasIndex() ? state.data[state.index].description : "");
+    const [name, setName] = useState(hasIndex() ? state.data[state.index].name : "");
+    const [description, setDescription] = useState(hasIndex() ? state.data[state.index].description : "");
 
 
     const save = value => {

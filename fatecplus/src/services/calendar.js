@@ -46,4 +46,8 @@ export class Calendar {
         return moment(date).utc().isSameOrAfter(Calendar.getNewDate());
     }
 
+    static isSameOrAfter(startDate, endDate) {
+        return moment(endDate).utc().isSameOrAfter(startDate);
+    }
+
 }

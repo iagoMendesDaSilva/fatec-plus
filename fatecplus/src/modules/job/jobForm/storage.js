@@ -1,4 +1,4 @@
-import { Executor, JobAdd, Job, JobEdit, BenefitAdd, BenefitEdit, BenefitDelete, RequirementAdd, RequirementEdit, RequirementDelete } from '../../services/request';
+import { Executor, JobAdd, Job, JobEdit, BenefitAdd, BenefitEdit, BenefitDelete, RequirementAdd, RequirementEdit, RequirementDelete } from '../../../services/request';
 
 export class StorageVacancy {
 

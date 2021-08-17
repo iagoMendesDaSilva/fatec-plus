@@ -96,7 +96,7 @@ export const ChangeLog = ({ route }) => {
                                         lib={"MaterialCommunityIcons"} />
                                     <TextDefault
                                         styleText={styles.txtLaunch}
-                                        children={"Ainda sem novidades"}
+                                        children={"Sem novidades"}
                                     />
                                 </View >
                                 :

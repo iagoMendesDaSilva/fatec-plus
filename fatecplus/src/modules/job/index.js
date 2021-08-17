@@ -116,7 +116,7 @@ export const Job = ({ navigation, route }) => {
     }
 
     const editJob = () =>
-        navigation.navigate("Vacancy", { id: job.id })
+        navigation.navigate("JobForm", { id: job.id })
 
     const deleteJob = () => {
         StorageJob.deleteJob(job.id)

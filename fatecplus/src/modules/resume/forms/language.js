@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useContext} from 'react';
 
 import { StorageResume } from '../storage';
 import Strings from '../../../constants/strings';
@@ -10,11 +10,11 @@ export const Language = ({ state, reload }) => {
     const hasIndex = () =>
         Number.isInteger(state.index)
 
-    const modal = React.useContext(ModalContext);
+    const modal = useContext(ModalContext);
     const levels = ["Básico", "Intermediário", "Avançado", "Fluente"]
 
-    const [level, setLevel] = React.useState(hasIndex() ? state.data[state.index].level : "");
-    const [language, setLanguage] = React.useState(hasIndex() ? state.data[state.index].language : "");
+    const [level, setLevel] = useState(hasIndex() ? state.data[state.index].level : "");
+    const [language, setLanguage] = useState(hasIndex() ? state.data[state.index].language : "");
 
     const save = () => {
         StorageResume.saveLanguage(level, language)
