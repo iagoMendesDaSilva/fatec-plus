@@ -21,8 +21,8 @@ def logout(current_user):
 @app.route("/mobile-api/v1/auth/recovery", methods=["POST"])
 @token
 def recovery(current_user):
-    userController.recovery(current_user.id,request.get_json())
-    return jsonify({"response":"Password Changed"}), 200
+    username = userController.recovery(current_user.id,request.get_json())
+    return jsonify({"username":username}), 200
 
 @app.route("/mobile-api/v1/auth/confirm-email", methods=["POST"])
 def confirm_email():

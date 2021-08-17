@@ -37,7 +37,7 @@ export const JobForm = ({ navigation, route }) => {
         if (params) {
             StorageVacancy.getVacancy(params.id)
                 .then(data => configVacancy(data.job))
-                .catch(status => modal.set({ status, positivePress: () => navigation.goBack() }))
+                .catch(status => modal.set({ status, back:true }))
         }
     }
 
@@ -61,7 +61,7 @@ export const JobForm = ({ navigation, route }) => {
     const editVacancy = () => {
         StorageVacancy.editVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, params.id)
             .then(data =>
-                modal.set({ msg: Strings.UPDATED, positivePress: () => navigation.goBack() }))
+                modal.set({ msg: Strings.UPDATED, back:true }))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
@@ -69,7 +69,7 @@ export const JobForm = ({ navigation, route }) => {
     const saveVacancy = () => {
         StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
             .then(data =>
-                modal.set({ msg: Strings.CREATED_VACANCY, positivePress: () => navigation.goBack() }))
+                modal.set({ msg: Strings.CREATED_VACANCY, back:true }))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }

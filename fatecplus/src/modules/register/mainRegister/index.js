@@ -93,7 +93,7 @@ export const MainRegister = (props) => {
             .catch(status => console.log(status))
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
-                modal.set({ msg: Strings.UPDATED, back: true, status:404 }))
+                modal.set({ msg: Strings.UPDATED, back: true }))
             .catch(status => modal.set({ status, msg: Strings.ERROR_UPDATE }))
     }
 
@@ -108,7 +108,7 @@ export const MainRegister = (props) => {
     const getImage = () => {
         launchImageLibrary(({ mediaType: "photo", includeBase64: true }), data => {
             data.fileSize / 1000 >= 4000
-                ? modal.set({ msg: Strings.ERROR_IMAGE, status: 404 })
+                ? modal.set({ msg: Strings.ERROR_IMAGE })
                 : setImage({ photo: data.uri, base64: data.base64 })
         })
     }

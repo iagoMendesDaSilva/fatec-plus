@@ -19,11 +19,11 @@ export const VerificationCode = ({ navigation }) => {
 
     const getCompleteCode = () => Number(valueCodes.codes.join(""))
 
-    const missingEmail = () => modal.set({ msg: Strings.MISSING_EMAIL, back: true, status:404 })
+    const missingEmail = () => modal.set({ msg: Strings.MISSING_EMAIL, back: true })
 
     const goToChangePassword = data => {
         Storage.setUser({ token: data.token, id: data.id })
-        navigation.navigate("ChangePassword")
+        navigation.navigate("ChangePassword", { recovery: true, edit: true })
     }
 
     const verifyVerificationCode = async () => {
@@ -98,8 +98,8 @@ export const VerificationCode = ({ navigation }) => {
                 text={"Próximo"}
                 loading={loading}
                 style={styles.button}
-                onPress={verifyVerificationCode} 
-                active={Boolean(!valueCodes.codes.includes(""))}/>
+                onPress={verifyVerificationCode}
+                active={Boolean(!valueCodes.codes.includes(""))} />
             <TextDefault
                 active={activeResend}
                 children={"Reenviar email"}

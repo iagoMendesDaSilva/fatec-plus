@@ -33,7 +33,7 @@ export const Resume = ({ navigation, route }) => {
                 formatResume(data)
                 setLoading(false)
             })
-            .catch(status => modal.set({ status, positivePress: () => navigation.goBack() }))
+            .catch(status => modal.set({ status, back:true}))
     }
 
     const formatResume = data => {

@@ -47,7 +47,7 @@ export const AddressRegister = (props) => {
         if (granted === Permission.RESULTS.GRANTED) {
             Geolocation.getCurrentPosition(
                 place => getLocation(place.coords.latitude, place.coords.longitude),
-                error => modal.set({ msg: Strings.ERROR_GEOLOCATION, status: 404 }),
+                error => modal.set({ msg: Strings.ERROR_GEOLOCATION }),
                 { enableHighAccuracy: true }
             );
         }
@@ -61,7 +61,7 @@ export const AddressRegister = (props) => {
     const getLocation = (lat, lng) => {
         Geocoder.from(lat, lng)
             .then(location => verifyInfoLocation(lat, lng, location))
-            .catch(error => modal.set({ msg: Strings.ERROR_GEOLOCATION, status: 404 }))
+            .catch(error => modal.set({ msg: Strings.ERROR_GEOLOCATION }))
     }
 
     const verifyInfoLocation = (lat, lng, location) => {

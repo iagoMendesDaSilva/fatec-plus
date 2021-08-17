@@ -51,4 +51,8 @@ export default StyleSheet.create({
         fontSize: 18,
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
+    txtNoTeachers: {
+        fontSize: 18,
+        color: Colors.TEXT_PRIMARY_LIGHT,
+    },
 });

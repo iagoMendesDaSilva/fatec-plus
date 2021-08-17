@@ -25,7 +25,7 @@ export const Students = ({ navigation, route }) => {
         setLoaded(false,
             StorageStudent.getStudents()
                 .then(data => verifyCurrentUser(data))
-                .catch(status => modal.set(status))
+                .catch(status => modal.set({status}))
                 .finally(() => {
                     setRefreshing(false)
                     setLoaded(true)

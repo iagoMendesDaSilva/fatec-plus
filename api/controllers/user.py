@@ -133,9 +133,11 @@ class UserController:
 
     def recovery(self,id,data):
         try:
+            user = dao.get_by_id(id, User)
             new_password =generate_password_hash(data['password'])
             update_data ={"password": new_password, "recovery":None, "recovery_time":None}
             dao.update_many(id,update_data,User)
+            return user.username
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:

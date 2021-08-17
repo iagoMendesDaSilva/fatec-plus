@@ -24,39 +24,39 @@ export const ChangePassword = ({ navigation, route }) => {
     const changePassword = () => {
         if (password === confirmPassword) {
             setLoading(true)
-            params ? saveUser() : editUser()
+            params.edit ? editUser() : saveUser()
         } else {
-            modal.set({ msg: Strings.ERROR_PASSWORDS, status: 404 })
+            modal.set({ msg: Strings.ERROR_PASSWORDS, })
         }
     }
 
     const editUser = () => {
         StorageRecovery.changePassword(password)
-            .then(data => setUser(password))
+            .then(data => setUser(password, data))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false));
     }
 
     const saveUser = () => {
         StorageRegister.register(params, password)
-            .then(response => login())
+            .then(response => login(params.username))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false));
     }
 
-    const setUser = async password => {
+    const setUser = async (password, {username}) => {
         const user = await Storage.getUser()
         Storage.setUser({ ...user, password })
-        modal.set({ msg: Strings.UPDATED, status: 404, back: true })
+        modal.set({ msg: Strings.UPDATED, positivePress: () => params.recovery ? login(username) : navigation.goBack() })
     }
 
-    const login = () => {
-        StorageAuth.login(params.username, password)
+    const login = username=> {
+        StorageAuth.login(username, password)
             .then(data => configUser(data))
-            .catch(status => set(status))
+            .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
-    
+
     const configUser = async data => {
         Storage.setUser({ username: params.username, password, token: data.token, id: data.id, category: data.category })
         const versionApp = Storage.getVersion()
@@ -66,9 +66,9 @@ export const ChangePassword = ({ navigation, route }) => {
             .then(() =>
                 StorageAuth.registerVersion(versionApp, data.id)
                     .then(data => navigation.reset({ index: 0, routes: [{ name: 'Home' }] })))
-            .catch(status => modal.set({ msg: Strings.ERROR_LOGIN, status, positivePress: logout }))
+            .catch(status => modal.set({ status, positivePress: logout }))
     }
-    
+
     const logout = async () => {
         await StorageAuth.logout()
         Storage.clear()

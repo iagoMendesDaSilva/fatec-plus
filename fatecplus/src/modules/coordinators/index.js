@@ -8,6 +8,7 @@ import Strings from '../../constants/strings';
 import { StorageCoordinator } from './storage';
 import { ModalContext } from '../../routes/modalContext'
 import { Screen, TextDefault, Shimmer, Icon } from '../../helpers'
+import { back } from 'react-native/Libraries/Animated/Easing';
 
 export const Coordinators = () => {
 
@@ -15,7 +16,7 @@ export const Coordinators = () => {
 
     const [loaded, setLoaded] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
-    const [teachers, setTeachers] = useState({ data: [] });
+    const [teachers, setTeachers] = useState({ data: [], show: false });
     const [selected, setSelected] = useState({ on: false, coodinator: -1, teacher: -1 });
 
     useEffect(() => getTeachers(), [])
@@ -28,9 +29,9 @@ export const Coordinators = () => {
                         .then(coodinators =>
                             StorageCoordinator.getTeachers()
                                 .then(teachers => configList(coodinators, courses, teachers))
-                                .catch(status => modal.set(status)))
-                        .catch(status => modal.set(status)))
-                .catch(status => modal.set(status))
+                                .catch(status => modal.set({ status })))
+                        .catch(status => modal.set({ status })))
+                .catch(status => modal.set({ status, back: true }))
                 .finally(() => {
                     setRefreshing(false)
                     setLoaded(true)
@@ -45,6 +46,7 @@ export const Coordinators = () => {
         courses.forEach(item => dataCoordinators.push({ teacher: coodinators.filter(teacher => teacher.id === item.id_internship_coordinator)[0], subTitle: item.name, courseId: item.id }));
 
         setTeachers({
+            show: Boolean(dataCoordinators.length > 0 && dataTeachers.length > 0),
             data: [
                 { title: "Coordenadores de estágio", data: dataCoordinators },
                 { title: "Professores", data: dataTeachers }
@@ -142,15 +144,23 @@ export const Coordinators = () => {
 
     return (
         <Screen>
-            <SectionList
-                scrollEnabled={false}
-                sections={teachers.data}
-                contentContainerStyle={styles.list}
-                showsVerticalScrollIndicator={false}
-                refreshControl={getRefreshControl()}
-                keyExtractor={(_, index) => String(index)}
-                renderItem={({ item, index }) => renderItem(item, index)}
-                renderSectionHeader={({ section: { title, data } }) => data.length > 0 && renderSection(title)} />
+            {
+                Boolean(teachers.show)
+                    ?
+                    <SectionList
+                        scrollEnabled={false}
+                        sections={teachers.data}
+                        contentContainerStyle={styles.list}
+                        showsVerticalScrollIndicator={false}
+                        refreshControl={getRefreshControl()}
+                        keyExtractor={(_, index) => String(index)}
+                        renderItem={({ item, index }) => renderItem(item, index)}
+                        renderSectionHeader={({ section: { title, data } }) => data.length > 0 && renderSection(title)} />
+                    :
+                    <TextDefault
+                        children={"Sem Professores"}
+                        styleText={styles.txtNoTeachers} />
+            }
         </Screen>
     );
 };

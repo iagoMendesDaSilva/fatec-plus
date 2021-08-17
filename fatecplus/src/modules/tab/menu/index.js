@@ -24,7 +24,7 @@ export const Menu = ({ navigation }) => {
         if (currentUser) {
             StorageMenu.getUser(currentUser.id)
                 .then(data => setUser(data))
-                .catch(status => modal.set({ msg: Strings.ERROR_USER, status }))
+                .catch(status => modal.set({ status }))
                 .finally(() => loading && setLoading(false))
         }
     }
@@ -129,7 +129,7 @@ export const Menu = ({ navigation }) => {
                                 iconName={"key"}
                                 iconLib={"Ionicons"}
                                 title={"Alterar senha"}
-                                onPress={() => navigation.navigate("ChangePassword")} />
+                                onPress={() => navigation.navigate("ChangePassword", { recovery: false, edit: true })} />
                             <ItemList
                                 iconLib={"Ionicons"}
                                 iconName={"newspaper"}
