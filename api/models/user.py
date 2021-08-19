@@ -33,6 +33,7 @@ class User(database.Model):
 
 
     projects = database.relationship('Project', backref='projects',  cascade="all, delete")
+    courses = database.relationship('Course', backref='courses',  cascade="all, delete")
     languages = database.relationship('Language', backref='languages', cascade="all, delete")
     formations = database.relationship('Formation', backref='formations', cascade="all, delete")
     experiences = database.relationship('Experience', backref='experiences', cascade="all, delete")
