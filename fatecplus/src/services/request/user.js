@@ -1,5 +1,5 @@
 import { Request } from './request';
-import Constants from '../../constants/values';
+import Constants from '~values';
 
 export class User extends Request {
 

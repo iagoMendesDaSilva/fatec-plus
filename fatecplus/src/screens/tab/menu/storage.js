@@ -1,4 +1,4 @@
-import { Executor, User, ImageProfile, Logout, UserDelete} from '../../../services/request';
+import { Executor, User, ImageProfile, Logout, UserDelete} from '~request';
 
 export class StorageMenu {
 

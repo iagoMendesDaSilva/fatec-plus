@@ -1,4 +1,4 @@
-import { Executor, Job, Subscription, Subscribed, UnSubscription, Resume, JobDelete} from '../../services/request';
+import { Executor, Job, Subscription, Subscribed, UnSubscription, Resume, JobDelete} from '~request';
 
 export class StorageJob {
 

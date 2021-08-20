@@ -1,4 +1,4 @@
-import { Executor, Login, PlayerId , Version, Logout} from '../../services/request';
+import { Executor, Login, PlayerId , Version, Logout} from '~request';
 
 export class StorageAuth {
 

@@ -1,4 +1,4 @@
-import { Executor, News } from '../../services/request';
+import { Executor, News } from '~request';
 
 export class StorageChangeLog {
 

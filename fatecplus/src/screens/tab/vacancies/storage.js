@@ -1,4 +1,4 @@
-import { Executor, Subscription, User, Jobs, JobsByCompany} from '../../../services/request';
+import { Executor, Subscription, User, Jobs, JobsByCompany} from '~request';
 
 export class StorageVacancie {
 

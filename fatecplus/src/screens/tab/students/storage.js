@@ -1,4 +1,4 @@
-import { Executor, Students, Subscription} from '../../../services/request';
+import { Executor, Students, Subscription} from '~request';
 
 export class StorageStudent {
 

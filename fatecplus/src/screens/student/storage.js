@@ -1,4 +1,4 @@
-import { Executor, User} from '../../services/request';
+import { Executor, User} from '~request';
 
 export class StorageUser {
 

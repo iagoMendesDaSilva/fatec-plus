@@ -1,4 +1,4 @@
-import { Executor, Teachers, Coordinators, CoordinatorEdit, Courses} from '../../services/request';
+import { Executor, Teachers, Coordinators, CoordinatorEdit, Courses} from '~request';
 
 export class StorageCoordinator {
 

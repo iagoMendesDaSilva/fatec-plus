@@ -1,4 +1,4 @@
-import { Executor, ConfirmEmail, VerificationCode, RecoveryPassword } from '../../services/request';
+import { Executor, ConfirmEmail, VerificationCode, RecoveryPassword } from '~request';
 
 export class StorageRecovery {
 

@@ -1,5 +1,5 @@
 
-import { Executor, Register, Courses, UserEdit , AddressEdit, ImageProfile, VerifyEmail, VerifyUsername} from '../../services/request';
+import { Executor, Register, Courses, UserEdit , AddressEdit, ImageProfile, VerifyEmail, VerifyUsername} from '~request';
 
 export class StorageRegister {
 
