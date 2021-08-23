@@ -1,21 +1,23 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity, SafeAreaView, StatusBar, StyleSheet } from 'react-native';
 
 import Colors from '~colors';
 import { Icon } from '~components';
 import { TabNav } from '~navigators';
+import { ModalContext } from '~contexts';
 import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, JobForm, Student, Job, ChangeLog, Coordinators } from '~screens';
 
 export const StackNav = () => {
 
     const Stack = createStackNavigator();
+    const modal = useContext(ModalContext);
 
     const back = (navigation, back = true, color = Colors.BACKGROUND) => {
         return (
             <>
                 <SafeAreaView style={{ ...styles.safeArea, backgroundColor: color }} />
-                <StatusBar animated barStyle={'light-content'} backgroundColor={color} />
+                <StatusBar animated barStyle={'light-content'} backgroundColor={modal.info.visible ? Colors.BACKGROUND : color} />
                 {back &&
                     <TouchableOpacity style={styles.touchableGoBack}
                         onPress={() => navigation.goBack()}>
@@ -61,7 +63,7 @@ export const StackNav = () => {
     );
 }
 
-const styles =  StyleSheet.create({
+const styles = StyleSheet.create({
     safeArea: {
         flex: 0,
     },

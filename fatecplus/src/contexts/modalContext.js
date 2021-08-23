@@ -31,7 +31,7 @@ export const ModalProvider = ({ children }) => {
     }
 
     return (
-        <ModalContext.Provider value={{ set, setNavigation }}>
+        <ModalContext.Provider value={{ set, setNavigation, info }}>
             {children}
             <ModalOneOption
                 message={info.message}

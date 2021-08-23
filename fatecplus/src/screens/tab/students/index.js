@@ -18,17 +18,36 @@ export const Students = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [students, setStudents] = useState({ data: Array(5).fill({}) });
 
-    useEffect(() => getStudents(), [])
+    useEffect(() => navigation.addListener("blur", clearParams), [])
+
+    useEffect(() => navigation.addListener("focus", getStudents), [route.params])
 
     const getStudents = () => {
-        setLoaded(false,
-            StorageStudent.getStudents()
-                .then(data => verifyCurrentUser(data))
-                .catch(status => modal.set({status}))
-                .finally(() => {
-                    setRefreshing(false)
-                    setLoaded(true)
-                }));
+        console.log(route.params);
+        route.params && route.params.jobId ? getSubscriptions() : getAllStudents()
+    }
+
+    const clearParams = () =>
+        navigation.setParams({ jobId: false });
+
+    const getAllStudents = () => {
+        StorageStudent.getStudents()
+            .then(data => verifyCurrentUser(data))
+            .catch(status => modal.set({ status }))
+            .finally(() => {
+                setRefreshing(false)
+                setLoaded(true)
+            })
+    }
+
+    const getSubscriptions = () => {
+        StorageStudent.getSubscriptions(route.params.jobId)
+            .then(data => setStudents({ data }))
+            .catch(status => modal.set({ status }))
+            .finally(() => {
+                setRefreshing(false)
+                setLoaded(true)
+            })
     }
 
     const verifyCurrentUser = async data => {
@@ -43,7 +62,7 @@ export const Students = ({ navigation, route }) => {
     }
 
     const goToStudent = id => {
-        if (route.params) {
+        if (route.params && !route.params.jobId) {
             StorageStudent.solicit(route.params.job, id)
                 .then(data => modal.set({ msg: route.params.msg, positivePress: finishIndication }))
                 .catch(status => () => modal.set({ status, positivePress: finishIndication }))
@@ -103,7 +122,7 @@ export const Students = ({ navigation, route }) => {
         <TextDefault
             styleText={styles.txtSubtitle}
             style={styles.containerEmpty}
-            children={filter.text ? "Aluno(a) não encontrado" : "Sem Alunos"} />
+            children={filter.text ? "Aluno(a) não encontrado" : route.params && route.params.jobId ? "Sem inscritos" : "Sem Alunos"} />
 
     const verifyEmpty = () =>
         Boolean(students.data.length === 0 || filter.data.length === 0 && filter.text)

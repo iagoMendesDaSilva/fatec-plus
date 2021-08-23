@@ -185,7 +185,9 @@ export const Student = ({ navigation, route }) => {
                                     lines={0}
                                     styleText={styles.txtText}
                                     children={user.description ? user.description : 'Sem descrição sobre o aluno.'} />
-                                <View style={styles.separator} />
+                                {Boolean(info.data && info.data[0].data.length > 0) &&
+                                    <View style={styles.separator} />
+                                }
                                 <SectionList
                                     sections={info.data}
                                     scrollEnabled={false}

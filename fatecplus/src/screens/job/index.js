@@ -118,6 +118,9 @@ export const Job = ({ navigation, route }) => {
     const editJob = () =>
         navigation.navigate("JobForm", { id: job.id })
 
+        const goToSubscribeds=()=>
+        navigation.navigate("Students", { jobId: job.id })
+
     const deleteJob = () => {
         StorageJob.deleteJob(job.id)
             .then(data =>
@@ -231,7 +234,8 @@ export const Job = ({ navigation, route }) => {
                                 <OptionMenu
                                     options={[
                                         { title: "Editar", onPress: editJob },
-                                        { title: "Excluir", onPress: confirmDeleteJob }
+                                        { title: "Excluir", onPress: confirmDeleteJob },
+                                        { title: "Inscritos", onPress: goToSubscribeds }
                                     ]}
                                 />
                             }
@@ -253,7 +257,9 @@ export const Job = ({ navigation, route }) => {
                                     lines={0}
                                     styleText={styles.txtTextHeader}
                                     children={job.description ? job.description : 'Sem descrição sobre a vaga.'} />
-                                <View style={styles.separator} />
+                                 {Boolean(info.data && info.data[0].data.length > 0) &&
+                                    <View style={styles.separator} />
+                                }
                                 <SectionList
                                     sections={info.data}
                                     scrollEnabled={false}
