@@ -135,14 +135,6 @@ export const Menu = ({ navigation }) => {
                                 iconName={"newspaper"}
                                 title={"Registro de alterações "}
                                 onPress={() => navigation.navigate("ChangeLog", { version: Storage.getVersion() })} />
-                            {
-                                user.category === "Admin" &&
-                                <ItemList
-                                    iconLib={"Ionicons"}
-                                    iconName={"people"}
-                                    title={"Gerenciar professores"}
-                                    onPress={() => navigation.navigate("Coordinators")} />
-                            }
                             <TextDefault
                                 styleText={styles.txtSection}
                                 children={"Gerenciamento da Conta"} />

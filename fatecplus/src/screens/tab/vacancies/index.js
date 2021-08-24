@@ -34,7 +34,7 @@ export const Vacancies = ({ navigation, route }) => {
     }
 
     const getVacancies = (category, id, internship, job) => {
-        if (category === "Company" || category === "Internship Coordinator")
+        if (category === "Company")
             getVacanciesByCompany(id)
         else
             getAllVacancies(category === "Student", internship, job)
@@ -185,9 +185,9 @@ export const Vacancies = ({ navigation, route }) => {
                 ListEmptyComponent={verifyEmpty() && getEmptyComponent}
             />
             {
-                Boolean(user.category === "Company" || user.category === "Internship Coordinator") &&
+                Boolean(user.category === "Company") &&
                 <FloatingButton
-                    onPress={() => navigation.navigate("JobForm", { address: Boolean(user.category === "Internship Coordinator") })} />
+                    onPress={() => navigation.navigate("JobForm")} />
             }
         </KeyboardAvoidingView>
     );

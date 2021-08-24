@@ -6,7 +6,7 @@ import Colors from '~colors';
 import { Icon } from '~components';
 import { TabNav } from '~navigators';
 import { ModalContext } from '~contexts';
-import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, JobForm, Student, Job, ChangeLog, Coordinators } from '~screens';
+import { Splash, Auth, Recovery, VerificationCode, ChangePassword, Register, MainRegister, AddressRegister, Resume, JobForm, Student, Job, ChangeLog } from '~screens';
 
 export const StackNav = () => {
 
@@ -52,7 +52,6 @@ export const StackNav = () => {
             <Stack.Screen name="Recovery" component={Recovery} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangeLog" component={ChangeLog} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="MainRegister" component={MainRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
-            <Stack.Screen name="Coordinators" component={Coordinators} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="AddressRegister" component={AddressRegister} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="VerificationCode" component={VerificationCode} options={{ header: ({ navigation }) => back(navigation, true) }} />
             <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ header: ({ navigation }) => back(navigation, true) }} />

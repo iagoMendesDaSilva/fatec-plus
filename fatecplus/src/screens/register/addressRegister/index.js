@@ -11,7 +11,6 @@ import Strings from '~strings';
 import { ModalContext } from '~contexts';
 import { StorageRegister } from '../storage';
 import mapStyle from '~statics/mapStyle.json';
-import { StorageVacancy } from '../../job/jobForm/storage';
 import { Icon, AddressInput, TextDefault, ButtonDefault } from '~components';
 
 export const AddressRegister = (props) => {
@@ -32,32 +31,9 @@ export const AddressRegister = (props) => {
             city: city.charAt(0).toUpperCase() + city.slice(1),
             ...params,
         }
-        if (params.vacancy)
-            params.editJob
-                ? editVacancy(data.state, data.city, data.address)
-                : saveVacancy(data.state, data.city, data.address)
-        else
             params.data
                 ? editAddress(data)
                 : props.navigation.navigate("ChangePassword", data);
-    }
-
-    const editVacancy = (state, city, address) => {
-        const { name, deadline, internship, job, receive, subject, description } = params.vacancy
-        StorageVacancy.editVacancyAddress(name, deadline, internship, job, receive, subject, description, state, city, address, params.jobId)
-            .then(data =>
-                modal.set({ msg: Strings.UPDATED, positivePress: () => props.navigation.replace("Job", { id: params.jobId }) }))
-            .catch(status => modal.set({ status }))
-            .finally(() => setLoading(false))
-    }
-
-    const saveVacancy = (state, city, address) => {
-        const { name, deadline, internship, job, receive, subject, description, benefits, requirements } = params.vacancy
-        StorageVacancy.saveVacancy(name, deadline, internship, job, receive, subject, description, state, city, address, benefits, requirements)
-            .then(data =>
-                modal.set({ msg: Strings.CREATED_VACANCY, positivePress: () => props.navigation.replace("Home") }))
-            .catch(status => modal.set({ status }))
-            .finally(() => setLoading(false))
     }
 
     const editAddress = async data => {

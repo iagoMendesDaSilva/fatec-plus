@@ -91,9 +91,6 @@ class UserController:
     def delete(self,current_user,id):
         try:
             if current_user.id == id:
-                if current_user.category=="Internship Coordinator":
-                    course = dao.get_by_key("id_internship_coordinator", current_user.id, Course)
-                    dao.update(course.id,"id_internship_coordinator", None, Course)
                 dao.remove(dao.get_by_id(id,User))
             else:
                 raise CurrentUser

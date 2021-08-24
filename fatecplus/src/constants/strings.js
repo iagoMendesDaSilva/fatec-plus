@@ -41,7 +41,6 @@ export default {
     CONFIRM_LOGOUT: "Deseja encerrar sessão?",
     CONFIRM_DELETE_USER: "Deseja excluir sua conta?",
     CONFIRM_DELETE_VACANCY: "Deseja excluir esta vaga?",
-    CONFIRM_CHANGE_COORDINATOR: "Deseja alterar o coordenador de estágio?",
     CONFIRM_SUBSCRIPTION: "Ao se inscrever-se na vaga iremos enviar todas suas informações.",
 
     DELETED_VACANCY: "Vaga excluida com sucesso!",
@@ -63,5 +62,5 @@ export default {
     DESCRIPTION_NETWORK: "Adicione uma rede social que mostre seu progresso profissional e/ou acadêmico como Linkedin ou Github.",
     DESCRIPTION_STUDENT: "Alunos tem permissão para se inscrever em vagas, podem ser indicados e/ou solicitados para vagas de estágio ou emprego.",
     DESCRIPTION_COMPANY: "Empresas tem permissão para postar e gerenciar suas vagas de emprego ou estágio, solicitar candidatos e recebem indicações de professores e coordenadores.",
-    DESCRIPTION_TEACHER: "Professores ou coordenadores tem permissão para indicar alunos para as vagas. Se você é um coordenador de estágio contate o administrador para poder gerenciar vagas.",
+    DESCRIPTION_TEACHER: "Professores ou coordenadores tem permissão para indicar alunos para as vagas.",
 }

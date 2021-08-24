@@ -28,18 +28,3 @@ def job(current_user,id):
 @token
 def get_jobs(current_user):
         return jsonify(jobController.get_all()), 200
-
-@app.route("/mobile-api/v1/jobs/limit=<int:limit>&offset=<int:offset>", methods=["GET"])
-@token
-def get_jobs_limit(current_user,limit,offset):
-        return jsonify(jobController.get_all(limit,offset)), 200
-
-@app.route("/mobile-api/v1/jobs/<int:company_id>", methods=["GET"])
-@token
-def get_jobs_by_company(current_user,company_id):
-        return jsonify(jobController.get_all_by_company(company_id)), 200
-
-@app.route("/mobile-api/v1/jobs/company=<int:company_id>&limit=<int:limit>&offset=<int:offset>", methods=["GET"])
-@token
-def get_jobs_by_company_limit(current_user,company_id,limit,offset):
-        return jsonify(jobController.get_all_by_company(company_id,limit,offset)), 200

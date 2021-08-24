@@ -54,7 +54,7 @@ export const Student = ({ navigation, route }) => {
 
     const configPermission = user => {
         const category = user.category;
-        let indicate = Boolean(category === "Teacher" || category === "Internship Coordinator")
+        let indicate = Boolean(category === "Teacher")
         let request = Boolean(category === "Company")
         setPermission({ indicate, request })
     }

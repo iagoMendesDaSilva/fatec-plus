@@ -32,7 +32,7 @@ class JobDao:
                     raise ObjectInvalid
 
     def key_is_valid(self, key):
-        return key=='date' or key=='description' or key=='job' or key=='name' or key=='internship' or key=='receive_by_email' or key == 'subject_email'or key == 'state'or key == 'city'or key == 'address'
+        return key=='date' or key=='description' or key=='job' or key=='name' or key=='internship' or key=='receive_by_email' or key == 'subject_email'
 
     def delete_all(self,id):
         database.session.query(Job).filter(Job.company==id).delete()

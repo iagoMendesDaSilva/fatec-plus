@@ -54,27 +54,9 @@ export const JobForm = ({ navigation, route }) => {
     }
 
     const pressButton = () => {
-        if (params.address)
-            navigation.navigate("AddressRegister",
-                {
-                    jobId: params.id,
-                    editJob: Boolean(params.id,),
-                    vacancy: {
-                        job,
-                        name,
-                        receive,
-                        subject,
-                        internship,
-                        description,
-                        benefits: benefits.data,
-                        requirements: requirements.data,
-                        deadline: Calendar.unFormat(deadline),
-                    }
-                })
-        else {
-            setLoading(true)
-            params.id ? editVacancy() : saveVacancy()
-        }
+        setLoading(true)
+        params ? editVacancy() : saveVacancy()
+
     }
 
     const editVacancy = () => {
@@ -86,7 +68,8 @@ export const JobForm = ({ navigation, route }) => {
     }
 
     const saveVacancy = () => {
-        StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, null, null, null, benefits.data, requirements.data)
+        console.log(1);
+        StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
             .then(data =>
                 modal.set({ msg: Strings.CREATED_VACANCY, back: true }))
             .catch(status => modal.set({ status }))
@@ -221,10 +204,10 @@ export const JobForm = ({ navigation, route }) => {
                             onchange={value => setDescription(value)} />
 
                         <ButtonDefault
+                            text={"Salvar"}
                             loading={loading}
                             onPress={pressButton}
                             active={activeButton()}
-                            text={params.address ? "Próximo" : "Salvar"}
                         />
                     </>
                 }

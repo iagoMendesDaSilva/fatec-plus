@@ -43,9 +43,9 @@ export const Job = ({ navigation, route }) => {
 
     const configPermission = (user, job, company) => {
         const category = user.category;
+        let indicate = Boolean(category === "Teacher")
         const subscribe = Boolean(category === "Student")
-        let indicate = Boolean(category === "Teacher" || category === "Internship Coordinator" && company.id != user.id)
-        let request = Boolean(category === "Company" || category === "Internship Coordinator" && company.id === user.id)
+        let request = Boolean(category === "Company" && company.id === user.id)
         setPermission({ indicate, subscribe, request })
         subscribe && verifySubscribed(job.id)
     }
@@ -115,10 +115,9 @@ export const Job = ({ navigation, route }) => {
             return job.internship ? "Estágio" : "Efetivo"
     }
 
-    const editJob =async () =>{
-        const user = await Storage.getUser()
-        navigation.navigate("JobForm", { id: job.id, address: Boolean(user.category === "Internship Coordinator") })
-    }
+    const editJob = () =>
+        navigation.navigate("JobForm", { id: job.id })
+    
 
     const goToSubscribeds = () =>
         navigation.navigate("Students", { jobId: job.id })
@@ -214,7 +213,7 @@ export const Job = ({ navigation, route }) => {
                                     children={company.name} />
                                 <TextDefault
                                     styleText={styles.txtAddress}
-                                    children={`${job.city}-${job.state}`} />
+                                    children={`${company.city}-${company.state}`} />
                                 <View style={styles.containerButtons}>
                                     {
                                         Boolean(permission.subscribe || permission.indicate || permission.request) &&
@@ -254,7 +253,7 @@ export const Job = ({ navigation, route }) => {
                                 <TextDefault
                                     lines={0}
                                     styleText={styles.txtTextHeader}
-                                    children={`Endereço: ${job.address}`} />
+                                    children={`Endereço: ${company.address}`} />
                                 <TextDefault
                                     lines={0}
                                     styleText={styles.txtTextHeader}

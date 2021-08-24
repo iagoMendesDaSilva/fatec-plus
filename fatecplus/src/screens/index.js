@@ -9,7 +9,6 @@ export * from './tab/menu';
 export * from './changelog';
 export * from './job/jobForm';
 export * from './tab/students';
-export * from './coordinators';
 export * from './tab/vacancies';
 export * from './register/mainRegister';
 export * from './register/addressRegister';

@@ -16,7 +16,7 @@ class SubscriptionController:
                 indication = None
                 if data['indication'] != None:
                     teacher = dao.get_by_id(data['indication'],User)
-                    if teacher.category.lower() == 'teacher' or teacher.category.lower() == 'internship coordinator':
+                    if teacher.category.lower() == 'teacher':
                         indication = teacher.id
                     else:
                         raise ObjectInvalid
@@ -36,7 +36,7 @@ class SubscriptionController:
                 student = dao.get_by_id(data['student'],User)
                 if current_user.category.lower()=='company':
                     notification.send([student.onesignal_playerID],"Solicitação",job.jobs.name+" solicitou você para a vaga: "+job.name,{"id":job.id, "type":"Job"})
-                if current_user.category.lower()=='internship coordinator' or  current_user.category.lower()=='teacher':
+                if  current_user.category.lower()=='teacher':
                     notification.send([student.onesignal_playerID],"Indicação","Você foi indicado para a vaga: "+job.name,{"id":job.id, "type":"Job", "indication":current_user.id})
                     if current_user.id != job.company:
                         notification.send([job.jobs.onesignal_playerID],"Indicação",current_user.name+" indicou o aluno(a): "+student.name+" para a vaga: "+job.name,{"id":student.id, "type":"Student"})
@@ -57,7 +57,7 @@ class SubscriptionController:
 
     def unsubscribe(self, current_user, job_id):
         try:
-            if current_user.category.lower()=='student' or current_user.category.lower() == 'teacher' or current_user.category.lower() == 'internship coordinator':
+            if current_user.category.lower()=='student' or current_user.category.lower() == 'teacher':
                 subscriptionDao.unsubscribe(current_user,job_id)
             else:
                 raise CurrentUser
@@ -76,7 +76,7 @@ class SubscriptionController:
 
     def delete_all_by_job(self,current_user, job_id):
         try:
-            if self.coodinator_or_company(current_user.id):
+            if current_user.category=="Company":
                 subscriptionDao.delete_all_by_job(current_user.id,job_id)
             else:
                 raise CurrentUser
@@ -87,7 +87,8 @@ class SubscriptionController:
 
     def delete_all(self,id):
         try:
-            if self.coodinator_or_company(id):
+            user = dao.get_by_id(id, User)
+            if user.category=="Company":
                 subscriptionDao.delete_all(id)
             else:
                 raise CurrentUser
@@ -95,11 +96,6 @@ class SubscriptionController:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
-
-    def  coodinator_or_company (self, id):
-        user = dao.get_by_id(id, User)
-        category = user.category.lower()
-        return  True if category=='company' or category=='internship coordinator' else  False
 
     def  verifySubscription (self, current_user, id):
         try:

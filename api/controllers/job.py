@@ -12,17 +12,14 @@ class JobController:
 
     def create(self, current_user, data):
         try:
-            if  self.coodinator_or_company(current_user.id):
+            if  current_user.category=="Company":
                 job = Job(
-                date=data['date'],
-                subject_email=data['subject_email'],
-                description=data['description'],
                 job=data['job'],
+                date=data['date'],
                 name=data['name'],
-                state=current_user.state if current_user.category=="Company" else data['state'],
-                address=current_user.address if current_user.category=="Company" else data['address'],
-                city=current_user.city if current_user.category=="Company" else data['city'],
                 internship=data['internship'],
+                description=data['description'],
+                subject_email=data['subject_email'],
                 receive_by_email=data['receive_by_email'],
                 company=current_user.id)
                 dao.add(job)
@@ -117,10 +114,5 @@ class JobController:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
-
-    def coodinator_or_company(self, id):
-        user = dao.get_by_id(id, User)
-        category = user.category.lower()
-        return  True if category=='company' or category=='internship coordinator' else  False
 
 jobController = JobController()
