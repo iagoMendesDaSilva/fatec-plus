@@ -12,6 +12,11 @@ def create_vacancy(current_user):
         jobController.delete_all(current_user)
         return jsonify({"response":"Deleted Job"}), 200
 
+@app.route("/mobile-api/v1/jobs/<int:company_id>", methods=["GET"])
+@token
+def get_jobs_by_company(current_user,company_id):
+        return jsonify(jobController.get_all_by_company(company_id)), 200
+
 @app.route("/mobile-api/v1/job/<int:id>", methods=["GET","PUT","DELETE"])
 @token
 def job(current_user,id):

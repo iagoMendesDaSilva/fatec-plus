@@ -3,7 +3,7 @@ from app.emailSender import emailSender
 from modelsDao import dao, subscriptionDao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
-from models import  User, Job, Subscription,subscriptions_schema
+from models import  User, Job, Subscription,users_schema_list
 
 class SubscriptionController:
     def __init__(self):
@@ -70,7 +70,11 @@ class SubscriptionController:
 
     def get_all_by_job(self,job_id):
         try:
-            return subscriptions_schema.dump(dao.get_all_by_key('job',job_id,Subscription))
+            subs = dao.get_all_by_key('job',job_id,Subscription)
+            users = []
+            for sub in subs:
+                users.append(dao.get_by_id(sub.subscription, User))
+            return users_schema_list.dump(users)
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 

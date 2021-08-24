@@ -22,13 +22,11 @@ export const Students = ({ navigation, route }) => {
 
     useEffect(() => navigation.addListener("focus", getStudents), [route.params])
 
-    const getStudents = () => {
-        console.log(route.params);
+    const getStudents = () => 
         route.params && route.params.jobId ? getSubscriptions() : getAllStudents()
-    }
 
     const clearParams = () =>
-        navigation.setParams({ jobId: false });
+        navigation.setParams({ jobId: false, job:false, msg:false });
 
     const getAllStudents = () => {
         StorageStudent.getStudents()
@@ -57,12 +55,12 @@ export const Students = ({ navigation, route }) => {
     }
 
     const finishIndication = () => {
-        route.params = null
-        navigation.goBack()
+        clearParams()
+       navigation.goBack()
     }
-
+    console.log(route.params);
     const goToStudent = id => {
-        if (route.params && !route.params.jobId) {
+        if (route.params && !route.params.jobId && route.params.job) {
             StorageStudent.solicit(route.params.job, id)
                 .then(data => modal.set({ msg: route.params.msg, positivePress: finishIndication }))
                 .catch(status => () => modal.set({ status, positivePress: finishIndication }))
