@@ -13,7 +13,6 @@ export const MainRegister = (props) => {
 
     const params = props.route.params;
     const modal = React.useContext(ModalContext);
-
     const category = params.data ? params.data.category : params.category;
 
     const [email, setEmail] = useState("");
@@ -29,7 +28,7 @@ export const MainRegister = (props) => {
     const [date, setDate] = useState(Calendar.getDateRegister());
 
     useEffect(() => {
-        getCourses();
+        category === "Student" && getCourses();
         verifyEditUser();
     }, [])
 
@@ -101,7 +100,7 @@ export const MainRegister = (props) => {
     const buttonActive = () => {
         const courseValid = category != "Student" ? true : Boolean(course)
         const birthDateValid = category != "Student" ? true : Boolean(birthDate)
-        const phoneValid = category === "Teacher" ? true : Boolean(phone.length===17)
+        const phoneValid = category === "Teacher" ? true : Boolean(phone.length === 17)
         return Boolean(email && name && birthDateValid && username && phoneValid && courseValid)
     }
 
@@ -147,15 +146,15 @@ export const MainRegister = (props) => {
                 type={"email-address"}
                 iconLib={"MaterialIcons"}
                 onchange={text => setEmail(text)} />
-                <Input
-                    text={phone}
-                    maxLength={17}
-                    type={"phone-pad"}
-                    iconName={"phone"}
-                    defaultValue={phone}
-                    placeholder={"Telefone"}
-                    mask={"+55 [00] [00000]-[0000]"}
-                    onchange={text => setPhone(text)} />
+            <Input
+                text={phone}
+                maxLength={17}
+                type={"phone-pad"}
+                iconName={"phone"}
+                defaultValue={phone}
+                placeholder={"Telefone"}
+                mask={"+55 [00] [00000]-[0000]"}
+                onchange={text => setPhone(text)} />
             {
                 category === "Student" &&
                 <>

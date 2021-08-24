@@ -115,10 +115,12 @@ export const Job = ({ navigation, route }) => {
             return job.internship ? "Estágio" : "Efetivo"
     }
 
-    const editJob = () =>
-        navigation.navigate("JobForm", { id: job.id })
+    const editJob =async () =>{
+        const user = await Storage.getUser()
+        navigation.navigate("JobForm", { id: job.id, address: Boolean(user.category === "Internship Coordinator") })
+    }
 
-        const goToSubscribeds=()=>
+    const goToSubscribeds = () =>
         navigation.navigate("Students", { jobId: job.id })
 
     const deleteJob = () => {
@@ -212,7 +214,7 @@ export const Job = ({ navigation, route }) => {
                                     children={company.name} />
                                 <TextDefault
                                     styleText={styles.txtAddress}
-                                    children={`${company.city}-${company.state}`} />
+                                    children={`${job.city}-${job.state}`} />
                                 <View style={styles.containerButtons}>
                                     {
                                         Boolean(permission.subscribe || permission.indicate || permission.request) &&
@@ -252,12 +254,12 @@ export const Job = ({ navigation, route }) => {
                                 <TextDefault
                                     lines={0}
                                     styleText={styles.txtTextHeader}
-                                    children={`Endereço: ${company.address}`} />
+                                    children={`Endereço: ${job.address}`} />
                                 <TextDefault
                                     lines={0}
                                     styleText={styles.txtTextHeader}
                                     children={job.description ? job.description : 'Sem descrição sobre a vaga.'} />
-                                 {Boolean(info.data && info.data[0].data.length > 0) &&
+                                {Boolean(info.data && info.data[0].data.length > 0) &&
                                     <View style={styles.separator} />
                                 }
                                 <SectionList

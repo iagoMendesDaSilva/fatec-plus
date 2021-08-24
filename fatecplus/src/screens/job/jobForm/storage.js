@@ -2,9 +2,9 @@ import * as Request from '~request';
 
 export class StorageVacancy {
 
-    static saveVacancy(name, date, internship, job, receive_by_email, subject_email, description, benefits, requirements) {
+    static saveVacancy(name, date, internship, job, receive_by_email, subject_email, description, state, city, address, benefits, requirements) {
         return new Promise((resolve, reject) => {
-            Request.Executor.run(new Request.JobAdd(name, date, internship, job, receive_by_email, subject_email, description, benefits, requirements))
+            Request.Executor.run(new Request.JobAdd(name, date, internship, job, receive_by_email, subject_email, description, state, city, address, benefits, requirements))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });
@@ -18,9 +18,17 @@ export class StorageVacancy {
         });
     }
 
-    static editVacancy(name, date, internship, job, receive_by_email, subject_email, description, id) {
+    static editVacancy(name, date, internship, job, receive_by_email, subject_email, description,  id) {
         return new Promise((resolve, reject) => {
             Request.Executor.run(new Request.JobEdit(name, date, internship, job, receive_by_email, subject_email, description, id))
+                .then(resp => resolve(resp.data))
+                .catch(err => reject(err.response ? err.response.status : 500));
+        });
+    }
+
+    static editVacancyAddress(name, date, internship, job, receive_by_email, subject_email, description, state, city, address, id) {
+        return new Promise((resolve, reject) => {
+            Request.Executor.run(new Request.JobEditAddress(name, date, internship, job, receive_by_email, subject_email, description, state, city, address, id))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

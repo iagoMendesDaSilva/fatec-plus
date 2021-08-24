@@ -19,6 +19,9 @@ class JobController:
                 description=data['description'],
                 job=data['job'],
                 name=data['name'],
+                state=current_user.state if current_user.category=="Company" else data['state'],
+                address=current_user.address if current_user.category=="Company" else data['address'],
+                city=current_user.city if current_user.category=="Company" else data['city'],
                 internship=data['internship'],
                 receive_by_email=data['receive_by_email'],
                 company=current_user.id)

@@ -2,6 +2,7 @@ import os
 import base64
 import datetime
 from random import randint
+from models.course import Course
 from modelsDao import userDao, dao
 from app.emailSender import emailSender
 from werkzeug.exceptions import BadRequest
@@ -90,7 +91,10 @@ class UserController:
     def delete(self,current_user,id):
         try:
             if current_user.id == id:
-                 dao.remove(dao.get_by_id(id,User))
+                if current_user.category=="Internship Coordinator":
+                    course = dao.get_by_key("id_internship_coordinator", current_user.id, Course)
+                    dao.update(course.id,"id_internship_coordinator", None, Course)
+                dao.remove(dao.get_by_id(id,User))
             else:
                 raise CurrentUser
         except CurrentUser as err:

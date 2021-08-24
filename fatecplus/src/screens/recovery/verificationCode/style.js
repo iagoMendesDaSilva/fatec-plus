@@ -36,14 +36,14 @@ export default StyleSheet.create({
     },
     txtResendEmail: {
         fontSize: 18,
-        color: Colors.link,
+        color: Colors.PRIMARY,
     },
     textInput: {
         fontSize: 20,
         padding: 10,
-        color: Colors.TEXT_PRIMARY,
         borderRadius: 10,
         textAlign: "center",
+        color: Colors.TEXT_PRIMARY,
         backgroundColor: Colors.BACKGROUND_LIGHT,
     },
 });

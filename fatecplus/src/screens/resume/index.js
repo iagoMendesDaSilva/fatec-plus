@@ -145,7 +145,7 @@ export const Resume = ({ navigation, route }) => {
                                             items={experiences.data}
                                             onPress={index => showForm(index, experiences.data, setExperiencies)} />
                                         <TextDefault
-                                            children={"Mostrar vagas de:"}
+                                            children={"Filtrar vagas por:"}
                                             styleText={styles.txtTitle} />
                                         <View style={styles.containerSwitch}>
                                             <SwicthDefault

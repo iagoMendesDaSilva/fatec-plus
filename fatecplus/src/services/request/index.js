@@ -46,6 +46,7 @@ export * from './internshipEdit';
 export * from './experienceEdit';
 export * from './networkDelete';
 export * from './unSubscription';
+export * from './jobEditAddress';
 export * from './verifyUsername';
 export * from './experienceAdd';
 export * from './coordinatorEdit';

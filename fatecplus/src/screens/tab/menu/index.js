@@ -140,7 +140,7 @@ export const Menu = ({ navigation }) => {
                                 <ItemList
                                     iconLib={"Ionicons"}
                                     iconName={"people"}
-                                    title={"Gerenciar Professores"}
+                                    title={"Gerenciar professores"}
                                     onPress={() => navigation.navigate("Coordinators")} />
                             }
                             <TextDefault

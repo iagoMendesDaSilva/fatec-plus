@@ -34,10 +34,10 @@ export const JobForm = ({ navigation, route }) => {
     useEffect(() => getDefaultValues(), [])
 
     const getDefaultValues = () => {
-        if (params) {
+        if (params && params.id) {
             StorageVacancy.getVacancy(params.id)
                 .then(data => configVacancy(data.job))
-                .catch(status => modal.set({ status, back:true }))
+                .catch(status => modal.set({ status, back: true }))
         }
     }
 
@@ -54,22 +54,41 @@ export const JobForm = ({ navigation, route }) => {
     }
 
     const pressButton = () => {
-        setLoading(true)
-        params ? editVacancy() : saveVacancy()
+        if (params.address)
+            navigation.navigate("AddressRegister",
+                {
+                    jobId: params.id,
+                    editJob: Boolean(params.id,),
+                    vacancy: {
+                        job,
+                        name,
+                        receive,
+                        subject,
+                        internship,
+                        description,
+                        benefits: benefits.data,
+                        requirements: requirements.data,
+                        deadline: Calendar.unFormat(deadline),
+                    }
+                })
+        else {
+            setLoading(true)
+            params.id ? editVacancy() : saveVacancy()
+        }
     }
 
     const editVacancy = () => {
         StorageVacancy.editVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, params.id)
             .then(data =>
-                modal.set({ msg: Strings.UPDATED, back:true }))
+                modal.set({ msg: Strings.UPDATED, back: true }))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
 
     const saveVacancy = () => {
-        StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, benefits.data, requirements.data)
+        StorageVacancy.saveVacancy(name, Calendar.unFormat(deadline), internship, job, receive, subject, description, null, null, null, benefits.data, requirements.data)
             .then(data =>
-                modal.set({ msg: Strings.CREATED_VACANCY, back:true }))
+                modal.set({ msg: Strings.CREATED_VACANCY, back: true }))
             .catch(status => modal.set({ status }))
             .finally(() => setLoading(false))
     }
@@ -125,7 +144,6 @@ export const JobForm = ({ navigation, route }) => {
                             capitalize={"sentences"}
                             iconLib={"MaterialCommunityIcons"}
                             onchange={text => setName(text)} />
-
                         <DatePickerDefault
                             picker={picker}
                             initialValue={"Sem prazo"}
@@ -144,7 +162,10 @@ export const JobForm = ({ navigation, route }) => {
                                 androidVariant={"iosClone"}
                                 textColor={Colors.TEXT_PRIMARY}
                                 fadeToColor={Colors.BACKGROUND}
-                                onDateChange={value => setDate(new Date(value))} />
+                                onDateChange={value => {
+                                    setDate(new Date(value))
+                                    setDeadline(new Date(value))
+                                }} />
                         }
                         <View style={styles.containerSwitch}>
                             <SwicthDefault
@@ -200,10 +221,10 @@ export const JobForm = ({ navigation, route }) => {
                             onchange={value => setDescription(value)} />
 
                         <ButtonDefault
-                            text={"Salvar"}
                             loading={loading}
                             onPress={pressButton}
                             active={activeButton()}
+                            text={params.address ? "Próximo" : "Salvar"}
                         />
                     </>
                 }

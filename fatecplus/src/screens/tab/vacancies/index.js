@@ -29,7 +29,7 @@ export const Vacancies = ({ navigation, route }) => {
                 setUser(data)
                 getVacancies(data.category, data.id, data.internship, data.job)
             })
-            .catch(status => modal.set({status}))
+            .catch(status => modal.set({ status }))
             .finally(() => setRefreshing(false))
     }
 
@@ -44,7 +44,7 @@ export const Vacancies = ({ navigation, route }) => {
         setLoaded(false,
             StorageVacancie.getVacanciesByCompany(id)
                 .then(data => setVacancies({ data }))
-                .catch(status => modal.set({status}))
+                .catch(status => modal.set({ status }))
                 .finally(() => {
                     route.params = null;
                     setRefreshing(false)
@@ -56,7 +56,7 @@ export const Vacancies = ({ navigation, route }) => {
         setLoaded(false,
             StorageVacancie.getVacancies()
                 .then(data => configVacancies(data, isStudent, internship, job))
-                .catch(status => modal.set({status}))
+                .catch(status => modal.set({ status }))
                 .finally(() => {
                     route.params = null;
                     setRefreshing(false)
@@ -187,7 +187,7 @@ export const Vacancies = ({ navigation, route }) => {
             {
                 Boolean(user.category === "Company" || user.category === "Internship Coordinator") &&
                 <FloatingButton
-                    onPress={() => navigation.navigate("JobForm")} />
+                    onPress={() => navigation.navigate("JobForm", { address: Boolean(user.category === "Internship Coordinator") })} />
             }
         </KeyboardAvoidingView>
     );
