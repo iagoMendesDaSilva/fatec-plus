@@ -37,6 +37,7 @@ export default {
 
     CONFLICT_EMAIL: "Email já cadastrado.",
     CONFLICT_USERNAME: "Nome de usuário já cadastrado.",
+    CONFLICT_EMAIL_OR_USERNAME: "Nome de usuário ou email já cadastrado.",
 
     CONFIRM_LOGOUT: "Deseja encerrar sessão?",
     CONFIRM_DELETE_USER: "Deseja excluir sua conta?",

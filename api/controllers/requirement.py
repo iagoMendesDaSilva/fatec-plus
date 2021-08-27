@@ -26,7 +26,7 @@ class RequirementController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def create_many(self, current_user, datas, id_job):
         try:
@@ -50,7 +50,7 @@ class RequirementController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Benefit."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get(self, id):
         try:
@@ -58,13 +58,13 @@ class RequirementController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get_all_by_job(self,id_job):
         try:
             return requirements_schema.dump(dao.get_all_by_key('id_job',id_job,Requirement))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete(self,current_user,id):
         try:
@@ -82,7 +82,7 @@ class RequirementController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
 
     def delete_all(self,current_user,job_id):
@@ -95,7 +95,7 @@ class RequirementController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def update(self,current_user,data,id):
         try:
@@ -113,7 +113,7 @@ class RequirementController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
        
 requirementController = RequirementController()

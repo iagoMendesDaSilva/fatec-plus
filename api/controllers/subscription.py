@@ -46,14 +46,14 @@ class SubscriptionController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job or Indication."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def send_resume(self, current_user, job_id):
         try:
             job = dao.get_by_id(job_id,Job)
             emailSender.send_resume(current_user,job)
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def unsubscribe(self, current_user, job_id):
         try:
@@ -66,7 +66,7 @@ class SubscriptionController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get_all_by_job(self,job_id):
         try:
@@ -76,7 +76,7 @@ class SubscriptionController:
                 users.append(dao.get_by_id(sub.subscription, User))
             return users_schema_list.dump(users)
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete_all_by_job(self,current_user, job_id):
         try:
@@ -87,7 +87,7 @@ class SubscriptionController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete_all(self,id):
         try:
@@ -99,7 +99,7 @@ class SubscriptionController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def  verifySubscription (self, current_user, id):
         try:
@@ -107,7 +107,7 @@ class SubscriptionController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Unsubscribed."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
 
        

@@ -19,13 +19,3 @@ def project(current_user, id):
     elif request.method == 'DELETE':
         projectController.delete(current_user,id)
         return jsonify({"response":"Deleted Project"}), 200
-
-@app.route("/mobile-api/v1/user/projects", methods=["DELETE","POST"])
-@token
-def projects(current_user):
-    if request.method == 'DELETE':
-        projectController.delete_all(current_user)
-        return jsonify({"response":"Deleted Projects"}), 200
-    elif request.method == 'POST':
-        projectController.create_many(current_user,request.get_json())
-        return jsonify({"response":"Created Projects"}), 200

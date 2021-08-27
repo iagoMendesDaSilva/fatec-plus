@@ -1,8 +1,8 @@
 from models.benefit import Benefit
 from modelsDao import jobDao,dao
-from models.user import User, user_schema_job
 from models.requirement import Requirement
 from flask import abort, make_response, jsonify
+from models.user import User, user_schema_company
 from app.exceptions import ObjectInvalid,CurrentUser
 from models.job import Job, job_schema, jobs_schema
 
@@ -46,17 +46,17 @@ class JobController:
         except CurrentUser as err:
             abort(make_response(jsonify({"response":"Without Permission."}), 403))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get(self, id):
         try:
             job = dao.get_by_id(id,Job)
             company = dao.get_by_id(job.company, User)
-            return  {"job":job_schema.dump(job),"company":user_schema_job.dump(company)}
+            return  {"job":job_schema.dump(job),"company":user_schema_company.dump(company)}
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get_all(self,limit=None,offset=None):
         try:
@@ -64,7 +64,7 @@ class JobController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get_all_by_company(self,id,limit=None,offset=None):
         try:
@@ -72,7 +72,7 @@ class JobController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete(self,current_user,id):
         try:
@@ -89,14 +89,14 @@ class JobController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
 
     def delete_all(self,current_user):
         try:
             jobDao.delete_all(current_user.id)
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def update(self,current_user,data,id):
         try:
@@ -113,6 +113,6 @@ class JobController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
 jobController = JobController()

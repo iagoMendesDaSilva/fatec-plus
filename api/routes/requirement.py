@@ -20,15 +20,3 @@ def requirement(current_user, id):
     elif request.method == 'DELETE':
         requirementController.delete(current_user,id)
         return jsonify({"response":"Deleted Requirement"}), 200
-
-@app.route("/mobile-api/v1/job/requirements/<int:job_id>", methods=["GET","DELETE","POST"])
-@token
-def requirements(current_user, job_id):
-    if request.method == 'GET':
-        return jsonify(requirementController.get_all_by_job(job_id)), 200
-    elif request.method == 'DELETE':
-        requirementController.delete_all(current_user,job_id)
-        return jsonify({"response":"Deleted Requirements"}), 200
-    elif request.method == 'POST':
-        requirementController.create_many(current_user,request.get_json(),job_id)
-        return jsonify({"response":"Created Requirements"}), 200

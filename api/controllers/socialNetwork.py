@@ -18,7 +18,7 @@ class SocialNetworkController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid SocialNetwork."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def create_many(self, current_user, datas):
         try:
@@ -34,7 +34,7 @@ class SocialNetworkController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid SocialNetwork."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get(self, id):
         try:
@@ -42,13 +42,13 @@ class SocialNetworkController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid SocialNetwork."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get_all_by_user(self,user_id):
         try:
             return socialNetworks_schema.dump(dao.get_all_by_key('id_user',user_id,SocialNetwork))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete(self,current_user,id):
         try:
@@ -65,14 +65,14 @@ class SocialNetworkController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid SocialNetwork."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
 
     def delete_all(self,current_user):
         try:
             socialNetworkDao.delete_all(current_user.id)
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def update(self,current_user,data,id):
         try:
@@ -89,7 +89,7 @@ class SocialNetworkController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid SocialNetwork."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
        
 socialNetworkController = SocialNetworkController()

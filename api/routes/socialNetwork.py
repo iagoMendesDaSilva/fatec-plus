@@ -19,13 +19,3 @@ def socialNetwork(current_user, id):
     elif request.method == 'DELETE':
         socialNetworkController.delete(current_user,id)
         return jsonify({"response":"Deleted Social Network"}), 200
-
-@app.route("/mobile-api/v1/user/social-networks", methods=["DELETE","POST"])
-@token
-def socilaNetworks(current_user):
-    if request.method == 'DELETE':
-        socialNetworkController.delete_all(current_user)
-        return jsonify({"response":"Deleted Social Networks"}), 200
-    elif request.method == 'POST':
-        socialNetworkController.create_many(current_user,request.get_json())
-        return jsonify({"response":"Created Social Networks"}), 200

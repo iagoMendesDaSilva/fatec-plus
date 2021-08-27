@@ -19,13 +19,3 @@ def language(current_user, id):
     elif request.method == 'DELETE':
         languageController.delete(current_user,id)
         return jsonify({"response":"Deleted Language"}), 200
-
-@app.route("/mobile-api/v1/user/languages", methods=["DELETE","POST"])
-@token
-def languages(current_user):
-    if request.method == 'DELETE':
-        languageController.delete_all(current_user)
-        return jsonify({"response":"Deleted Languages"}), 200
-    elif request.method == 'POST':
-        languageController.create_many(current_user,request.get_json())
-        return jsonify({"response":"Created Languages"}), 200

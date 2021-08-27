@@ -2,7 +2,7 @@ import os
 import base64
 import datetime
 from random import randint
-from models.course import Course
+from app.applications import ip
 from modelsDao import userDao, dao
 from app.emailSender import emailSender
 from werkzeug.exceptions import BadRequest
@@ -48,7 +48,7 @@ class UserController:
         except BadRequest as err:
             abort(make_response(jsonify({"response":"  Invalid parameters."}), 400))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem"}), 502))
+            abort(make_response(jsonify({"response":"Internal problem"}), 500))
 
     def login(self, data):
         try:
@@ -63,14 +63,14 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def logout(self, id):
         try:
             update_data ={"token": None, "recovery":None, "recovery_time":None}
             dao.update_many(id,update_data,User)
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def get(self, id):
         try:
@@ -78,15 +78,15 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-    def get_all(self,category=None,limit=None,offset=None):
+    def get_all(self,category=None):
         try:
-            return users_schema_list.dump(userDao.get_all(category,limit,offset))
+            return users_schema_list.dump(userDao.get_all(category))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def delete(self,current_user,id):
         try:
@@ -99,7 +99,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def update(self,current_user,data,id):
         try:
@@ -112,7 +112,10 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            if err.code == 409:
+                abort(make_response(jsonify({"response":"Internal problem."}), 409))
+            else:
+                abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def verify_username(self, data):
         try:
@@ -121,7 +124,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Username."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))  
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))  
 
     def verify_email(self, data):
         try:
@@ -130,7 +133,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Email."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))  
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))  
 
     def recovery(self,id,data):
         try:
@@ -142,7 +145,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def confirm_email(self,data):
         try:
@@ -156,7 +159,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
     def confirm_verification_code(self,id,data):
         try:
@@ -171,7 +174,7 @@ class UserController:
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User or Code."}), 404))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
   
     def profile_image(self, user, base64_img):
         image = None
@@ -181,7 +184,7 @@ class UserController:
                 data = base64_img['image'].encode('utf-8')
                 fh.write(base64.decodebytes(data))
             fh.close()
-            image = "http://192.168.0.4:5000/mobile-api/v1/user/image-profile/"+str(user.id)
+            image = "http://"+ip+":5000/mobile-api/v1/user/image-profile/"+str(user.id)
         userDao.update_image(user.id, image)
 
     def get_image_profile(self, id):

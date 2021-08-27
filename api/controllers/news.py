@@ -10,6 +10,6 @@ class NewsController:
         try:
             return news_schema.dump(dao.get_all_by_key('version_app',current_user.version_app,New))
         except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
+            abort(make_response(jsonify({"response":"Internal problem."}), 500))
        
 newsController = NewsController()

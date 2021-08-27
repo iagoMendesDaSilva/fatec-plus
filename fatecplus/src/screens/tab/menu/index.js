@@ -1,9 +1,10 @@
 import styles from './style';
 
-import { View } from 'react-native';
+import { View, Linking } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 
 import Colors from '~colors';
+import Values from '~values';
 import Strings from '~strings';
 import { StorageMenu } from './storage';
 import { ModalContext } from '~contexts';
@@ -81,6 +82,9 @@ export const Menu = ({ navigation }) => {
         }
     }
 
+    const sendEmailSuport = () =>
+        Linking.openURL(`mailto:support:${Values.SUPORT_EMAIL}`)
+
     return (
         <Screen center={false}>
             {
@@ -106,7 +110,7 @@ export const Menu = ({ navigation }) => {
                         <View style={styles.containerInfo}>
                             <TextDefault
                                 styleText={styles.txtSection}
-                                children={"Informações da Conta"} />
+                                children={"Configurações do usuário"} />
                             <ItemList
                                 iconName={"pencil"}
                                 title={"Editar informações"}
@@ -130,14 +134,19 @@ export const Menu = ({ navigation }) => {
                                 iconLib={"Ionicons"}
                                 title={"Alterar senha"}
                                 onPress={() => navigation.navigate("ChangePassword", { recovery: false, edit: true })} />
+                            <TextDefault
+                                styleText={styles.txtSection}
+                                children={"Configurações do aplicativo"} />
+                            <ItemList
+                                title={"Contate-nos"}
+                                iconLib={"SimpleLineIcons"}
+                                iconName={"earphones-alt"}
+                                onPress={sendEmailSuport} />
                             <ItemList
                                 iconLib={"Ionicons"}
                                 iconName={"newspaper"}
                                 title={"Registro de alterações "}
                                 onPress={() => navigation.navigate("ChangeLog", { version: Storage.getVersion() })} />
-                            <TextDefault
-                                styleText={styles.txtSection}
-                                children={"Gerenciamento da Conta"} />
                             <ItemList
                                 arrow={false}
                                 iconLib={"AntDesign"}

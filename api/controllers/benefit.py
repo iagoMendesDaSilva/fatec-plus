@@ -80,7 +80,6 @@ class BenefitController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
-
     def delete_all(self,current_user,job_id):
         try:
             job = dao.get_by_id(job_id,Job)

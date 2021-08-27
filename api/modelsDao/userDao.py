@@ -9,18 +9,12 @@ class UserDao:
     def __init__(self):
         pass
 
-    def get_all(self,category=None,limit=None,offset=None):
+    def get_all(self,category=None):
         if category:
             key = dao.get_key_formated('category',User)
-            if limit and offset:
-                return  User.query.filter(key == category).offset(offset).limit(limit).all()
-            else:
-                return User.query.filter(key == category).all()
+            return User.query.filter(key == category).all()
         else:
-            if limit and offset:
-                return  User.query.offset(offset).limit(limit).all()
-            else:
-                return User.query.all()
+            return User.query.all()
 
     def update_many(self,id,data):
         object = dao.get_by_id(id,User)

@@ -19,13 +19,3 @@ def experience(current_user, id):
     elif request.method == 'DELETE':
         experienceController.delete(current_user,id)
         return jsonify({"response":"Deleted Experience"}), 200
-
-@app.route("/mobile-api/v1/user/experiences", methods=["DELETE","POST"])
-@token
-def experiences(current_user):
-    if request.method == 'DELETE':
-        experienceController.delete_all(current_user)
-        return jsonify({"response":"Deleted Experiences"}), 200
-    elif request.method == 'POST':
-        experienceController.create_many(current_user,request.get_json())
-        return jsonify({"response":"Created Experiences"}), 200

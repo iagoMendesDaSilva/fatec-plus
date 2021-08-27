@@ -93,7 +93,12 @@ export const MainRegister = (props) => {
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
                 modal.set({ msg: Strings.UPDATED, back: true }))
-            .catch(status => modal.set({ status, msg: Strings.ERROR_UPDATE }))
+            .catch(status => {
+               status===409?
+               modal.set({ status:404, msg: Strings.CONFLICT_EMAIL_OR_USERNAME })
+               :
+               modal.set({ status, msg: Strings.ERROR_UPDATE })
+            })
     }
 
 

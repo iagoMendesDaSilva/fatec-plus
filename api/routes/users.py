@@ -14,11 +14,6 @@ def user(current_user,id):
         userController.update(current_user,request.get_json(), id)
         return jsonify({"response":"Edited User"}), 200
 
-@app.route("/mobile-api/v1/users", methods=["GET"])
-@token
-def get_users(current_user):
-        return jsonify(userController.get_all()), 200
-
 @app.route("/mobile-api/v1/users/students", methods=["GET"])
 @token
 def get_students(current_user):
@@ -33,7 +28,6 @@ def get_teachers(current_user):
 @token
 def get_companies(current_user):
         return jsonify(userController.get_all('company')), 200
-
 
 @app.route("/mobile-api/v1/user/image-profile", methods=["PUT"])
 @token

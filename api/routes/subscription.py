@@ -18,12 +18,6 @@ def send_resume(current_user,job_id):
     subscriptionController.send_resume(current_user,job_id)
     return jsonify({"response":"Resume Sended"}), 200
 
-@app.route("/mobile-api/v1/subscriptions", methods=["DELETE"])
-@token
-def subscriptions(current_user):
-    subscriptionController.delete_all(current_user.id)
-    return jsonify({"response":"Deleted Subscriptions"}), 200
-
 @app.route("/mobile-api/v1/job/subscriptions/<int:job_id>", methods=["GET","DELETE"])
 @token
 def subscriptions_jobs(current_user,job_id):

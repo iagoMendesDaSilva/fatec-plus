@@ -55,5 +55,5 @@ class UserSchema(serializer.SQLAlchemyAutoSchema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 user_schema_login = UserSchema(only=('id','token','category'))
-user_schema_job = UserSchema(only=('id','image','email','phone','address','city','state','name'))
+user_schema_company = UserSchema(only=('id','image','email','phone','address','city','state','name'))
 users_schema_list = UserSchema(only=('id','name','category','studying','image','city','state'), many=True)

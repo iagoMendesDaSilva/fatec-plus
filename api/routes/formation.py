@@ -19,13 +19,3 @@ def formation(current_user, id):
     elif request.method == 'DELETE':
         formationController.delete(current_user,id)
         return jsonify({"response":"Deleted Formation"}), 200
-
-@app.route("/mobile-api/v1/user/formations", methods=["DELETE","POST"])
-@token
-def formations(current_user):
-    if request.method == 'DELETE':
-        formationController.delete_all(current_user)
-        return jsonify({"response":"Deleted Formations"}), 200
-    elif request.method == 'POST':
-        formationController.create_many(current_user,request.get_json())
-        return jsonify({"response":"Created Formations"}), 200
