@@ -46,7 +46,7 @@ export const Splash = (props) => {
         Storage.setUser({ username: user.username, password: user.password, token: data.token, id: data.id, category: data.category })
         const params = props.route.params
         if (params) {
-            params.id && (params.type === "Student" || params.type === "Job") && props.navigation.replace(params.type, { id: params.id, indication: params.indication })
+            params.id && (params.type === "Student" || params.type === "Job") && props.navigation.replace(params.type, { id: params.id })
         } else {
             props.navigation.replace("Home")
         }

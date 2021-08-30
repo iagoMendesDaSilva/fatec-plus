@@ -58,10 +58,10 @@ export const Students = ({ navigation, route }) => {
         clearParams()
        navigation.goBack()
     }
-    console.log(route.params);
+
     const goToStudent = id => {
         if (route.params && !route.params.jobId && route.params.job) {
-            StorageStudent.solicit(route.params.job, id)
+            StorageStudent.indicate(route.params.job, id)
                 .then(data => modal.set({ msg: route.params.msg, positivePress: finishIndication }))
                 .catch(status => () => modal.set({ status, positivePress: finishIndication }))
         } else

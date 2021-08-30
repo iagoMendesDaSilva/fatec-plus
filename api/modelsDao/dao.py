@@ -28,8 +28,7 @@ class DaoDefault:
             if hasattr(object, key):
                 setattr(object, key, data[key])
         self.commit()
-
-    
+   
     def get_by_key(self, key, value, model):
             key = self.get_key_formated(key, model)
             object =  model.query.filter(key == value).first()
@@ -46,11 +45,9 @@ class DaoDefault:
     def get_all_by_key(self,key, value, model):
             key = self.get_key_formated(key, model)
             return model.query.filter(key == value).all()
- 
 
     def get_all_by_model(self, model):
             return model.query.all()
-
 
     def get_key_formated(self, key, model):
         return eval(model.__tablename__.title() + f".{key}")

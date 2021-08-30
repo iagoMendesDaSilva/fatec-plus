@@ -1,4 +1,4 @@
-from modelsDao import formationDao,dao
+from modelsDao import dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models import  Formation,formation_schema,formations_schema
@@ -72,20 +72,13 @@ class FormationController:
             abort(make_response(jsonify({"response":"Invalid Formation."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
-
-    def delete_all(self,current_user):
-        try:
-            formationDao.delete_all(current_user.id)
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
+            
     def update(self,current_user,data,id):
         try:
             formation  =dao.get_by_id(id,Formation)
             if formation:
                 if current_user.id == formation.id_user:
-                    formationDao.update_many(id,data)
+                    dao.update_many(id,data, Formation)
                 else:
                     raise CurrentUser
             else:

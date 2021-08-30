@@ -1,5 +1,5 @@
+from flask import jsonify
 from app import app, token
-from flask import jsonify, request
 from controllers import newsController
 
 @app.route("/mobile-api/v1/news", methods=["GET"])

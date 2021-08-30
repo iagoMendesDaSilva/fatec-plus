@@ -1,4 +1,4 @@
-from modelsDao import socialNetworkDao,dao
+from modelsDao import dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models import  SocialNetwork,socialNetwork_schema,socialNetworks_schema
@@ -67,19 +67,12 @@ class SocialNetworkController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-
-    def delete_all(self,current_user):
-        try:
-            socialNetworkDao.delete_all(current_user.id)
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
     def update(self,current_user,data,id):
         try:
             socialNetwork  =dao.get_by_id(id,SocialNetwork)
             if socialNetwork:
                 if current_user.id == socialNetwork.id_user:
-                    socialNetworkDao.update_many(id,data)
+                    dao.update_many(id,data, SocialNetwork)
                 else:
                     raise CurrentUser
             else:

@@ -123,7 +123,7 @@ export const Vacancies = ({ navigation, route }) => {
     }
 
     const requestOrIndicate = (vacancyId, studentId) => {
-        StorageVacancie.solicit(vacancyId, studentId)
+        StorageVacancie.indicate(vacancyId, studentId)
             .then(() =>
                 modal.set({
                     msg: user.category === "Company" ? Strings.REQUESTED : Strings.INDICATED,

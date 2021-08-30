@@ -1,4 +1,4 @@
-from modelsDao import requirementDao,dao
+from modelsDao import dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models import Job, Requirement,requirement_schema,requirements_schema
@@ -70,7 +70,7 @@ class RequirementController:
         try:
             requirement  =dao.get_by_id(id,Requirement)
             job = dao.get_by_id(Requirement.id_job, Job)
-            if Requirement and job:
+            if requirement and job:
                 if current_user.id == job.company:
                     dao.remove(requirement)
                 else:
@@ -83,27 +83,14 @@ class RequirementController:
             abort(make_response(jsonify({"response":"Invalid Requirement."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
-
-    def delete_all(self,current_user,job_id):
-        try:
-            job = dao.get_by_id(job_id,Job)
-            if job.company == current_user.id:
-                requirementDao.delete_all(job_id)
-            else:
-                raise CurrentUser
-        except CurrentUser as err:
-            abort(make_response(jsonify({"response":"Without Permission."}), 403))
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
+            
     def update(self,current_user,data,id):
         try:
             requirement  =dao.get_by_id(id,Requirement)
             job = dao.get_by_id(requirement.id_job, Job)
-            if Requirement and job:
+            if requirement and job:
                 if current_user.id == job.company:
-                    requirementDao.update_many(id,data)
+                    dao.update_many(id,data, Requirement)
                 else:
                     raise CurrentUser
             else:

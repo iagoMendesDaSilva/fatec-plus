@@ -84,8 +84,7 @@ export const Job = ({ navigation, route }) => {
 
     const subscribe = async () => {
         setLoadingSub(true)
-        const indication = route.params.indication || null;
-        StorageJob.subscribe(job.id, indication)
+        StorageJob.subscribe(job.id)
             .then(data => {
                 setSubscribed(true)
                 job.receive_by_email && sendResume()

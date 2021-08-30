@@ -1,5 +1,5 @@
+from modelsDao import dao
 from models.benefit import Benefit
-from modelsDao import jobDao,dao
 from models.requirement import Requirement
 from flask import abort, make_response, jsonify
 from models.user import User, user_schema_company
@@ -58,17 +58,17 @@ class JobController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-    def get_all(self,limit=None,offset=None):
+    def get_all(self):
         try:
-            return jobs_schema.dump(jobDao.get_all(limit,offset))
+            return jobs_schema.dump(dao.get_all_by_model(Job))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-    def get_all_by_company(self,id,limit=None,offset=None):
+    def get_all_by_company(self,id):
         try:
-            return jobs_schema.dump(jobDao.get_all_by_company(id,limit,offset))
+            return jobs_schema.dump(dao.get_all_by_key('company',id, Job))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid Job."}), 404))
         except Exception as err:
@@ -91,19 +91,12 @@ class JobController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-
-    def delete_all(self,current_user):
-        try:
-            jobDao.delete_all(current_user.id)
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
     def update(self,current_user,data,id):
         try:
             job  =dao.get_by_id(id,Job)
             if job:
                 if current_user.id == job.company:
-                    jobDao.update_many(id,data)
+                    dao.update_many(id,data, Job)
                 else:
                     raise CurrentUser
             else:

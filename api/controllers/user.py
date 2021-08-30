@@ -3,7 +3,7 @@ import base64
 import datetime
 from random import randint
 from app.applications import ip
-from modelsDao import userDao, dao
+from modelsDao import  dao
 from app.emailSender import emailSender
 from werkzeug.exceptions import BadRequest
 from flask import abort, make_response, jsonify
@@ -82,7 +82,10 @@ class UserController:
 
     def get_all(self,category=None):
         try:
-            return users_schema_list.dump(userDao.get_all(category))
+            if category:
+                return users_schema_list.dump(dao.get_all_by_key('category',category,User))
+            else:
+                return users_schema_list.dump(dao.get_all_by_model(User))
         except ObjectInvalid as err:
             abort(make_response(jsonify({"response":"Invalid User."}), 404))
         except Exception as err:
@@ -104,7 +107,7 @@ class UserController:
     def update(self,current_user,data,id):
         try:
             if current_user.id == id:
-                userDao.update_many(id,data)
+                dao.update_many(id,data,User)
             else:
                 raise CurrentUser
         except CurrentUser as err:
@@ -134,6 +137,7 @@ class UserController:
             abort(make_response(jsonify({"response":"Invalid Email."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))  
+            
 
     def recovery(self,id,data):
         try:
@@ -185,7 +189,7 @@ class UserController:
                 fh.write(base64.decodebytes(data))
             fh.close()
             image = "http://"+ip+":5000/mobile-api/v1/user/image-profile/"+str(user.id)
-        userDao.update_image(user.id, image)
+        dao.update(user.id, 'image', image, User)
 
     def get_image_profile(self, id):
         return str(os.getcwd())+"/src/images/"+str(id)+"_profile"+".jpg"

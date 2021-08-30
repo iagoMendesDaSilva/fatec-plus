@@ -6,11 +6,17 @@ from controllers import subscriptionController
 @token
 def subscibe(current_user,job_id):
     if request.method == 'POST':
-        subscriptionController.create_subscribe(current_user,request.get_json(),job_id)
+        subscriptionController.create_subscribe(current_user,job_id)
         return jsonify({"response":"Subscribed"}), 200
     elif request.method == 'DELETE':
         subscriptionController.unsubscribe(current_user,job_id)
         return jsonify({"response":"OK"}), 200
+
+@app.route("/mobile-api/v1/job/indicate/<int:job_id>", methods=["POST"])
+@token
+def indicate(current_user,job_id):
+    subscriptionController.indicate(current_user,job_id, request.get_json())
+    return jsonify({"response":"Indicated"}), 200
 
 @app.route("/mobile-api/v1/job/send-resume/<int:job_id>", methods=["GET",])
 @token
@@ -18,14 +24,10 @@ def send_resume(current_user,job_id):
     subscriptionController.send_resume(current_user,job_id)
     return jsonify({"response":"Resume Sended"}), 200
 
-@app.route("/mobile-api/v1/job/subscriptions/<int:job_id>", methods=["GET","DELETE"])
+@app.route("/mobile-api/v1/job/subscriptions/<int:job_id>", methods=["GET"])
 @token
 def subscriptions_jobs(current_user,job_id):
-    if request.method == 'GET':
-        return jsonify(subscriptionController.get_all_by_job(job_id)), 200
-    elif request.method == 'DELETE':
-        subscriptionController.delete_all_by_job(current_user,job_id)
-        return jsonify({"response":"Deleted Subscriptions"}), 200
+    return jsonify(subscriptionController.get_all_by_job(job_id)), 200
 
 @app.route("/mobile-api/v1/job/subscribed/<int:job_id>", methods=["GET"])
 @token

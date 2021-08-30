@@ -1,4 +1,4 @@
-import { Executor, Students, Subscription, Subscriptions} from '~request';
+import { Executor, Students, Indicate, Subscriptions} from '~request';
 
 export class StorageStudent {
 
@@ -10,9 +10,9 @@ export class StorageStudent {
         });
     }
 
-    static solicit(jobId, student) {
+    static indicate(jobId, student) {
         return new Promise((resolve, reject) => {
-            Executor.run(new Subscription(jobId, student, false))
+            Executor.run(new Indicate(jobId, student))
                 .then(resp => resolve(resp.data))
                 .catch(err => reject(err.response ? err.response.status : 500));
         });

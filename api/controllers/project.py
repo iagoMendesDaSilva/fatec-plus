@@ -1,4 +1,4 @@
-from modelsDao import projectDao,dao
+from modelsDao import dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models import  Project,project_schema,projects_schema
@@ -69,19 +69,12 @@ class ProjectController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
 
-
-    def delete_all(self,current_user):
-        try:
-            projectDao.delete_all(current_user.id)
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 500))
-
     def update(self,current_user,data,id):
         try:
             project  =dao.get_by_id(id,Project)
             if project:
                 if current_user.id == project.id_user:
-                    projectDao.update_many(id,data)
+                    dao.update_many(id,data, Project)
                 else:
                     raise CurrentUser
             else:

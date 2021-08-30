@@ -1,4 +1,4 @@
-from modelsDao import benefitDao,dao
+from modelsDao import dao
 from flask import abort, make_response, jsonify
 from app.exceptions import ObjectInvalid,CurrentUser
 from models import Job, Benefit,benefit_schema,benefits_schema
@@ -80,17 +80,6 @@ class BenefitController:
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
-    def delete_all(self,current_user,job_id):
-        try:
-            job = dao.get_by_id(job_id,Job)
-            if job.company == current_user.id:
-                benefitDao.delete_all(job_id)
-            else:
-                raise CurrentUser
-        except CurrentUser as err:
-            abort(make_response(jsonify({"response":"Without Permission."}), 403))
-        except Exception as err:
-            abort(make_response(jsonify({"response":"Internal problem."}), 502))
 
     def update(self,current_user,data,id):
         try:
@@ -98,7 +87,7 @@ class BenefitController:
             job = dao.get_by_id(benefit.id_job, Job)
             if benefit and job:
                 if current_user.id == job.company:
-                    benefitDao.update_many(id,data)
+                    dao.update_many(id,data,Benefit)
                 else:
                     raise CurrentUser
             else:
