@@ -19,8 +19,8 @@ export const Select = ({ value = "", changeValue = false, options = [], zIndex =
         setOpen(!open)
     }
 
-    const choiseSelect = value => {
-        changeValue && changeValue(value)
+    const choiseSelect = (value, index) => {
+        changeValue && changeValue(value, index)
         pressSelect()
     }
 
@@ -53,7 +53,7 @@ export const Select = ({ value = "", changeValue = false, options = [], zIndex =
                             active={value != item}
                             style={styles.containerText}
                             styleText={styles.txtSelectItem}
-                            onPress={() => open && choiseSelect(options[index])} />
+                            onPress={() => open && choiseSelect(options[index], index)} />
                     )
                 }
             </Animated.View>

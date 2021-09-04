@@ -73,7 +73,7 @@ export const Menu = ({ navigation }) => {
             name: user.name,
             image: user.image,
             phone: user.phone,
-            course: user.studying,
+            course: user.course,
             address: user.address,
             category: user.category,
             birthDate: user.birth_date,

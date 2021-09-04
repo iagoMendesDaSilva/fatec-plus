@@ -19,11 +19,11 @@ export const MainRegister = (props) => {
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [picker, setPicker] = useState(false);
-    const [course, setCourse] = useState(null);
     const [username, setUsername] = useState("");
     const [birthDate, setBirthDate] = useState(null);
     const [description, setDescription] = useState("");
     const [courses, setCourses] = useState({ data: [] });
+    const [course, setCourse] = useState({id:0, name:""});
     const [image, setImage] = useState({ photo: "", base64: "" });
     const [date, setDate] = useState(Calendar.getDateRegister());
 
@@ -43,10 +43,10 @@ export const MainRegister = (props) => {
             setEmail(params.data.email)
             setName(params.data.name)
             setPhone(params.data.phone)
-            setCourse(params.data.course)
             setUsername(params.data.username)
             setDescription(params.data.description)
             setBirthDate(Calendar.format(params.data.birthDate))
+            setCourse(params.data.course?params.data.course : false)
             setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
         }
     }
@@ -62,10 +62,10 @@ export const MainRegister = (props) => {
             email,
             name,
             phone,
-            course,
             category,
             username,
             description,
+            course:course.name?course.id:null,
             birthDate: Calendar.unFormat(date),
             image: image.base64 ? image.base64 : null,
         }
@@ -164,12 +164,12 @@ export const MainRegister = (props) => {
                 category === "Student" &&
                 <>
                     <Select
-                        value={course}
+                        value={course.name}
                         iconName={"book"}
                         options={courses.data}
                         iconLib={"fontawesome5"}
                         initialValue={"Escolha seu curso"}
-                        changeValue={value => setCourse(value)} />
+                        changeValue={(name, id) => setCourse({name, id: id+1})} />
                     <DatePickerDefault
                         picker={picker}
                         title={birthDate}

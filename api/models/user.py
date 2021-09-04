@@ -1,4 +1,5 @@
 from enum import unique
+from models.course import CourseSchema
 from models.job import JobSchema
 from models.project import ProjectSchema
 from models.language import LanguageSchema
@@ -18,7 +19,6 @@ class User(database.Model):
     recovery = database.Column(database.Integer)
     phone = database.Column(database.String(17))
     internship = database.Column(database.Boolean)
-    studying = database.Column(database.String(50))
     address = database.Column(database.String(300))
     version_app = database.Column(database.String(15))
     description = database.Column(database.String(300))
@@ -29,8 +29,10 @@ class User(database.Model):
     category = database.Column(database.String(22), nullable=False)
     email = database.Column(database.String(50), nullable=False, unique=True)
     username = database.Column(database.String(20), nullable=False, unique=True)
+    studying= database.Column(database.Integer, database.ForeignKey('course.id'), nullable=True)
     id = database.Column(database.Integer, primary_key=True, nullable=False, autoincrement=True)
 
+    course = database.relationship('Course', backref='course')
     projects = database.relationship('Project', backref='projects',  cascade="all, delete")
     languages = database.relationship('Language', backref='languages', cascade="all, delete")
     formations = database.relationship('Formation', backref='formations', cascade="all, delete")
@@ -41,6 +43,7 @@ class User(database.Model):
     subscriptions = database.relationship('Subscription', backref="subscriptions",  foreign_keys = 'Subscription.subscribed', cascade="all, delete")
 
 class UserSchema(serializer.SQLAlchemyAutoSchema):
+    course = serializer.Nested(CourseSchema)
     projects = serializer.Nested(ProjectSchema, many=True)
     languages = serializer.Nested(LanguageSchema, many=True)
     formations = serializer.Nested(FormationSchema, many=True)
@@ -53,5 +56,5 @@ class UserSchema(serializer.SQLAlchemyAutoSchema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 user_schema_login = UserSchema(only=('id','token','category'))
+users_schema_list = UserSchema(only=('id','name','category','image','city','state', 'course'), many=True)
 user_schema_company = UserSchema(only=('id','image','email','phone','address','city','state','name'))
-users_schema_list = UserSchema(only=('id','name','category','studying','image','city','state'), many=True)

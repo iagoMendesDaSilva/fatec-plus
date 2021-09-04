@@ -154,7 +154,7 @@ export const Student = ({ navigation, route }) => {
                                     children={user.name}
                                     styleText={styles.txtName} />
                                 <TextDefault
-                                    children={user.studying}
+                                    children={user.course.name}
                                     styleText={styles.txtCourse} />
                                 <TextDefault
                                     styleText={styles.txtAddress}

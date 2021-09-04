@@ -68,7 +68,7 @@ export const Students = ({ navigation, route }) => {
             navigation.navigate("Student", { id })
     }
 
-    const renderItem = ({ id, image, name, studying }, index) => {
+    const renderItem = ({ id, image, name, course }, index) => {
         return (
             <Shimmer style={styles.itemShimmer} visible={loaded}>
                 <TouchableOpacity
@@ -93,7 +93,7 @@ export const Students = ({ navigation, route }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={studying} />
+                            children={course?course.name:""} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>
