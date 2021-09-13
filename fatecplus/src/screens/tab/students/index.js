@@ -22,11 +22,11 @@ export const Students = ({ navigation, route }) => {
 
     useEffect(() => navigation.addListener("focus", getStudents), [route.params])
 
-    const getStudents = () => 
+    const getStudents = () =>
         route.params && route.params.jobId ? getSubscriptions() : getAllStudents()
 
     const clearParams = () =>
-        navigation.setParams({ jobId: false, job:false, msg:false });
+        navigation.setParams({ jobId: false, job: false, msg: false });
 
     const getAllStudents = () => {
         StorageStudent.getStudents()
@@ -56,7 +56,7 @@ export const Students = ({ navigation, route }) => {
 
     const finishIndication = () => {
         clearParams()
-       navigation.goBack()
+        navigation.goBack()
     }
 
     const goToStudent = id => {
@@ -93,7 +93,7 @@ export const Students = ({ navigation, route }) => {
                             styleText={styles.txtTitle} />
                         <TextDefault
                             styleText={styles.txtSubtitle}
-                            children={course?course.name:""} />
+                            children={course ? course.name : ""} />
                     </View>
                 </TouchableOpacity>
             </Shimmer>
@@ -116,11 +116,24 @@ export const Students = ({ navigation, route }) => {
         setFilter({ data, text })
     }
 
+    const verifyText = () => {
+        if (route.params && route.params.jobId) {
+            return filter.text
+                ? "Inscrito não encontrado"
+                : "Sem inscritos"
+        } else{
+
+            return filter.text
+                ? "Aluno(a) não encontrado"
+                : "Sem Alunos"
+        }
+    }
+
     const getEmptyComponent = () =>
         <TextDefault
+            children={verifyText()}
             styleText={styles.txtSubtitle}
-            style={styles.containerEmpty}
-            children={filter.text ? "Aluno(a) não encontrado" : route.params && route.params.jobId ? "Sem inscritos" : "Sem Alunos"} />
+            style={styles.containerEmpty} />
 
     const verifyEmpty = () =>
         Boolean(students.data.length === 0 || filter.data.length === 0 && filter.text)
@@ -130,7 +143,7 @@ export const Students = ({ navigation, route }) => {
             style={styles.conatinerAll}
             behavior={Platform.OS === 'ios' && 'padding'}>
             <HeaderList
-                title={"Alunos"}
+                title={route.params && route.params.jobId ? "Inscritos" : "Alunos"}
                 text={filter.text}
                 placeholder={"Pesquisar..."}
                 onClose={() => setFilter({ data: [], text: "" })}

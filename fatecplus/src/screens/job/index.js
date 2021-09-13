@@ -59,7 +59,7 @@ export const Job = ({ navigation, route }) => {
     const choiceStudent = () =>
         permission.subscribe
             ? subscribed ? unSubscribe() : confirmSubscription()
-            : navigation.navigate("Students", { job: job.id, msg: permission.indicate ? Strings.INDICATED : Strings.REQUESTED })
+            : navigation.navigate("Home", { screen: "Students", params: { job: job.id, msg: permission.indicate ? Strings.INDICATED : Strings.REQUESTED } })
 
     const getTitleButton = () =>
         permission.indicate
@@ -116,7 +116,7 @@ export const Job = ({ navigation, route }) => {
 
     const editJob = () =>
         navigation.navigate("JobForm", { id: job.id })
-    
+
 
     const goToSubscribeds = () =>
         navigation.navigate("Students", { jobId: job.id })

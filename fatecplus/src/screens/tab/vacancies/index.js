@@ -20,7 +20,10 @@ export const Vacancies = ({ navigation, route }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [vacancies, setVacancies] = useState({ data: Array(5).fill({}) });
 
-    useEffect(() => navigation.addListener('focus', () => getUser()), [])
+    useEffect(() => {
+        navigation.addListener('focus', () => getUser())
+        navigation.addListener('blur', () => navigation.setParams({studentId: false}))
+    }, [])
 
     const getUser = async () => {
         const currentUser = await Storage.getUser()
@@ -46,7 +49,6 @@ export const Vacancies = ({ navigation, route }) => {
                 .then(data => setVacancies({ data }))
                 .catch(status => modal.set({ status }))
                 .finally(() => {
-                    route.params = null;
                     setRefreshing(false)
                     setLoaded(true)
                 }))
@@ -58,7 +60,6 @@ export const Vacancies = ({ navigation, route }) => {
                 .then(data => configVacancies(data, isStudent, internship, job))
                 .catch(status => modal.set({ status }))
                 .finally(() => {
-                    route.params = null;
                     setRefreshing(false)
                     setLoaded(true)
                 }))
@@ -116,7 +117,7 @@ export const Vacancies = ({ navigation, route }) => {
         date ? date.split("-").reverse().join("/") : null
 
     const goToJob = id => {
-        if (route.params) {
+        if (route.params && route.params.studentId) {
             requestOrIndicate(id, route.params.studentId)
         } else
             navigation.navigate("Job", { id })
@@ -136,7 +137,8 @@ export const Vacancies = ({ navigation, route }) => {
             .catch(status =>
                 modal.set({
                     status,
-                    back: true
+                    back: true,
+                    positivePress: () => route.params = null,
                 }))
     }
 

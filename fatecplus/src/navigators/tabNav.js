@@ -15,19 +15,19 @@ export const TabNav = ({ navigation }) => {
 
     const Tab = createBottomTabNavigator();
 
-    const getScreenProps = name => {
-        switch (name) {
+    const getScreenProps = route => {
+        switch (route.name) {
             case "Menu":
                 return { name: "Menu", icon: { name: "bars", lib: "FontAwesome5" } }
             case "Vacancies":
                 return { name: "Vagas", icon: { name: "suitcase", lib: "FontAwesome" } }
             case "Students":
-                return { name: "Alunos", icon: { name: "graduation-cap", lib: "FontAwesome5" } }
+                return { name: route.params && route.params.jobId ? "Inscritos" : "Alunos", icon: { name: "graduation-cap", lib: "FontAwesome5" } }
         }
     }
 
-    const getIconsByRoute = (name, focused) => {
-        const screen = getScreenProps(name);
+    const getIconsByRoute = (route, focused) => {
+        const screen = getScreenProps(route);
         return (
             <>
                 <Icon
@@ -51,7 +51,7 @@ export const TabNav = ({ navigation }) => {
         <Tab.Navigator
             initialRouteName='Vacancies'
             tabBarOptions={{ style: styles.tabBar, showLabel: false }}
-            screenOptions={({ route }) => ({ tabBarIcon: ({ focused }) => getIconsByRoute(route.name, focused), })}>
+            screenOptions={({ route }) => ({ tabBarIcon: ({ focused }) => getIconsByRoute(route, focused), })}>
             <Tab.Screen name="Students" component={Students} />
             <Tab.Screen name="Vacancies" component={Vacancies} />
             <Tab.Screen name="Menu" component={Menu} />
@@ -59,11 +59,11 @@ export const TabNav = ({ navigation }) => {
     );
 }
 
-const styles =  StyleSheet.create({
+const styles = StyleSheet.create({
     tabBar: {
         height: 60,
-        borderTopWidth:0,
-        backgroundColor:Colors.BACKGROUND_LIGHT,
+        borderTopWidth: 0,
+        backgroundColor: Colors.BACKGROUND_LIGHT,
     },
     txtTabBar: {
         fontSize: 12,

@@ -64,8 +64,9 @@ export const Student = ({ navigation, route }) => {
         supported ? await Linking.openURL(url) : modal.set({ msg: Strings.ERROR_LINK })
     }
 
-    const choiceVacancy = () =>
-        navigation.navigate("Vacancies", { studentId: user.id })
+    const choiceVacancy = () => {
+        navigation.navigate("Home", { screen: "Vacancies", params: { studentId: user.id } })
+    }
 
     const pressArrow = () =>
         navigation.navigate("Home", { screen: "Students", params: null })
