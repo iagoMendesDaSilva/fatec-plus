@@ -41,9 +41,27 @@ export const Splash = (props) => {
         props.navigation.replace("Login")
     }
 
+    const logout = async () => {
+        await StorageAuth.logout()
+        Storage.clear()
+        Notification.unregister()
+    }
+
     const goToApp = async (user, data) => {
-        stopEvents();
         Storage.setUser({ username: user.username, password: user.password, token: data.token, id: data.id, category: data.category })
+
+        const versionApp = Storage.getVersion()
+        const playerId = await Notification.getPlayerId()
+
+        StorageAuth.registerOneSignal(playerId, data.id)
+            .then(() =>
+                StorageAuth.registerVersion(versionApp, data.id)
+                    .then(data => verifyRoute()))
+            .catch(status => modal.set({  status, positivePress: logout }))
+        stopEvents();
+    }
+
+    const verifyRoute = () => {
         const params = props.route.params
         if (params) {
             params.id && (params.type === "Student" || params.type === "Job") && props.navigation.replace(params.type, { id: params.id })

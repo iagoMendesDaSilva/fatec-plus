@@ -67,7 +67,7 @@ class UserController:
 
     def logout(self, id):
         try:
-            update_data ={"token": None, "recovery":None, "recovery_time":None}
+            update_data ={"token": None, "recovery":None, "recovery_time":None, "onesignal_playerID": None}
             dao.update_many(id,update_data,User)
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
@@ -179,6 +179,26 @@ class UserController:
             abort(make_response(jsonify({"response":"Invalid User or Code."}), 404))
         except Exception as err:
             abort(make_response(jsonify({"response":"Internal problem."}), 500))
+
+    def edit_notification(self, current_user, id, data):
+        try:
+            if current_user.id == id:
+                id_notification = data['onesignal_playerID']
+                user = dao.get_by_key('onesignal_playerID', id_notification, User)
+                dao.update(user.id, 'onesignal_playerID', None,User)
+                dao.update(current_user.id, 'onesignal_playerID', id_notification,User)
+            else:
+                raise CurrentUser
+        except CurrentUser as err:
+            abort(make_response(jsonify({"response":"Without Permission."}), 403))
+        except ObjectInvalid as err:
+            dao.update(current_user.id, 'onesignal_playerID', id_notification,User)
+            abort(make_response(jsonify({"response":"Edited Notification."}), 200))
+        except Exception as err:
+            if err.code == 409:
+                abort(make_response(jsonify({"response":"Internal problem."}), 409))
+            else:
+                abort(make_response(jsonify({"response":"Internal problem."}), 500))
   
     def profile_image(self, user, base64_img):
         image = None

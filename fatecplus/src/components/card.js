@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         fontSize: 25,
-        color: Colors.TEXT_PRIMARY,
         fontWeight: "bold",
+        color: Colors.TEXT_PRIMARY,
     },
     txtKnowMore: {
         fontSize: 18,
@@ -79,8 +79,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     textDescription: {
-        fontSize: 16,
-        textAlign: "justify",
+        fontSize: 15,
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },
     line: {

@@ -29,6 +29,12 @@ def get_teachers(current_user):
 def get_companies(current_user):
         return jsonify(userController.get_all('company')), 200
 
+@app.route("/mobile-api/v1/user/notification/<int:id>", methods=["PUT"])
+@token
+def notification(current_user, id):
+        userController.edit_notification(current_user,id, request.get_json())
+        return jsonify({"response":"Edited Notification"}), 200
+
 @app.route("/mobile-api/v1/user/image-profile", methods=["PUT"])
 @token
 def image_profile(current_user):

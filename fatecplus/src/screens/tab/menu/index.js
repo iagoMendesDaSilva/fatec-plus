@@ -59,8 +59,8 @@ export const Menu = ({ navigation }) => {
             options: true,
             iconLib: "Ionicons",
             iconName: "power",
-            positivePress: logout,
             title: "Encerrar sessão",
+            positivePress: ()=>logout(true),
             msg: Strings.CONFIRM_LOGOUT,
         })
 
