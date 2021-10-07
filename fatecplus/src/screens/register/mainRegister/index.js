@@ -23,7 +23,7 @@ export const MainRegister = (props) => {
     const [birthDate, setBirthDate] = useState(null);
     const [description, setDescription] = useState("");
     const [courses, setCourses] = useState({ data: [] });
-    const [course, setCourse] = useState({id:0, name:""});
+    const [course, setCourse] = useState({ id: 0, name: "" });
     const [image, setImage] = useState({ photo: "", base64: "" });
     const [date, setDate] = useState(Calendar.getDateRegister());
 
@@ -46,7 +46,7 @@ export const MainRegister = (props) => {
             setUsername(params.data.username)
             setDescription(params.data.description)
             setBirthDate(Calendar.format(params.data.birthDate))
-            setCourse(params.data.course?params.data.course : false)
+            setCourse(params.data.course ? params.data.course : false)
             setImage(params.data.image ? { photo: params.data.image, base64: "" } : { photo: "", base64: "" })
         }
     }
@@ -65,7 +65,7 @@ export const MainRegister = (props) => {
             category,
             username,
             description,
-            course:course.name?course.id:null,
+            course: course.name ? course.id : null,
             birthDate: Calendar.unFormat(date),
             image: image.base64 ? image.base64 : null,
         }
@@ -87,17 +87,18 @@ export const MainRegister = (props) => {
     }
 
     const editUser = async data => {
-        await StorageRegister.changeImage(image.base64 ? image.base64 : null)
-            .then(data => console.log(data))
-            .catch(status => console.log(status))
+        image.photo && image.base64 &&
+            await StorageRegister.changeImage(image.base64 ? image.base64 : null)
+                .then(data => console.log(data))
+                .catch(status => console.log(status))
         StorageRegister.editUser(data, params.data.id)
             .then(data =>
                 modal.set({ msg: Strings.UPDATED, back: true }))
             .catch(status => {
-               status===409?
-               modal.set({ status:404, msg: Strings.CONFLICT_EMAIL_OR_USERNAME })
-               :
-               modal.set({ status, msg: Strings.ERROR_UPDATE })
+                status === 409 ?
+                    modal.set({ status: 404, msg: Strings.CONFLICT_EMAIL_OR_USERNAME })
+                    :
+                    modal.set({ status, msg: Strings.ERROR_UPDATE })
             })
     }
 
@@ -169,7 +170,7 @@ export const MainRegister = (props) => {
                         options={courses.data}
                         iconLib={"fontawesome5"}
                         initialValue={"Escolha seu curso"}
-                        changeValue={(name, id) => setCourse({name, id: id+1})} />
+                        changeValue={(name, id) => setCourse({ name, id: id + 1 })} />
                     <DatePickerDefault
                         picker={picker}
                         title={birthDate}

@@ -120,7 +120,7 @@ export const JobForm = ({ navigation, route }) => {
                     <>
                         <Input
                             text={name}
-                            maxLength={20}
+                            maxLength={50}
                             iconName={"pencil"}
                             defaultValue={name}
                             placeholder={"Nome"}

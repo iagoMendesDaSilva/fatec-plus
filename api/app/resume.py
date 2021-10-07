@@ -42,7 +42,7 @@ class Resume:
                     text +=" - "+formation.subtitle
                 text+= " | "+time
                 if formation.workload:
-                    text += " | "+formation.workload+"h"
+                    text += " | "+str(formation.workload)+"h"
                 self.add_text(resume, text)
 
         if(len(user.languages)>0):

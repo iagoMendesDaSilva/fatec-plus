@@ -29,7 +29,7 @@ export default StyleSheet.create({
         width: "95%",
     },
     txtMessage: {
-        fontSize: 16,
+        fontSize: 17,
         textAlign: "justify",
         color: Colors.TEXT_PRIMARY_LIGHT_PLUS,
     },

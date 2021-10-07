@@ -8,7 +8,7 @@ class Job(database.Model):
     description = database.Column(database.String(300))
     subject_email=database.Column(database.String(50))
     job = database.Column(database.Boolean, nullable=False)
-    name = database.Column(database.String(20), nullable=False)
+    name = database.Column(database.String(50), nullable=False)
     internship = database.Column(database.Boolean, nullable=False)
     receive_by_email = database.Column(database.Boolean, nullable=False)
     company = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
